@@ -13,7 +13,7 @@ inputs:
   head:
     required: true
     description: 'The head branch of the pull request.'
-  issue-number:
+  issue_number:
     required: true
     description: 'The number of a issue or pull request to add a comment.'
   token:
