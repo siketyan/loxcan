@@ -43,6 +43,7 @@
     "scripts": {
         "lint": "php-cs-fixer fix -v --dry-run",
         "fix": "php-cs-fixer fix -v",
+        "coverage": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-html ./coverage",
         "test": "phpunit ./tests",
         "tests": [
             "@lint",
