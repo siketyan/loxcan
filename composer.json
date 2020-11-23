@@ -28,5 +28,8 @@
         "psr-4": {
             "Siketyan\\Loxcan\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit ./tests"
     }
 }
