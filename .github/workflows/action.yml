@@ -1,0 +1,20 @@
+name: Action
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: siketyan/loxcan@${{ github.event.pull_request.head.ref }}
+        with:
+          owner: ${{ github.event.repository.owner.login }}
+          repo: ${{ github.event.repository.name }}
+          base: ${{ github.event.pull_request.base.ref }}
+          head: ${{ github.event.pull_request.head.ref }}
+          issue-number: ${{ github.event.pull_request.number }}
+          token: ${{ github.token }}
