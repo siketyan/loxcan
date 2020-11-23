@@ -19,7 +19,6 @@
         "symfony/console": "^4.4",
         "symfony/dependency-injection": "^4.4",
         "symfony/process": "^4.4",
-        "symfony/symfony": "^4.4",
         "symfony/yaml": "^4.4"
     },
     "require-dev": {
