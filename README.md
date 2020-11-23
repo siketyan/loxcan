@@ -1,5 +1,6 @@
 # loxcan
 ![PHP](https://github.com/siketyan/loxcan/workflows/PHP/badge.svg)
+![Action](https://github.com/siketyan/loxcan/workflows/Action/badge.svg)
 
 Universal Lock File Scanner for Git.
 
