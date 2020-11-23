@@ -4,8 +4,123 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd5e5fa6e3f4f1a928e311cb0c392ad4",
-    "packages": [],
+    "content-hash": "d18247f118018d82ec5671d74a5406cc",
+    "packages": [
+        {
+            "name": "icecave/isolator",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/icecave/isolator.git",
+                "reference": "97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/icecave/isolator/zipball/97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5",
+                "reference": "97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "icecave/archer": "~1"
+            },
+            "suggest": {
+                "eloquent/asplode": "Drop-in exception-based error handling."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Icecave\\Isolator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "Dependency injection for global functions.",
+            "homepage": "https://github.com/IcecaveStudios/isolator",
+            "keywords": [
+                "fake",
+                "mock",
+                "phake",
+                "phpunit",
+                "test",
+                "unit"
+            ],
+            "support": {
+                "issues": "https://github.com/icecave/isolator/issues",
+                "source": "https://github.com/icecave/isolator/tree/2.3.0"
+            },
+            "time": "2014-08-12T03:16:11+00:00"
+        },
+        {
+            "name": "mschop/pathogen",
+            "version": "0.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mschop/pathogen.git",
+                "reference": "baa1376e1de56ad462cd67794de808d690904fb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mschop/pathogen/zipball/baa1376e1de56ad462cd67794de808d690904fb8",
+                "reference": "baa1376e1de56ad462cd67794de808d690904fb8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "icecave/isolator": "~2",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "eloquent/liberator": "~2",
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eloquent\\Pathogen\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erin Millard",
+                    "email": "ezzatron@gmail.com",
+                    "homepage": "http://ezzatron.com/"
+                },
+                {
+                    "name": "Darian Brown",
+                    "email": "darianbr@gmail.com",
+                    "homepage": "http://www.darian-brown.com/"
+                }
+            ],
+            "description": "General-purpose path library for PHP.",
+            "homepage": "https://github.com/eloquent/pathogen",
+            "keywords": [
+                "file",
+                "filesystem",
+                "manipulation",
+                "path"
+            ],
+            "support": {
+                "source": "https://github.com/mschop/pathogen/tree/0.6.1"
+            },
+            "time": "2014-10-22T01:04:35+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/semver",
