@@ -1,0 +1,16 @@
+services:
+  guzzle.client.github:
+    class: GuzzleHttp\Client
+    arguments:
+      - 'base_uri': 'https://api.github.com/'
+
+  Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder: ~
+
+  Siketyan\Loxcan\Reporter\GitHub\GitHubClient:
+    arguments:
+      $httpClient: '@guzzle.client.github'
+
+  Siketyan\Loxcan\Reporter\GitHub\GitHubReporter:
+    arguments:
+      $markdownBuilder: '@Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder'
+      $client: '@Siketyan\Loxcan\Reporter\GitHub\GitHubClient'
