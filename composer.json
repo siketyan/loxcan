@@ -12,7 +12,9 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^7.4",
-        "ext-json": "*"
+        "ext-json": "*",
+        "mschop/pathogen": "^0.6.1",
+        "symfony/process": "^5.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

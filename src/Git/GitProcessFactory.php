@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Siketyan\Loxcan\Git;
+
+use Siketyan\Loxcan\Model\Repository;
+use Symfony\Component\Process\Process;
+
+class GitProcessFactory
+{
+    private string $path;
+
+    public function __construct(
+        string $path = 'git'
+    ) {
+        $this->path = $path;
+    }
+
+    public function create(Repository $repository, array $command): Process
+    {
+        return new Process(
+            [$this->path, ...$command],
+            $repository->getPath()->string(),
+        );
+    }
+}
