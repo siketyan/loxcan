@@ -1,0 +1,17 @@
+{
+    "name": "siketyan/loxcan",
+    "description": "Universal Lock File Scanner for Git.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Naoki Ikeguchi",
+            "email": "root@siketyan.dev"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    },
+    "require-dev": {
+    }
+}
