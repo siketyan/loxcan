@@ -30,6 +30,6 @@ trait DependencyCollectionTrait
             fn (Dependency $d): bool => $d->getPackage() === $package,
         );
 
-        return $filtered[0] ?? null;
+        return $filtered[array_key_first($filtered)] ?? null;
     }
 }

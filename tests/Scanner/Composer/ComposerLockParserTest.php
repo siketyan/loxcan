@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner\Composer;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
@@ -50,6 +51,7 @@ EOS;
 
         $this->packagePool->get('foo/bar')->willReturn(null);
         $this->packagePool->get('bar/baz')->willReturn($cache);
+        $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
 
         $collection = $this->parser->parse(self::CONTENTS);
         $dependencies = $collection->getDependencies();

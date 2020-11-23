@@ -48,9 +48,15 @@ class ComposerLockParser
         foreach ($packages as $package) {
             $name = $package['name'];
             $version = $package['version'];
+            $package = $this->packagePool->get($name);
+
+            if ($package === null) {
+                $package = new Package($name);
+                $this->packagePool->add($package);
+            }
 
             $dependencies[] = new Dependency(
-                $this->packagePool->get($name) ?? new Package($name),
+                $package,
                 $this->getVersion($version),
             );
         }
