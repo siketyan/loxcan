@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: siketyan/loxcan@${{ github.event.pull_request.head.ref }}
+      - uses: siketyan/loxcan@master
         with:
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
