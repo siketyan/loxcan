@@ -1,5 +1,9 @@
 services:
-  Siketyan\Loxcan\Comparator\DependencyComparator: ~
+  Siketyan\Loxcan\Comparator\VersionComparator: ~
+
+  Siketyan\Loxcan\Comparator\DependencyComparator:
+    arguments:
+      $versionComparator: '@Siketyan\Loxcan\Comparator\VersionComparator'
 
   Siketyan\Loxcan\Comparator\DependencyCollectionSubtractor: ~
 

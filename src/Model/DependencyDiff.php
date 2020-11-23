@@ -7,17 +7,14 @@ namespace Siketyan\Loxcan\Model;
 class DependencyDiff
 {
     private Package $package;
-    private Version $before;
-    private Version $after;
+    private VersionDiff $versionDiff;
 
     public function __construct(
         Package $package,
-        Version $before,
-        Version $after
+        VersionDiff $versionDiff
     ) {
         $this->package = $package;
-        $this->before = $before;
-        $this->after = $after;
+        $this->versionDiff = $versionDiff;
     }
 
     public function getPackage(): Package
@@ -25,13 +22,8 @@ class DependencyDiff
         return $this->package;
     }
 
-    public function getBefore(): Version
+    public function getVersionDiff(): VersionDiff
     {
-        return $this->before;
-    }
-
-    public function getAfter(): Version
-    {
-        return $this->after;
+        return $this->versionDiff;
     }
 }

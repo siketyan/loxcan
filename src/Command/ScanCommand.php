@@ -6,6 +6,7 @@ namespace Siketyan\Loxcan\Command;
 
 use Eloquent\Pathogen\Path;
 use Siketyan\Loxcan\Model\Repository;
+use Siketyan\Loxcan\Model\VersionDiff;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -57,11 +58,12 @@ class ScanCommand extends Command
             }
 
             foreach ($diff->getUpdated() as $dependencyDiff) {
+                $versionDiff = $dependencyDiff->getVersionDiff();
                 $rows[] = [
-                    '⬆️',
+                    $versionDiff->getType() === VersionDiff::UPGRADED ? '⬆️' : '⬇️',
                     $dependencyDiff->getPackage()->getName(),
-                    $dependencyDiff->getBefore(),
-                    $dependencyDiff->getAfter(),
+                    $versionDiff->getBefore(),
+                    $versionDiff->getAfter(),
                 ];
             }
 

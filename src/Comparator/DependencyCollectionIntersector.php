@@ -46,6 +46,9 @@ class DependencyCollectionIntersector
             $diff[] = $this->comparator->compare($before, $after);
         }
 
-        return $diff;
+        return array_filter(
+            $diff,
+            fn (?DependencyDiff $d) => $d !== null,
+        );
     }
 }

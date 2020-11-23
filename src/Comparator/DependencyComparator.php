@@ -10,7 +10,15 @@ use Siketyan\Loxcan\Model\DependencyDiff;
 
 class DependencyComparator
 {
-    public function compare(Dependency $before, Dependency $after): DependencyDiff
+    private VersionComparator $versionComparator;
+
+    public function __construct(
+        VersionComparator $versionComparator
+    ) {
+        $this->versionComparator = $versionComparator;
+    }
+
+    public function compare(Dependency $before, Dependency $after): ?DependencyDiff
     {
         if ($before->getPackage() !== $after->getPackage()) {
             throw new InvalidComparisonException(
@@ -18,10 +26,18 @@ class DependencyComparator
             );
         }
 
-        return new DependencyDiff(
-            $after->getPackage(),
+        $versionDiff = $this->versionComparator->compare(
             $before->getVersion(),
             $after->getVersion(),
+        );
+
+        if ($versionDiff === null) {
+            return null;
+        }
+
+        return new DependencyDiff(
+            $after->getPackage(),
+            $versionDiff,
         );
     }
 }
