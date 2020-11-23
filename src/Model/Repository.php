@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Model;
 
+use Eloquent\Pathogen\PathInterface;
+
 class Repository
 {
-    private string $path;
+    private PathInterface $path;
 
     public function __construct(
-        string $path
+        PathInterface $path
     ) {
         $this->path = $path;
     }
 
-    public function getPath(): string
+    public function getPath(): PathInterface
     {
         return $this->path;
     }
