@@ -32,7 +32,7 @@ class DependencyCollectionIntersector
         $packages = array_uintersect(
             $this->getPackages($a),
             $this->getPackages($b),
-            fn (Package $a, Package $b): int => $a === $b ? 0 : -1,
+            fn (Package $u, Package $v): int => spl_object_id($u) - spl_object_id($v),
         );
 
         foreach ($packages as $package) {
