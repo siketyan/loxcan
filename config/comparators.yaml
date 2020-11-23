@@ -1,0 +1,13 @@
+services:
+  Siketyan\Loxcan\Comparator\DependencyComparator: ~
+
+  Siketyan\Loxcan\Comparator\DependencyCollectionSubtractor: ~
+
+  Siketyan\Loxcan\Comparator\DependencyCollectionIntersector:
+    arguments:
+      $comparator: '@Siketyan\Loxcan\Comparator\DependencyComparator'
+
+  Siketyan\Loxcan\Comparator\DependencyCollectionComparator:
+    arguments:
+      $subtractor: '@Siketyan\Loxcan\Comparator\DependencyCollectionSubtractor'
+      $intersector: '@Siketyan\Loxcan\Comparator\DependencyCollectionIntersector'

@@ -1,0 +1,16 @@
+services:
+  Siketyan\Loxcan\Scanner\Composer\ComposerPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Composer\ComposerLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Composer\ComposerPackagePool'
+
+  Siketyan\Loxcan\Scanner\Composer\ComposerScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Composer\ComposerLockParser'
+
+  Siketyan\Loxcan\Scanner\ScannerResolver:
+    arguments:
+      $scanners:
+        - '@Siketyan\Loxcan\Scanner\Composer\ComposerScanner'

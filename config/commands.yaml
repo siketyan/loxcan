@@ -1,0 +1,5 @@
+services:
+  Siketyan\Loxcan\Command\ScanCommand:
+    public: true
+    arguments:
+      $useCase: '@Siketyan\Loxcan\UseCase\ScanUseCase'

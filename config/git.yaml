@@ -1,0 +1,6 @@
+services:
+  Siketyan\Loxcan\Git\GitProcessFactory: ~
+
+  Siketyan\Loxcan\Git\Git:
+    arguments:
+      $processFactory: '@Siketyan\Loxcan\Git\GitProcessFactory'
