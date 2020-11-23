@@ -3,3 +3,4 @@ services:
     public: true
     arguments:
       $useCase: '@Siketyan\Loxcan\UseCase\ScanUseCase'
+      $reportUseCase: '@Siketyan\Loxcan\UseCase\ReportUseCase'

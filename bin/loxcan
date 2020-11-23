@@ -15,6 +15,7 @@ $configs = [
     'commands.yaml',
     'comparators.yaml',
     'git.yaml',
+    'reporters.yaml',
     'scanners.yaml',
     'usecases.yaml',
 ];

@@ -7,6 +7,7 @@ namespace Siketyan\Loxcan\Command;
 use Eloquent\Pathogen\Path;
 use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\Model\VersionDiff;
+use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,12 +20,16 @@ class ScanCommand extends Command
     private const NAME = 'scan';
 
     private ScanUseCase $useCase;
+    private ReportUseCase $reportUseCase;
 
-    public function __construct(ScanUseCase $useCase)
-    {
+    public function __construct(
+        ScanUseCase $useCase,
+        ReportUseCase $reportUseCase
+    ) {
         parent::__construct(self::NAME);
 
         $this->useCase = $useCase;
+        $this->reportUseCase = $reportUseCase;
     }
 
     protected function configure()
@@ -81,6 +86,8 @@ class ScanCommand extends Command
                 ['', 'Package', 'Before', 'After'],
                 $rows,
             );
+
+            $this->reportUseCase->report($diff, $file);
         }
 
         return 0;
