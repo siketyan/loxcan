@@ -42,4 +42,23 @@ class Version
     {
         return $this->revision;
     }
+
+    public function __toString(): string
+    {
+        $version = sprintf(
+            'v%d.%d.%d',
+            $this->major,
+            $this->minor,
+            $this->patch,
+        );
+
+        if ($this->getRevision() !== null) {
+            $version .= sprintf(
+                '.%d',
+                $this->revision,
+            );
+        }
+
+        return $version;
+    }
 }
