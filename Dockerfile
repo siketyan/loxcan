@@ -1,4 +1,4 @@
-FROM alpine:7.4-cli-alpine
+FROM php:7.4-cli-alpine
 
 COPY . /app
 
