@@ -1,0 +1,42 @@
+{
+    "name": "siketyan/loxcan",
+    "description": "Universal Lock File Scanner for Git.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Naoki Ikeguchi",
+            "email": "root@siketyan.dev"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpunit/phpunit": "^9.4"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Siketyan\\Loxcan\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Siketyan\\Loxcan\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix -v --dry-run",
+        "fix": "php-cs-fixer fix -v",
+        "test": "phpunit ./tests",
+        "tests": [
+            "@lint",
+            "@test"
+        ]
+    }
+}
