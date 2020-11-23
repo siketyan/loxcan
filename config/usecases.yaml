@@ -4,3 +4,8 @@ services:
       $git: '@Siketyan\Loxcan\Git\Git'
       $scannerResolver: '@Siketyan\Loxcan\Scanner\ScannerResolver'
       $comparator: '@Siketyan\Loxcan\Comparator\DependencyCollectionComparator'
+
+  Siketyan\Loxcan\UseCase\ReportUseCase:
+    arguments:
+      $reporters:
+        - '@Siketyan\Loxcan\Reporter\GitHub\GitHubReporter'
