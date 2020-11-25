@@ -26,8 +26,12 @@ class ComposerLockParser
         $this->packagePool = $packagePool;
     }
 
-    public function parse(string $json): DependencyCollection
+    public function parse(?string $json): DependencyCollection
     {
+        if ($json === null) {
+            $json = '{}';
+        }
+
         try {
             $assoc = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {

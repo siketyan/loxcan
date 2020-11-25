@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\UseCase;
 
+use Eloquent\Pathogen\Exception\NonRelativePathException;
+use Eloquent\Pathogen\PathInterface;
+use Eloquent\Pathogen\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -40,16 +43,32 @@ class ScanUseCaseTest extends TestCase
         );
     }
 
+    /**
+     * @throws NonRelativePathException
+     */
     public function test(): void
     {
         $base = 'main';
         $head = 'feature';
         $files = [
-            __FILE__,
-            'unsupported.lock',
+            $this->prophesize(RelativePathInterface::class)->reveal(),
+            $this->prophesize(RelativePathInterface::class)->reveal(),
         ];
 
-        $repository = $this->prophesize(Repository::class)->reveal();
+        $file0Path = $this->prophesize(PathInterface::class);
+        $file0Path->string()->willReturn(__FILE__);
+        $file0Path = $file0Path->reveal();
+
+        $file1Path = $this->prophesize(PathInterface::class)->reveal();
+
+        $repositoryPath = $this->prophesize(PathInterface::class);
+        $repositoryPath->join($files[0])->willReturn($file0Path);
+        $repositoryPath->join($files[1])->willReturn($file1Path);
+
+        $repository = $this->prophesize(Repository::class);
+        $repository->getPath()->willReturn($repositoryPath->reveal());
+        $repository = $repository->reveal();
+
         $before = $this->prophesize(DependencyCollection::class)->reveal();
         $after = $this->prophesize(DependencyCollection::class)->reveal();
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
@@ -70,9 +89,10 @@ class ScanUseCaseTest extends TestCase
         $this->git->fetchChangedFiles($repository, $base, $head)->willReturn($files)->shouldBeCalledOnce();
         $this->git->fetchOriginalFile($repository, $base, $files[0])->willReturn('foo')->shouldBeCalledOnce();
         $this->git->fetchOriginalFile($repository, $base, $files[1])->shouldNotBeCalled();
+        $this->git->checkFileExists($repository, $base, $files[0])->willReturn(true)->shouldBeCalledOnce();
 
-        $this->scannerResolver->resolve($files[0])->willReturn($scanner->reveal());
-        $this->scannerResolver->resolve($files[1])->willReturn(null);
+        $this->scannerResolver->resolve($file0Path)->willReturn($scanner->reveal());
+        $this->scannerResolver->resolve($file1Path)->willReturn(null);
 
         $this->comparator->compare($before, $after)->willReturn($diff);
 

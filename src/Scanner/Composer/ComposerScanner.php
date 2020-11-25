@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Composer;
 
+use Eloquent\Pathogen\PathInterface;
 use Siketyan\Loxcan\Model\DependencyCollectionPair;
 use Siketyan\Loxcan\Model\FileDiff;
 use Siketyan\Loxcan\Scanner\ScannerInterface;
@@ -26,8 +27,8 @@ class ComposerScanner implements ScannerInterface
         );
     }
 
-    public function supports(string $filename): bool
+    public function supports(PathInterface $path): bool
     {
-        return $filename === 'composer.lock';
+        return $path->name() === 'composer.lock';
     }
 }
