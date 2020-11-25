@@ -49,7 +49,7 @@ steps:
 
 - [x] Composer (PHP)
 - [ ] Cargo (Rust)
-- [ ] npm (JavaScript, Node.js)
+- [x] npm (JavaScript, Node.js)
 - [ ] Yarn (JavaScript, Node.js)
 
 ## 📋 Supported Reporters
