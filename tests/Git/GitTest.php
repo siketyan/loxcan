@@ -79,6 +79,31 @@ EOS;
         $this->assertSame($expected, $actual);
     }
 
+    public function testCheckFileExists(): void
+    {
+        $repository = $this->prophesize(Repository::class)->reveal();
+
+        $process = $this->prophesize(Process::class);
+        $process->run()->willReturn(0)->shouldBeCalledTimes(2);
+        $process->isSuccessful()->willReturn(true);
+
+        $this->processFactory
+            ->create($repository, ['cat-file', '-e', 'master:bar.lock'])
+            ->willReturn($process->reveal())
+            ->shouldBeCalledTimes(2)
+        ;
+
+        $this->assertTrue(
+            $this->git->checkFileExists($repository, 'master', 'bar.lock'),
+        );
+
+        $process->isSuccessful()->willReturn(false);
+
+        $this->assertFalse(
+            $this->git->checkFileExists($repository, 'master', 'bar.lock'),
+        );
+    }
+
     public function testSupports(): void
     {
         $this->assertTrue(

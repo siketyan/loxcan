@@ -96,6 +96,7 @@ class ScanUseCaseTest extends TestCase
         $this->git->fetchChangedFiles($repository, $base, $head)->willReturn($files)->shouldBeCalledOnce();
         $this->git->fetchOriginalFile($repository, $base, $files[0])->willReturn('foo')->shouldBeCalledOnce();
         $this->git->fetchOriginalFile($repository, $base, $files[1])->shouldNotBeCalled();
+        $this->git->checkFileExists($repository, $base, $files[0])->willReturn(true)->shouldBeCalledOnce();
 
         $this->scannerResolver->resolve($file0Path)->willReturn($scanner->reveal());
         $this->scannerResolver->resolve($file1Path)->willReturn(null);

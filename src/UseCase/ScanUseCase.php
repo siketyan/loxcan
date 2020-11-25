@@ -54,10 +54,11 @@ class ScanUseCase
                 continue;
             }
 
+            $exists = $this->git->checkFileExists($repository, $base, $file);
             $pair = $scanner->scan(
                 new FileDiff(
-                    $this->git->fetchOriginalFile($repository, $base, $file),
-                    file_get_contents($file),
+                    $exists ? $this->git->fetchOriginalFile($repository, $base, $file) : null,
+                    file_get_contents($file) ?: null,
                 ),
             );
 

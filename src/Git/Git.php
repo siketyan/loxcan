@@ -69,6 +69,26 @@ class Git
         return $process->getOutput();
     }
 
+    public function checkFileExists(Repository $repository, string $branch, string $path): bool
+    {
+        $process = $this->processFactory->create(
+            $repository,
+            [
+                'cat-file',
+                '-e',
+                sprintf('%s:%s', $branch, $path),
+            ],
+        );
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function supports(Repository $repository): bool
     {
         return is_dir(
