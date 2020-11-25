@@ -4,32 +4,13 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Composer;
 
-use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Siketyan\Loxcan\Model\Package;
+use Siketyan\Loxcan\Scanner\AbstractPackagePool;
+use Siketyan\Loxcan\Scanner\AbstractPackagePoolTest;
 
-class ComposerPackagePoolTest extends TestCase
+class ComposerPackagePoolTest extends AbstractPackagePoolTest
 {
-    use ProphecyTrait;
-
-    private ComposerPackagePool $pool;
-
-    protected function setUp(): void
+    protected function getImpl(): AbstractPackagePool
     {
-        $this->pool = new ComposerPackagePool();
-    }
-
-    public function test(): void
-    {
-        $name = 'dummy/dummy';
-
-        $package = $this->prophesize(Package::class);
-        $package->getName()->willReturn($name);
-        $package = $package->reveal();
-
-        $this->pool->add($package);
-
-        $this->assertSame($package, $this->pool->get($name));
-        $this->assertNull($this->pool->get('not/exists'));
+        return new ComposerPackagePool();
     }
 }
