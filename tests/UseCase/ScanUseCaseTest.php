@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\UseCase;
 
+use Eloquent\Pathogen\Exception\NonRelativePathException;
+use Eloquent\Pathogen\PathInterface;
+use Eloquent\Pathogen\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -40,16 +43,39 @@ class ScanUseCaseTest extends TestCase
         );
     }
 
+    /**
+     * @throws NonRelativePathException
+     */
     public function test(): void
     {
         $base = 'main';
         $head = 'feature';
         $files = [
-            __FILE__,
+            'composer.lock',
             'unsupported.lock',
         ];
 
-        $repository = $this->prophesize(Repository::class)->reveal();
+        $file0Path = $this->prophesize(PathInterface::class)->reveal();
+        $file1Path = $this->prophesize(PathInterface::class)->reveal();
+
+        $repositoryPath = $this->prophesize(PathInterface::class);
+
+        /** @noinspection PhpParamsInspection */
+        $repositoryPath
+            ->join(Argument::that(fn (RelativePathInterface $p): bool => $p->name() === $files[0]))
+            ->willReturn($file0Path)
+        ;
+
+        /** @noinspection PhpParamsInspection */
+        $repositoryPath
+            ->join(Argument::that(fn (RelativePathInterface $p): bool => $p->name() === $files[1]))
+            ->willReturn($file1Path)
+        ;
+
+        $repository = $this->prophesize(Repository::class);
+        $repository->getPath()->willReturn($repositoryPath->reveal());
+        $repository = $repository->reveal();
+
         $before = $this->prophesize(DependencyCollection::class)->reveal();
         $after = $this->prophesize(DependencyCollection::class)->reveal();
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
@@ -71,8 +97,8 @@ class ScanUseCaseTest extends TestCase
         $this->git->fetchOriginalFile($repository, $base, $files[0])->willReturn('foo')->shouldBeCalledOnce();
         $this->git->fetchOriginalFile($repository, $base, $files[1])->shouldNotBeCalled();
 
-        $this->scannerResolver->resolve($files[0])->willReturn($scanner->reveal());
-        $this->scannerResolver->resolve($files[1])->willReturn(null);
+        $this->scannerResolver->resolve($file0Path)->willReturn($scanner->reveal());
+        $this->scannerResolver->resolve($file1Path)->willReturn(null);
 
         $this->comparator->compare($before, $after)->willReturn($diff);
 

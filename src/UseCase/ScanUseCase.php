@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\UseCase;
 
+use Eloquent\Pathogen\Exception\NonRelativePathException;
+use Eloquent\Pathogen\RelativePath;
 use Siketyan\Loxcan\Comparator\DependencyCollectionComparator;
 use Siketyan\Loxcan\Git\Git;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
@@ -33,6 +35,8 @@ class ScanUseCase
      * @param string     $head
      *
      * @return DependencyCollectionDiff[]
+     *
+     * @throws NonRelativePathException
      */
     public function scan(Repository $repository, string $base, string $head): array
     {
@@ -40,7 +44,11 @@ class ScanUseCase
         $files = $this->git->fetchChangedFiles($repository, $base, $head);
 
         foreach ($files as $file) {
-            $scanner = $this->scannerResolver->resolve($file);
+            $scanner = $this->scannerResolver->resolve(
+                $repository->getPath()->join(
+                    RelativePath::fromString($file),
+                ),
+            );
 
             if ($scanner === null) {
                 continue;

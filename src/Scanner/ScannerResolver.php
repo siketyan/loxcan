@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner;
 
+use Eloquent\Pathogen\PathInterface;
+
 class ScannerResolver
 {
     /**
@@ -20,10 +22,10 @@ class ScannerResolver
         $this->scanners = $scanners;
     }
 
-    public function resolve(string $filename): ?ScannerInterface
+    public function resolve(PathInterface $path): ?ScannerInterface
     {
         foreach ($this->scanners as $scanner) {
-            if ($scanner->supports($filename)) {
+            if ($scanner->supports($path)) {
                 return $scanner;
             }
         }

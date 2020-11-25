@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner;
 
+use Eloquent\Pathogen\PathInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -30,16 +31,17 @@ class ScannerResolverTest extends TestCase
 
     public function test(): void
     {
-        $foo = 'foo';
-        $bar = 'bar';
+        $foo = $this->prophesize(PathInterface::class)->reveal();
+        $bar = $this->prophesize(PathInterface::class)->reveal();
+        $dummy = $this->prophesize(PathInterface::class)->reveal();
 
         $this->fooScanner->supports($foo)->willReturn(true);
-        $this->fooScanner->supports(Argument::type('string'))->willReturn(false);
+        $this->fooScanner->supports(Argument::type(PathInterface::class))->willReturn(false);
         $this->barScanner->supports($bar)->willReturn(true);
-        $this->barScanner->supports(Argument::type('string'))->willReturn(false);
+        $this->barScanner->supports(Argument::type(PathInterface::class))->willReturn(false);
 
         $this->assertSame($this->fooScanner->reveal(), $this->resolver->resolve($foo));
         $this->assertSame($this->barScanner->reveal(), $this->resolver->resolve($bar));
-        $this->assertNull($this->resolver->resolve('dummy'));
+        $this->assertNull($this->resolver->resolve($dummy));
     }
 }
