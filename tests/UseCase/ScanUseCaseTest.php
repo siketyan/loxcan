@@ -51,26 +51,19 @@ class ScanUseCaseTest extends TestCase
         $base = 'main';
         $head = 'feature';
         $files = [
-            'composer.lock',
-            'unsupported.lock',
+            $this->prophesize(RelativePathInterface::class)->reveal(),
+            $this->prophesize(RelativePathInterface::class)->reveal(),
         ];
 
-        $file0Path = $this->prophesize(PathInterface::class)->reveal();
+        $file0Path = $this->prophesize(PathInterface::class);
+        $file0Path->string()->willReturn(__FILE__);
+        $file0Path = $file0Path->reveal();
+
         $file1Path = $this->prophesize(PathInterface::class)->reveal();
 
         $repositoryPath = $this->prophesize(PathInterface::class);
-
-        /** @noinspection PhpParamsInspection */
-        $repositoryPath
-            ->join(Argument::that(fn (RelativePathInterface $p): bool => $p->name() === $files[0]))
-            ->willReturn($file0Path)
-        ;
-
-        /** @noinspection PhpParamsInspection */
-        $repositoryPath
-            ->join(Argument::that(fn (RelativePathInterface $p): bool => $p->name() === $files[1]))
-            ->willReturn($file1Path)
-        ;
+        $repositoryPath->join($files[0])->willReturn($file0Path);
+        $repositoryPath->join($files[1])->willReturn($file1Path);
 
         $repository = $this->prophesize(Repository::class);
         $repository->getPath()->willReturn($repositoryPath->reveal());

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\UseCase;
 
-use Eloquent\Pathogen\Exception\NonRelativePathException;
-use Eloquent\Pathogen\RelativePath;
 use Siketyan\Loxcan\Comparator\DependencyCollectionComparator;
 use Siketyan\Loxcan\Git\Git;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
@@ -35,34 +33,29 @@ class ScanUseCase
      * @param string     $head
      *
      * @return DependencyCollectionDiff[]
-     *
-     * @throws NonRelativePathException
      */
     public function scan(Repository $repository, string $base, string $head): array
     {
         $diffs = [];
-        $files = $this->git->fetchChangedFiles($repository, $base, $head);
+        $paths = $this->git->fetchChangedFiles($repository, $base, $head);
 
-        foreach ($files as $file) {
-            $scanner = $this->scannerResolver->resolve(
-                $repository->getPath()->join(
-                    RelativePath::fromString($file),
-                ),
-            );
+        foreach ($paths as $path) {
+            $absolutePath = $repository->getPath()->join($path);
+            $scanner = $this->scannerResolver->resolve($absolutePath);
 
             if ($scanner === null) {
                 continue;
             }
 
-            $exists = $this->git->checkFileExists($repository, $base, $file);
+            $exists = $this->git->checkFileExists($repository, $base, $path);
             $pair = $scanner->scan(
                 new FileDiff(
-                    $exists ? $this->git->fetchOriginalFile($repository, $base, $file) : null,
-                    file_get_contents($file) ?: null,
+                    $exists ? $this->git->fetchOriginalFile($repository, $base, $path) : null,
+                    file_get_contents($absolutePath->string()) ?: null,
                 ),
             );
 
-            $diffs[$file] = $this->comparator->compare(
+            $diffs[$path->string()] = $this->comparator->compare(
                 $pair->getBefore(),
                 $pair->getAfter(),
             );
