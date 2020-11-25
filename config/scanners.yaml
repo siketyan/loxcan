@@ -10,7 +10,19 @@ services:
     arguments:
       $parser: '@Siketyan\Loxcan\Scanner\Composer\ComposerLockParser'
 
+  Siketyan\Loxcan\Scanner\Npm\NpmPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Npm\NpmLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Npm\NpmPackagePool'
+
+  Siketyan\Loxcan\Scanner\Npm\NpmScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Npm\NpmLockParser'
+
   Siketyan\Loxcan\Scanner\ScannerResolver:
     arguments:
       $scanners:
         - '@Siketyan\Loxcan\Scanner\Composer\ComposerScanner'
+        - '@Siketyan\Loxcan\Scanner\Npm\NpmScanner'
