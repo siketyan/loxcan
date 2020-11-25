@@ -12,7 +12,7 @@ Use `pull_request` events to trigger the action.
 steps:
   - uses: actions/checkout@v2
     with:
-      force-depth: 0
+      fetch-depth: 0
 
   - uses: siketyan/loxcan@v0.1
     with:
@@ -30,6 +30,7 @@ steps:
 - [x] Composer (PHP)
 - [ ] Cargo (Rust)
 - [ ] npm (JavaScript, Node.js)
+- [ ] Yarn (JavaScript, Node.js)
 
 ## 📋 Supported Reporters
 (✅ = Supported, ⬜️ = Scheduled)
