@@ -41,7 +41,7 @@ class GitHubMarkdownBuilder
             $versionDiff = $dependencyDiff->getVersionDiff();
             $rows[] = sprintf(
                 '|%s|%s|%s|%s|',
-                $versionDiff->getType() === VersionDiff::UPGRADED ? '⬆️' : '⬇️',
+                $this->getVersionDiffTypeEmoji($versionDiff),
                 $dependencyDiff->getPackage()->getName(),
                 $versionDiff->getBefore(),
                 $versionDiff->getAfter(),
@@ -57,5 +57,20 @@ class GitHubMarkdownBuilder
         }
 
         return $rows;
+    }
+
+    private function getVersionDiffTypeEmoji(VersionDiff $diff): string
+    {
+        switch ($diff->getType()) {
+            case VersionDiff::UPGRADED:
+                return '⬆️';
+
+            case VersionDiff::DOWNGRADED:
+                return '⬇️';
+
+            default:
+            case VersionDiff::UNKNOWN:
+                return '🔄';
+        }
     }
 }

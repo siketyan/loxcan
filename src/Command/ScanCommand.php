@@ -65,7 +65,7 @@ class ScanCommand extends Command
             foreach ($diff->getUpdated() as $dependencyDiff) {
                 $versionDiff = $dependencyDiff->getVersionDiff();
                 $rows[] = [
-                    $versionDiff->getType() === VersionDiff::UPGRADED ? '⬆️' : '⬇️',
+                    $this->getVersionDiffTypeEmoji($versionDiff),
                     $dependencyDiff->getPackage()->getName(),
                     $versionDiff->getBefore(),
                     $versionDiff->getAfter(),
@@ -91,5 +91,20 @@ class ScanCommand extends Command
         }
 
         return 0;
+    }
+
+    private function getVersionDiffTypeEmoji(VersionDiff $diff): string
+    {
+        switch ($diff->getType()) {
+            case VersionDiff::UPGRADED:
+                return '⬆️';
+
+            case VersionDiff::DOWNGRADED:
+                return '⬇️';
+
+            default:
+            case VersionDiff::UNKNOWN:
+                return '🔄';
+        }
     }
 }
