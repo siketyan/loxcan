@@ -78,6 +78,75 @@ EOS);
     /**
      * @throws GuzzleException
      */
+    public function testGetComments(): void
+    {
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->getContents()->willReturn(<<<'EOS'
+[
+    {
+        "id": 123,
+        "body": "foo",
+        "user": {
+            "id": 111,
+            "login": "abc"
+        }
+    },
+    {
+        "id": 456,
+        "body": "bar",
+        "user": {
+            "id": 111,
+            "login": "abc"
+        }
+    }
+]
+EOS);
+
+        $response = $this->prophesize(ResponseInterface::class);
+        $response->getBody()->willReturn($stream->reveal());
+
+        $user = $this->prophesize(GitHubUser::class)->reveal();
+
+        $this->httpClient
+            ->request(
+                'GET',
+                '/repos/foo/bar/issues/123/comments',
+                [
+                    'headers' => [
+                        'Accept' => 'application/vnd.github.v3+json',
+                        'Authorization' => 'token dummy_token',
+                    ],
+                ]
+            )
+            ->willReturn($response->reveal())
+            ->shouldBeCalledOnce()
+        ;
+
+        $pool = $this->userPool;
+
+        $this->userPool->get(111)->willReturn(null)->shouldBeCalledTimes(2);
+        $this->userPool
+            ->add(Argument::type(GitHubUser::class))
+            ->will(function ($args) use ($pool) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $pool->get(111)->willReturn($args[0]);
+            })
+            ->shouldBeCalledOnce();
+
+        $comments = $this->client->getComments('foo', 'bar', 123);
+
+        $this->assertContainsOnlyInstancesOf(GitHubComment::class, $comments);
+        $this->assertCount(2, $comments);
+        $this->assertSame(123, $comments[0]->getId());
+        $this->assertSame('foo', $comments[0]->getBody());
+        $this->assertSame(456, $comments[1]->getId());
+        $this->assertSame('bar', $comments[1]->getBody());
+        $this->assertSame($comments[0]->getAuthor(), $comments[1]->getAuthor());
+    }
+
+    /**
+     * @throws GuzzleException
+     */
     public function testCreateComment(): void
     {
         $this->httpClient

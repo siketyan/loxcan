@@ -45,6 +45,44 @@ class GitHubClient
         return $this->getOrCreateUser($assoc);
     }
 
+    /**
+     * @param string $owner
+     * @param string $repo
+     * @param int    $issueNumber
+     *
+     * @return GitHubComment[]
+     */
+    public function getComments(string $owner, string $repo, int $issueNumber): array
+    {
+        try {
+            $response = $this->httpClient->request(
+                'GET',
+                sprintf('/repos/%s/%s/issues/%d/comments', $owner, $repo, $issueNumber),
+                ['headers' => $this->getDefaultHeaders()],
+            );
+        } catch (GuzzleException $e) {
+            throw new GitHubException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
+
+        $json = $response->getBody()->getContents();
+        $assoc = json_decode($json, true);
+        $comments = [];
+
+        foreach ($assoc as $row) {
+            $comments[] = new GitHubComment(
+                $row['id'],
+                $row['body'],
+                $this->getOrCreateUser($row['user']),
+            );
+        }
+
+        return $comments;
+    }
+
     public function createComment(string $owner, string $repo, int $issueNumber, string $body): void
     {
         try {
