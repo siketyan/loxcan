@@ -6,7 +6,7 @@ namespace Siketyan\Loxcan\Command;
 
 use Eloquent\Pathogen\Path;
 use Siketyan\Loxcan\Model\Repository;
-use Siketyan\Loxcan\Model\VersionDiff;
+use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
 use Symfony\Component\Console\Command\Command;

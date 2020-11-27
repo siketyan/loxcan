@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Model;
+namespace Siketyan\Loxcan\Versioning;
 
 class Version
 {

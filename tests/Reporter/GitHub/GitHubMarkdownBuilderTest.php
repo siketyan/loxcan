@@ -10,8 +10,8 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Model\Version;
-use Siketyan\Loxcan\Model\VersionDiff;
+use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class GitHubMarkdownBuilderTest extends TestCase
 {

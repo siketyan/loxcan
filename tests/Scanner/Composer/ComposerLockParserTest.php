@@ -10,7 +10,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Model\Version;
+use Siketyan\Loxcan\Versioning\Version;
 
 class ComposerLockParserTest extends TestCase
 {

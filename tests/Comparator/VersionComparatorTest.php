@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Comparator;
 
 use PHPUnit\Framework\TestCase;
-use Siketyan\Loxcan\Model\Version;
-use Siketyan\Loxcan\Model\VersionDiff;
+use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class VersionComparatorTest extends TestCase
 {

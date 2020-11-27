@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Model;
 
+use Siketyan\Loxcan\Versioning\Version;
+
 class Dependency
 {
     private Package $package;

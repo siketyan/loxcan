@@ -10,7 +10,7 @@ use Siketyan\Loxcan\Exception\UnsupportedVersionException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Model\Version;
+use Siketyan\Loxcan\Versioning\Version;
 
 class NpmLockParser
 {
