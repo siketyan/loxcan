@@ -51,6 +51,16 @@ class ScanCommand extends Command
         $diffs = $this->useCase->scan($repository, $base, $head);
 
         foreach ($diffs as $file => $diff) {
+            $io->section($file);
+
+            if ($diff->count() === 0) {
+                $io->writeln(
+                    '🔄 The file was updated, but no dependency changes found.',
+                );
+
+                continue;
+            }
+
             $rows = [];
 
             foreach ($diff->getAdded() as $dependency) {
@@ -81,7 +91,6 @@ class ScanCommand extends Command
                 ];
             }
 
-            $io->section($file);
             $io->table(
                 ['', 'Package', 'Before', 'After'],
                 $rows,

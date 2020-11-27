@@ -11,6 +11,10 @@ class GitHubMarkdownBuilder
 {
     public function build(DependencyCollectionDiff $diff, string $filename): string
     {
+        if ($diff->count() === 0) {
+            return '🔄 The file was updated, but no dependency changes found.';
+        }
+
         return implode("\n", [
             sprintf('#### %s', $filename),
             ...$this->buildTable($diff),
