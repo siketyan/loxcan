@@ -6,24 +6,22 @@ namespace Siketyan\Loxcan\Scanner\Npm;
 
 use JsonException;
 use Siketyan\Loxcan\Exception\ParseErrorException;
-use Siketyan\Loxcan\Exception\UnsupportedVersionException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
+use Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser;
 
 class NpmLockParser
 {
-    private const VERSION_PATTERNS = [
-        '/^(\d+)\.(\d+)\.(\d+)(?:-[A-Za-z]+(?:\.(\d+))?)?$/',
-    ];
-
     private NpmPackagePool $packagePool;
+    private SimpleVersionParser $versionParser;
 
     public function __construct(
-        NpmPackagePool $packagePool
+        NpmPackagePool $packagePool,
+        SimpleVersionParser $versionParser
     ) {
         $this->packagePool = $packagePool;
+        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $json): DependencyCollection
@@ -61,28 +59,12 @@ class NpmLockParser
 
             $dependencies[] = new Dependency(
                 $package,
-                $this->getVersion($version),
+                $this->versionParser->parse($version),
             );
         }
 
         return new DependencyCollection(
             $dependencies,
         );
-    }
-
-    private function getVersion(string $version): SimpleVersion
-    {
-        foreach (self::VERSION_PATTERNS as $pattern) {
-            if (preg_match($pattern, $version, $matches)) {
-                return new SimpleVersion(
-                    (int) $matches[1],
-                    (int) $matches[2],
-                    (int) $matches[3],
-                    count($matches) > 4 ? (int) $matches[4] : null,
-                );
-            }
-        }
-
-        throw new UnsupportedVersionException($version);
     }
 }

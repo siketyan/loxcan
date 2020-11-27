@@ -29,6 +29,7 @@ services:
   Siketyan\Loxcan\Scanner\Npm\NpmLockParser:
     arguments:
       $packagePool: '@Siketyan\Loxcan\Scanner\Npm\NpmPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser'
 
   Siketyan\Loxcan\Scanner\Npm\NpmScanner:
     arguments:
