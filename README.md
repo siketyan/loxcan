@@ -24,7 +24,19 @@ Using this action, the added, upgraded, downgraded, and removed packages are rep
 
 So we can check what packages will be changed by the PR, in the review.
 
-## ✨ Installation
+## ✨ Usage
+### Via Composer
+```console
+$ composer require --dev siketyan/loxcan
+```
+
+Then you can use this tool in CLI.
+(In some IDEs, you can access to the executable as just `loxcan` !)
+
+```console
+$ ./vendor/bin/loxcan [base] [head]
+```
+
 ### In GitHub Actions
 Use `pull_request` events to trigger the action.
 
