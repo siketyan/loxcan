@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.2",
         "mschop/pathogen": "^0.6.1",
@@ -19,9 +19,11 @@
         "symfony/console": "^5.1",
         "symfony/dependency-injection": "^5.1",
         "symfony/process": "^5.1",
-        "symfony/yaml": "^5.1"
+        "symfony/yaml": "^5.1",
+        "yosymfony/toml": "^1.0"
     },
     "require-dev": {
+        "php": "^7.4",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/php-code-coverage": "^9.2",
@@ -50,5 +52,8 @@
             "@lint",
             "@test"
         ]
-    }
+    },
+    "bin": [
+        "bin/loxcan"
+    ]
 }

@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Comparator;
+namespace Siketyan\Loxcan\Versioning\Simple;
 
-use Siketyan\Loxcan\Model\Version;
-use Siketyan\Loxcan\Model\VersionDiff;
+use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
+use Siketyan\Loxcan\Versioning\VersionDiff;
+use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class VersionComparator
+class SimpleVersionComparator implements VersionComparatorInterface
 {
-    public function compare(Version $before, Version $after): ?VersionDiff
+    public function compare(VersionInterface $before, VersionInterface $after): ?VersionDiff
     {
+        if (!($before instanceof SimpleVersion) || !($after instanceof SimpleVersion)) {
+            return null;
+        }
+
         $type = $this->determineType($before, $after);
 
         if ($type === null) {
@@ -24,7 +29,14 @@ class VersionComparator
         );
     }
 
-    private function determineType(Version $before, Version $after): ?int
+    public function supports(string $beforeType, string $afterType): bool
+    {
+        return $beforeType === SimpleVersion::class
+            && $afterType === SimpleVersion::class
+        ;
+    }
+
+    private function determineType(SimpleVersion $before, SimpleVersion $after): ?int
     {
         if ($before->getMajor() < $after->getMajor()) {
             return VersionDiff::UPGRADED;

@@ -1,5 +1,9 @@
 name: 'Loxcan'
+author: 'Naoki Ikeguchi'
 description: 'Universal Lock File Scanner for Git.'
+branding:
+  icon: 'search'
+  color: 'yellow'
 inputs:
   owner:
     required: true

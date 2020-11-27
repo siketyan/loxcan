@@ -18,6 +18,7 @@ $configs = [
     'reporters.yaml',
     'scanners.yaml',
     'usecases.yaml',
+    'versioning.yaml',
 ];
 
 $container = new ContainerBuilder();

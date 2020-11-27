@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Git;
 
 use Eloquent\Pathogen\Path;
+use Eloquent\Pathogen\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -49,10 +50,9 @@ EOS);
 
         $files = $this->git->fetchChangedFiles($repository, $base, $head);
 
-        $this->assertSame(
-            ['foo/bar.json', 'baz.lock'],
-            $files,
-        );
+        $this->assertContainsOnlyInstancesOf(RelativePathInterface::class, $files);
+        $this->assertSame('foo/bar.json', $files[0]->string());
+        $this->assertSame('baz.lock', $files[1]->string());
     }
 
     public function testFetchOriginalFile(): void
@@ -74,9 +74,42 @@ EOS;
             ->shouldBeCalledOnce()
         ;
 
-        $actual = $this->git->fetchOriginalFile($repository, 'master', 'bar.lock');
+        $path = $this->prophesize(RelativePathInterface::class);
+        $path->string()->willReturn('bar.lock');
+        $path = $path->reveal();
+
+        $actual = $this->git->fetchOriginalFile($repository, 'master', $path);
 
         $this->assertSame($expected, $actual);
+    }
+
+    public function testCheckFileExists(): void
+    {
+        $repository = $this->prophesize(Repository::class)->reveal();
+
+        $process = $this->prophesize(Process::class);
+        $process->run()->willReturn(0)->shouldBeCalledTimes(2);
+        $process->isSuccessful()->willReturn(true);
+
+        $this->processFactory
+            ->create($repository, ['cat-file', '-e', 'master:bar.lock'])
+            ->willReturn($process->reveal())
+            ->shouldBeCalledTimes(2)
+        ;
+
+        $path = $this->prophesize(RelativePathInterface::class);
+        $path->string()->willReturn('bar.lock');
+        $path = $path->reveal();
+
+        $this->assertTrue(
+            $this->git->checkFileExists($repository, 'master', $path),
+        );
+
+        $process->isSuccessful()->willReturn(false);
+
+        $this->assertFalse(
+            $this->git->checkFileExists($repository, 'master', $path),
+        );
     }
 
     public function testSupports(): void

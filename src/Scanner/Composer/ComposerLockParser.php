@@ -6,28 +6,30 @@ namespace Siketyan\Loxcan\Scanner\Composer;
 
 use JsonException;
 use Siketyan\Loxcan\Exception\ParseErrorException;
-use Siketyan\Loxcan\Exception\UnsupportedVersionException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Model\Version;
+use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
 
 class ComposerLockParser
 {
-    private const VERSION_PATTERNS = [
-        '/^v?(\d+).(\d+).(\d+)(?:.(\d+))?$/',
-    ];
-
     private ComposerPackagePool $packagePool;
+    private ComposerVersionParser $versionParser;
 
     public function __construct(
-        ComposerPackagePool $packagePool
+        ComposerPackagePool $packagePool,
+        ComposerVersionParser $versionParser
     ) {
         $this->packagePool = $packagePool;
+        $this->versionParser = $versionParser;
     }
 
-    public function parse(string $json): DependencyCollection
+    public function parse(?string $json): DependencyCollection
     {
+        if ($json === null) {
+            $json = '{}';
+        }
+
         try {
             $assoc = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
@@ -57,28 +59,12 @@ class ComposerLockParser
 
             $dependencies[] = new Dependency(
                 $package,
-                $this->getVersion($version),
+                $this->versionParser->parse($version),
             );
         }
 
         return new DependencyCollection(
             $dependencies,
         );
-    }
-
-    private function getVersion(string $version): Version
-    {
-        foreach (self::VERSION_PATTERNS as $pattern) {
-            if (preg_match($pattern, $version, $matches)) {
-                return new Version(
-                    (int) $matches[1],
-                    (int) $matches[2],
-                    (int) $matches[3],
-                    count($matches) > 4 ? (int) $matches[4] : null,
-                );
-            }
-        }
-
-        throw new UnsupportedVersionException($version);
     }
 }

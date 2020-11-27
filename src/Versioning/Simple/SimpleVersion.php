@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Model;
+namespace Siketyan\Loxcan\Versioning\Simple;
 
-class Version
+use Siketyan\Loxcan\Versioning\VersionInterface;
+
+class SimpleVersion implements VersionInterface
 {
     private int $major;
     private int $minor;

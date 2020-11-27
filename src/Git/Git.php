@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Git;
 
+use Eloquent\Pathogen\Exception\NonRelativePathException;
+use Eloquent\Pathogen\RelativePath;
+use Eloquent\Pathogen\RelativePathInterface;
 use Siketyan\Loxcan\Model\Repository;
 
 class Git
@@ -21,7 +24,7 @@ class Git
      * @param string     $base
      * @param string     $head
      *
-     * @return string[]
+     * @return RelativePathInterface[]
      */
     public function fetchChangedFiles(Repository $repository, string $base, string $head = ''): array
     {
@@ -42,19 +45,30 @@ class Git
             );
         }
 
-        return array_filter(
-            explode(PHP_EOL, $process->getOutput()),
-            fn (string $line): bool => $line !== '',
-        );
+        try {
+            return array_map(
+                fn (string $path) => RelativePath::fromString($path),
+                array_filter(
+                    explode(PHP_EOL, $process->getOutput()),
+                    fn (string $line): bool => $line !== '',
+                )
+            );
+        } catch (NonRelativePathException $e) {
+            throw new GitException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
     }
 
-    public function fetchOriginalFile(Repository $repository, string $branch, string $path): string
+    public function fetchOriginalFile(Repository $repository, string $branch, RelativePathInterface $path): string
     {
         $process = $this->processFactory->create(
             $repository,
             [
                 'show',
-                sprintf('%s:%s', $branch, $path),
+                sprintf('%s:%s', $branch, $path->string()),
             ],
         );
 
@@ -67,6 +81,26 @@ class Git
         }
 
         return $process->getOutput();
+    }
+
+    public function checkFileExists(Repository $repository, string $branch, RelativePathInterface $path): bool
+    {
+        $process = $this->processFactory->create(
+            $repository,
+            [
+                'cat-file',
+                '-e',
+                sprintf('%s:%s', $branch, $path->string()),
+            ],
+        );
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function supports(Repository $repository): bool

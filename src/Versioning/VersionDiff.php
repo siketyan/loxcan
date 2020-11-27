@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Model;
+namespace Siketyan\Loxcan\Versioning;
 
 class VersionDiff
 {
     public const UPGRADED = 1;
     public const DOWNGRADED = -1;
+    public const UNKNOWN = 0;
 
     private int $type;
-    private Version $before;
-    private Version $after;
+    private VersionInterface $before;
+    private VersionInterface $after;
 
     public function __construct(
         int $type,
-        Version $before,
-        Version $after
+        VersionInterface $before,
+        VersionInterface $after
     ) {
         $this->type = $type;
         $this->before = $before;
@@ -28,12 +29,12 @@ class VersionDiff
         return $this->type;
     }
 
-    public function getBefore(): Version
+    public function getBefore(): VersionInterface
     {
         return $this->before;
     }
 
-    public function getAfter(): Version
+    public function getAfter(): VersionInterface
     {
         return $this->after;
     }

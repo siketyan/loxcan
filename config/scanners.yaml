@@ -1,16 +1,43 @@
 services:
+  Siketyan\Loxcan\Scanner\Cargo\CargoPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Cargo\CargoLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Cargo\CargoPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser'
+
+  Siketyan\Loxcan\Scanner\Cargo\CargoScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Cargo\CargoLockParser'
+
   Siketyan\Loxcan\Scanner\Composer\ComposerPackagePool:
     shared: true
 
   Siketyan\Loxcan\Scanner\Composer\ComposerLockParser:
     arguments:
       $packagePool: '@Siketyan\Loxcan\Scanner\Composer\ComposerPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser'
 
   Siketyan\Loxcan\Scanner\Composer\ComposerScanner:
     arguments:
       $parser: '@Siketyan\Loxcan\Scanner\Composer\ComposerLockParser'
 
+  Siketyan\Loxcan\Scanner\Npm\NpmPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Npm\NpmLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Npm\NpmPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser'
+
+  Siketyan\Loxcan\Scanner\Npm\NpmScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Npm\NpmLockParser'
+
   Siketyan\Loxcan\Scanner\ScannerResolver:
     arguments:
       $scanners:
+        - '@Siketyan\Loxcan\Scanner\Cargo\CargoScanner'
         - '@Siketyan\Loxcan\Scanner\Composer\ComposerScanner'
+        - '@Siketyan\Loxcan\Scanner\Npm\NpmScanner'
