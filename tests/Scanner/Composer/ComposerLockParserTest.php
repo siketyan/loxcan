@@ -10,6 +10,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
+use Siketyan\Loxcan\Versioning\Composer\ComposerVersion;
+use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
 use Siketyan\Loxcan\Versioning\Version;
 
 class ComposerLockParserTest extends TestCase
@@ -34,24 +36,32 @@ class ComposerLockParserTest extends TestCase
 EOS;
 
     private ObjectProphecy $packagePool;
+    private ObjectProphecy $versionParser;
     private ComposerLockParser $parser;
 
     protected function setUp(): void
     {
         $this->packagePool = $this->prophesize(ComposerPackagePool::class);
+        $this->versionParser = $this->prophesize(ComposerVersionParser::class);
 
         $this->parser = new ComposerLockParser(
             $this->packagePool->reveal(),
+            $this->versionParser->reveal(),
         );
     }
 
     public function test(): void
     {
         $cache = $this->prophesize(Package::class)->reveal();
+        $fooBarVersion = $this->prophesize(ComposerVersion::class)->reveal();
+        $barBazVersion = $this->prophesize(ComposerVersion::class)->reveal();
 
         $this->packagePool->get('foo/bar')->willReturn(null);
         $this->packagePool->get('bar/baz')->willReturn($cache);
         $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
+
+        $this->versionParser->parse('v1.2.3.4')->willReturn($fooBarVersion);
+        $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
 
         $collection = $this->parser->parse(self::CONTENTS);
         $dependencies = $collection->getDependencies();
@@ -60,17 +70,9 @@ EOS;
         $this->assertContainsOnlyInstancesOf(Dependency::class, $dependencies);
 
         $this->assertSame('foo/bar', $dependencies[0]->getPackage()->getName());
-        $this->assertVersion(1, 2, 3, 4, $dependencies[0]->getVersion());
+        $this->assertSame($fooBarVersion, $dependencies[0]->getVersion());
 
         $this->assertSame($cache, $dependencies[1]->getPackage());
-        $this->assertVersion(3, 2, 1, null, $dependencies[1]->getVersion());
-    }
-
-    private function assertVersion(int $major, int $minor, int $patch, ?int $revision, Version $actual): void
-    {
-        $this->assertSame($major, $actual->getMajor());
-        $this->assertSame($minor, $actual->getMinor());
-        $this->assertSame($patch, $actual->getPatch());
-        $this->assertSame($revision, $actual->getRevision());
+        $this->assertSame($barBazVersion, $dependencies[1]->getVersion());
     }
 }

@@ -5,6 +5,7 @@ services:
   Siketyan\Loxcan\Scanner\Composer\ComposerLockParser:
     arguments:
       $packagePool: '@Siketyan\Loxcan\Scanner\Composer\ComposerPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser'
 
   Siketyan\Loxcan\Scanner\Composer\ComposerScanner:
     arguments:
