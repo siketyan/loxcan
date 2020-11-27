@@ -32,7 +32,7 @@ class GitHubClientTest extends TestCase
     /**
      * @throws GuzzleException
      */
-    public function test(): void
+    public function testCreateComment(): void
     {
         $this->httpClient
             ->request(
@@ -50,7 +50,7 @@ class GitHubClientTest extends TestCase
             ->shouldBeCalledOnce()
         ;
 
-        $this->client->comment(
+        $this->client->createComment(
             'foo',
             'bar',
             123,

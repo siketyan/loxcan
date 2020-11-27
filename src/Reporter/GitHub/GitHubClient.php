@@ -20,7 +20,7 @@ class GitHubClient
         $this->httpClient = $httpClient;
     }
 
-    public function comment(string $owner, string $repo, int $issueNumber, string $body): void
+    public function createComment(string $owner, string $repo, int $issueNumber, string $body): void
     {
         try {
             $this->httpClient->request(

@@ -40,7 +40,7 @@ class GitHubReporterTest extends TestCase
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
 
         $this->markdownBuilder->build($diff, $filename)->willReturn($markdown);
-        $this->client->comment('foo', 'bar', 123, $markdown)->shouldBeCalledOnce();
+        $this->client->createComment('foo', 'bar', 123, $markdown)->shouldBeCalledOnce();
 
         $this->reporter->report($diff, $filename);
     }

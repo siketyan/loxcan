@@ -25,7 +25,7 @@ class GitHubReporter implements ReporterInterface
 
     public function report(DependencyCollectionDiff $diff, string $filename): void
     {
-        $this->client->comment(
+        $this->client->createComment(
             $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER'),
             $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO'),
             (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER'),
