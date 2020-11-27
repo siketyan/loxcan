@@ -99,6 +99,8 @@ class ScanCommand extends Command
             $this->reportUseCase->report($diff, $file);
         }
 
+        $this->reportUseCase->report($diffs);
+
         return 0;
     }
 

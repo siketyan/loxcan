@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
-use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Reporter\EnvironmentTrait;
 use Siketyan\Loxcan\Reporter\ReporterInterface;
 
@@ -23,12 +22,15 @@ class GitHubReporter implements ReporterInterface
         $this->client = $client;
     }
 
-    public function report(DependencyCollectionDiff $diff, string $filename): void
+    /**
+     * @inheritDoc
+     */
+    public function report(array $diffs): void
     {
         $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
         $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
         $issueNumber = (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER');
-        $body = $this->markdownBuilder->build($diff, $filename);
+        $body = $this->markdownBuilder->build($diffs);
 
         $me = $this->client->getMe();
         $comments = $this->client->getComments($owner, $repo, $issueNumber);

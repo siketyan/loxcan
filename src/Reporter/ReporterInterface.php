@@ -8,6 +8,9 @@ use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 
 interface ReporterInterface
 {
-    public function report(DependencyCollectionDiff $diff, string $filename): void;
+    /**
+     * @param DependencyCollectionDiff[] $diffs
+     */
+    public function report(array $diffs): void;
     public function supports(): bool;
 }

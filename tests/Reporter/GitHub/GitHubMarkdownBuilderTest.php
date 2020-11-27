@@ -29,6 +29,7 @@ class GitHubMarkdownBuilderTest extends TestCase
         $filename = 'foo.lock';
 
         $diff = $this->prophesize(DependencyCollectionDiff::class);
+        $diff->count()->willReturn(5);
         $diff->getAdded()->willReturn([$this->createDependency('added', 'v1.2.3')]);
         $diff->getRemoved()->willReturn([$this->createDependency('removed', 'v3.2.1')]);
         $diff->getUpdated()->willReturn([
@@ -37,7 +38,7 @@ class GitHubMarkdownBuilderTest extends TestCase
             $this->createDependencyDiff('unknown', 'v5.5.5', 'v5.5.5', VersionDiff::UNKNOWN),
         ]);
 
-        $markdown = $this->builder->build($diff->reveal(), $filename);
+        $markdown = $this->builder->build([$filename => $diff->reveal()]);
 
         $this->assertSame(
             <<<'EOS'
