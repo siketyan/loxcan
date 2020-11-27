@@ -27,3 +27,9 @@ jobs:
 
       - name: Run test suite
         run: composer run-script tests
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          verbose: true
