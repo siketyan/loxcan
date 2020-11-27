@@ -2,26 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Reporter\GitHub;
+namespace Siketyan\Loxcan\Command;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
+use Siketyan\Loxcan\Model\Repository;
+use Siketyan\Loxcan\UseCase\ReportUseCase;
+use Siketyan\Loxcan\UseCase\ScanUseCase;
 use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionDiff;
+use Symfony\Component\Console\Tester\CommandTester;
 
-class GitHubMarkdownBuilderTest extends TestCase
+class ScanCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    private GitHubMarkdownBuilder $builder;
+    private ObjectProphecy $scanUseCase;
+    private ObjectProphecy $reportUseCase;
+    private CommandTester $tester;
 
     protected function setUp(): void
     {
-        $this->builder = new GitHubMarkdownBuilder();
+        $this->scanUseCase = $this->prophesize(ScanUseCase::class);
+        $this->reportUseCase = $this->prophesize(ReportUseCase::class);
+
+        $this->tester = new CommandTester(
+            new ScanCommand(
+                $this->scanUseCase->reveal(),
+                $this->reportUseCase->reveal(),
+            ),
+        );
     }
 
     public function test(): void
@@ -39,36 +55,79 @@ class GitHubMarkdownBuilderTest extends TestCase
         $emptyDiff = $this->prophesize(DependencyCollectionDiff::class);
         $emptyDiff->count()->willReturn(0);
 
-        $markdown = $this->builder->build([
+        $diffs = [
             'foo.lock' => $diff->reveal(),
             'bar.lock' => $emptyDiff->reveal(),
+        ];
+
+        $this->scanUseCase
+            ->scan(Argument::type(Repository::class), 'foo', 'bar')
+            ->willReturn($diffs)
+            ->shouldBeCalledOnce()
+        ;
+
+        $this->reportUseCase
+            ->report($diffs)
+            ->shouldBeCalledOnce()
+        ;
+
+        $exitCode = $this->tester->execute([
+            'base' => 'foo',
+            'head' => 'bar',
         ]);
 
+        $this->assertSame(0, $exitCode);
         $this->assertSame(
             <<<'EOS'
-#### foo.lock
-||Package|Before|After|
-|---|---|---|---|
-|➕|added||v1.2.3|
-|⬆️|upgraded|v1.1.1|v2.2.2|
-|⬇️|downgraded|v4.4.4|v3.3.3|
-|🔄|unknown|v5.5.5|v5.5.5|
-|➖|removed|v3.2.1||
 
-#### bar.lock
+foo.lock
+--------
+
+ ---- ------------ -------- -------- 
+       Package      Before   After   
+ ---- ------------ -------- -------- 
+  ➕    added                 v1.2.3  
+  ⬆️   upgraded     v1.1.1   v2.2.2  
+  ⬇️   downgraded   v4.4.4   v3.3.3  
+  🔄    unknown      v5.5.5   v5.5.5  
+  ➖    removed      v3.2.1           
+ ---- ------------ -------- -------- 
+
+bar.lock
+--------
+
 🔄 The file was updated, but no dependency changes found.
+
 EOS,
-            $markdown,
+            $this->tester->getDisplay(),
         );
     }
 
     public function testNoDiff(): void
     {
-        $markdown = $this->builder->build([]);
+        $this->scanUseCase
+            ->scan(Argument::type(Repository::class), 'foo', 'bar')
+            ->willReturn([])
+            ->shouldBeCalledOnce()
+        ;
 
+        $this->reportUseCase
+            ->report([])
+            ->shouldBeCalledOnce()
+        ;
+
+        $exitCode = $this->tester->execute([
+           'base' => 'foo',
+           'head' => 'bar',
+        ]);
+
+        $this->assertSame(0, $exitCode);
         $this->assertSame(
-            '✨ No lock file changes found, looks shine!',
-            $markdown,
+            <<<EOS
+✨ No lock file changes found, looks shine!
+
+EOS,
+            $this->tester->getDisplay(),
         );
     }
 

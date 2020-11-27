@@ -59,4 +59,9 @@ class DependencyCollectionDiff
     {
         return $this->removed;
     }
+
+    public function count(): int
+    {
+        return count($this->added) + count($this->updated) + count($this->removed);
+    }
 }

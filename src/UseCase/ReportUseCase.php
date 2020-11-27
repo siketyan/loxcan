@@ -23,11 +23,14 @@ class ReportUseCase
         $this->reporters = $reporters;
     }
 
-    public function report(DependencyCollectionDiff $diff, string $filename): void
+    /**
+     * @param DependencyCollectionDiff[] $diffs
+     */
+    public function report(array $diffs): void
     {
         foreach ($this->reporters as $reporter) {
             if ($reporter->supports()) {
-                $reporter->report($diff, $filename);
+                $reporter->report($diffs);
             }
         }
     }

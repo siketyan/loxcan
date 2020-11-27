@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Command;
 
 use Eloquent\Pathogen\Path;
+use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
@@ -50,7 +51,36 @@ class ScanCommand extends Command
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
+        if (count($diffs) === 0) {
+            $io->writeln(
+                '✨ No lock file changes found, looks shine!',
+            );
+        } else {
+            $this->printDiffs($io, $diffs);
+        }
+
+        $this->reportUseCase->report($diffs);
+
+        return 0;
+    }
+
+    /**
+     * @param SymfonyStyle               $io
+     * @param DependencyCollectionDiff[] $diffs
+     */
+    private function printDiffs(SymfonyStyle $io, array $diffs): void
+    {
         foreach ($diffs as $file => $diff) {
+            $io->section($file);
+
+            if ($diff->count() === 0) {
+                $io->writeln(
+                    '🔄 The file was updated, but no dependency changes found.',
+                );
+
+                continue;
+            }
+
             $rows = [];
 
             foreach ($diff->getAdded() as $dependency) {
@@ -81,16 +111,11 @@ class ScanCommand extends Command
                 ];
             }
 
-            $io->section($file);
             $io->table(
                 ['', 'Package', 'Before', 'After'],
                 $rows,
             );
-
-            $this->reportUseCase->report($diff, $file);
         }
-
-        return 0;
     }
 
     private function getVersionDiffTypeEmoji(VersionDiff $diff): string

@@ -9,12 +9,37 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class GitHubMarkdownBuilder
 {
-    public function build(DependencyCollectionDiff $diff, string $filename): string
+    public function build(array $diffs): string
     {
-        return implode("\n", [
+        if (count($diffs) === 0) {
+            return '✨ No lock file changes found, looks shine!';
+        }
+
+        $sections = [];
+
+        foreach ($diffs as $filename => $diff) {
+            $sections[] = $this->buildSection($diff, $filename);
+        }
+
+        return implode("\n\n", $sections);
+    }
+
+    public function buildSection(DependencyCollectionDiff $diff, string $filename): string
+    {
+        $rows = [
             sprintf('#### %s', $filename),
-            ...$this->buildTable($diff),
-        ]);
+        ];
+
+        if ($diff->count() === 0) {
+            $rows[] = '🔄 The file was updated, but no dependency changes found.';
+        } else {
+            $rows = array_merge(
+                $rows,
+                $this->buildTable($diff),
+            );
+        }
+
+        return implode("\n", $rows);
     }
 
     /**
