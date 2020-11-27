@@ -30,8 +30,17 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
+      - name: Run linter
+        run: composer run-script lint
+
       - name: Run test suite
-        run: composer run-script tests
+        run: composer run-script codecov
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          verbose: true
 
       - name: Upgrade PHP to v8
         uses: shivammathur/setup-php@v2

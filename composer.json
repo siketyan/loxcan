@@ -26,6 +26,7 @@
         "php": "^7.4",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.4"
     },
     "config": {
@@ -44,6 +45,8 @@
     "scripts": {
         "lint": "php-cs-fixer fix -v --dry-run",
         "fix": "php-cs-fixer fix -v",
+        "coverage": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-html ./coverage",
+        "codecov": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
         "test": "phpunit ./tests",
         "tests": [
             "@lint",
