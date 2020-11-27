@@ -1,4 +1,7 @@
 # loxcan
+[![Latest Stable Version](https://poser.pugx.org/siketyan/loxcan/v)](https://packagist.org/packages/siketyan/loxcan)
+[![Total Downloads](https://poser.pugx.org/siketyan/loxcan/downloads)](https://packagist.org/packages/siketyan/loxcan)
+[![License](https://poser.pugx.org/siketyan/loxcan/license)](https://packagist.org/packages/siketyan/loxcan)
 ![PHP](https://github.com/siketyan/loxcan/workflows/PHP/badge.svg)
 ![Action](https://github.com/siketyan/loxcan/workflows/Action/badge.svg)
 
