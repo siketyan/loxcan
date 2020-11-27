@@ -37,47 +37,6 @@ class GitHubClientTest extends TestCase
     /**
      * @throws GuzzleException
      */
-    public function testGetMe(): void
-    {
-        $stream = $this->prophesize(StreamInterface::class);
-        $stream->getContents()->willReturn(<<<'EOS'
-{
-    "id": 123,
-    "login": "foobar"
-}
-EOS);
-
-        $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()->willReturn($stream->reveal());
-
-        $this->httpClient
-            ->request(
-                'GET',
-                '/user',
-                [
-                    'headers' => [
-                        'Accept' => 'application/vnd.github.v3+json',
-                        'Authorization' => 'token dummy_token',
-                    ],
-                ]
-            )
-            ->willReturn($response->reveal())
-            ->shouldBeCalledOnce()
-        ;
-
-        $this->userPool->get(123)->willReturn(null);
-        $this->userPool->add(Argument::type(GitHubUser::class))->shouldBeCalledOnce();
-
-        $me = $this->client->getMe();
-
-        $this->assertInstanceOf(GitHubUser::class, $me);
-        $this->assertSame(123, $me->getId());
-        $this->assertSame('foobar', $me->getLogin());
-    }
-
-    /**
-     * @throws GuzzleException
-     */
     public function testGetComments(): void
     {
         $stream = $this->prophesize(StreamInterface::class);
