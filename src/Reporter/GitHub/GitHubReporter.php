@@ -25,12 +25,27 @@ class GitHubReporter implements ReporterInterface
 
     public function report(DependencyCollectionDiff $diff, string $filename): void
     {
-        $this->client->comment(
-            $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER'),
-            $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO'),
-            (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER'),
-            $this->markdownBuilder->build($diff, $filename),
-        );
+        $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
+        $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
+        $issueNumber = (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER');
+        $body = $this->markdownBuilder->build($diff, $filename);
+
+        $me = $this->client->getMe();
+        $comments = $this->client->getComments($owner, $repo, $issueNumber);
+        $myComments = array_filter($comments, fn (GitHubComment $comment): bool => $comment->getAuthor() === $me);
+
+        if (count($myComments) > 0) {
+            $this->client->updateComment(
+                $owner,
+                $repo,
+                $myComments[array_key_first($myComments)],
+                $body,
+            );
+
+            return;
+        }
+
+        $this->client->createComment($owner, $repo, $issueNumber, $body);
     }
 
     public function supports(): bool
