@@ -10,7 +10,7 @@ use Siketyan\Loxcan\Exception\UnsupportedVersionException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Model\Version;
+use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 
 class NpmLockParser
 {
@@ -70,11 +70,11 @@ class NpmLockParser
         );
     }
 
-    private function getVersion(string $version): Version
+    private function getVersion(string $version): SimpleVersion
     {
         foreach (self::VERSION_PATTERNS as $pattern) {
             if (preg_match($pattern, $version, $matches)) {
-                return new Version(
+                return new SimpleVersion(
                     (int) $matches[1],
                     (int) $matches[2],
                     (int) $matches[3],
