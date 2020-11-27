@@ -9,16 +9,16 @@ use Siketyan\Loxcan\Exception\ParseErrorException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser;
+use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 
 class NpmLockParser
 {
     private NpmPackagePool $packagePool;
-    private SimpleVersionParser $versionParser;
+    private SemVerVersionParser $versionParser;
 
     public function __construct(
         NpmPackagePool $packagePool,
-        SimpleVersionParser $versionParser
+        SemVerVersionParser $versionParser
     ) {
         $this->packagePool = $packagePool;
         $this->versionParser = $versionParser;
