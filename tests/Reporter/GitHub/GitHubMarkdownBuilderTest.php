@@ -32,8 +32,9 @@ class GitHubMarkdownBuilderTest extends TestCase
         $diff->getAdded()->willReturn([$this->createDependency('added', 'v1.2.3')]);
         $diff->getRemoved()->willReturn([$this->createDependency('removed', 'v3.2.1')]);
         $diff->getUpdated()->willReturn([
-            $this->createDependencyDiff('upgraded', 'v1.1.1', 'v2.2.2'),
-            $this->createDependencyDiff('downgraded', 'v4.4.4', 'v3.3.3', false),
+            $this->createDependencyDiff('upgraded', 'v1.1.1', 'v2.2.2', VersionDiff::UPGRADED),
+            $this->createDependencyDiff('downgraded', 'v4.4.4', 'v3.3.3', VersionDiff::DOWNGRADED),
+            $this->createDependencyDiff('unknown', 'v5.5.5', 'v5.5.5', VersionDiff::UNKNOWN),
         ]);
 
         $markdown = $this->builder->build($diff->reveal(), $filename);
@@ -46,6 +47,7 @@ class GitHubMarkdownBuilderTest extends TestCase
 |➕|added||v1.2.3|
 |⬆️|upgraded|v1.1.1|v2.2.2|
 |⬇️|downgraded|v4.4.4|v3.3.3|
+|🔄|unknown|v5.5.5|v5.5.5|
 |➖|removed|v3.2.1||
 EOS,
             $markdown,
@@ -67,7 +69,7 @@ EOS,
         return $dependency->reveal();
     }
 
-    private function createDependencyDiff(string $name, string $before, string $after, bool $upgraded = true): DependencyDiff
+    private function createDependencyDiff(string $name, string $before, string $after, int $type): DependencyDiff
     {
         $package = $this->prophesize(Package::class);
         $package->getName()->willReturn($name);
@@ -79,7 +81,7 @@ EOS,
         $afterVersion->__toString()->willReturn($after);
 
         $versionDiff = $this->prophesize(VersionDiff::class);
-        $versionDiff->getType()->willReturn($upgraded ? VersionDiff::UPGRADED : VersionDiff::DOWNGRADED);
+        $versionDiff->getType()->willReturn($type);
         $versionDiff->getBefore()->willReturn($beforeVersion->reveal());
         $versionDiff->getAfter()->willReturn($afterVersion->reveal());
 
