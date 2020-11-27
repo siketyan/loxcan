@@ -47,5 +47,8 @@
             "@lint",
             "@test"
         ]
-    }
+    },
+    "bin": [
+        "bin/loxcan"
+    ]
 }
