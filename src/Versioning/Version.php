@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning;
 
-class Version
+class Version implements VersionInterface
 {
     private int $major;
     private int $minor;

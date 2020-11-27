@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Model;
 
-use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class Dependency
 {
     private Package $package;
-    private Version $version;
+    private VersionInterface $version;
 
     public function __construct(
         Package $package,
-        Version $version
+        VersionInterface $version
     ) {
         $this->package = $package;
         $this->version = $version;
@@ -24,7 +24,7 @@ class Dependency
         return $this->package;
     }
 
-    public function getVersion(): Version
+    public function getVersion(): VersionInterface
     {
         return $this->version;
     }
