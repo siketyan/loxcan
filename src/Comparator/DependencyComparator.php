@@ -32,6 +32,16 @@ class DependencyComparator
             $after->getVersion(),
         );
 
+        if ($versionComparator === null) {
+            throw new InvalidComparisonException(
+                sprintf(
+                    'No comparator supports to compare versions between "%s" and "%s".',
+                    get_debug_type($before->getVersion()),
+                    get_debug_type($after->getVersion()),
+                ),
+            );
+        }
+
         $versionDiff = $versionComparator->compare(
             $before->getVersion(),
             $after->getVersion(),
