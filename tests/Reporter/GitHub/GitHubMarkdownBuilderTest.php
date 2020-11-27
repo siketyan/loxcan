@@ -10,7 +10,7 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class GitHubMarkdownBuilderTest extends TestCase
@@ -57,7 +57,7 @@ EOS,
         $package = $this->prophesize(Package::class);
         $package->getName()->willReturn($name);
 
-        $version = $this->prophesize(Version::class);
+        $version = $this->prophesize(SimpleVersion::class);
         $version->__toString()->willReturn($versionName);
 
         $dependency = $this->prophesize(Dependency::class);
@@ -72,10 +72,10 @@ EOS,
         $package = $this->prophesize(Package::class);
         $package->getName()->willReturn($name);
 
-        $beforeVersion = $this->prophesize(Version::class);
+        $beforeVersion = $this->prophesize(SimpleVersion::class);
         $beforeVersion->__toString()->willReturn($before);
 
-        $afterVersion = $this->prophesize(Version::class);
+        $afterVersion = $this->prophesize(SimpleVersion::class);
         $afterVersion->__toString()->willReturn($after);
 
         $versionDiff = $this->prophesize(VersionDiff::class);

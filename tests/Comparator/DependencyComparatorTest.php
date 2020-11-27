@@ -11,7 +11,7 @@ use Siketyan\Loxcan\Exception\InvalidComparisonException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
-use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionComparatorResolver;
 use Siketyan\Loxcan\Versioning\VersionDiff;
@@ -36,8 +36,8 @@ class DependencyComparatorTest extends TestCase
     {
         $package = $this->prophesize(Package::class)->reveal();
         $versionDiff = $this->prophesize(VersionDiff::class)->reveal();
-        $beforeVersion = $this->prophesize(Version::class)->reveal();
-        $afterVersion = $this->prophesize(Version::class)->reveal();
+        $beforeVersion = $this->prophesize(SimpleVersion::class)->reveal();
+        $afterVersion = $this->prophesize(SimpleVersion::class)->reveal();
         $before = $this->prophesize(Dependency::class);
         $after = $this->prophesize(Dependency::class);
 

@@ -3,8 +3,10 @@ services:
 
   Siketyan\Loxcan\Versioning\Composer\ComposerVersionComparator: ~
 
+  Siketyan\Loxcan\Versioning\Simple\SimpleVersionComparator: ~
+
   Siketyan\Loxcan\Versioning\VersionComparatorResolver:
     arguments:
       $comparators:
-        - '@Siketyan\Loxcan\Comparator\VersionComparator'
+        - '@Siketyan\Loxcan\Versioning\Simple\SimpleVersionComparator'
         - '@Siketyan\Loxcan\Versioning\Composer\ComposerVersionComparator'

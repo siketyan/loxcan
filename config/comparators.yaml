@@ -1,6 +1,4 @@
 services:
-  Siketyan\Loxcan\Comparator\VersionComparator: ~
-
   Siketyan\Loxcan\Comparator\DependencyComparator:
     arguments:
       $versionComparatorResolver: '@Siketyan\Loxcan\Versioning\VersionComparatorResolver'

@@ -12,7 +12,6 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\Composer\ComposerVersion;
 use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
-use Siketyan\Loxcan\Versioning\Version;
 
 class ComposerLockParserTest extends TestCase
 {
