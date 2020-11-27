@@ -41,6 +41,7 @@ class GitHubClientTest extends TestCase
                 [
                     'body' => '{"body":"dummy_body"}',
                     'headers' => [
+                        'Accept' => 'application/vnd.github.v3+json',
                         'Authorization' => 'token dummy_token',
                     ],
                 ]

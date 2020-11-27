@@ -45,6 +45,7 @@ class GitHubClient
     private function getDefaultHeaders(): array
     {
         return [
+            'Accept' => 'application/vnd.github.v3+json',
             'Authorization' => sprintf(
                 'token %s',
                 $this->getEnv('LOXCAN_REPORTER_GITHUB_TOKEN'),
