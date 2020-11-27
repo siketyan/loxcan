@@ -7,6 +7,8 @@ services:
 
   Siketyan\Loxcan\Versioning\SemVer\SemVerVersionComparator: ~
 
+  Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser: ~
+
   Siketyan\Loxcan\Versioning\Simple\SimpleVersionComparator: ~
 
   Siketyan\Loxcan\Versioning\VersionComparatorResolver:
