@@ -13,11 +13,36 @@ class GitHubClient
     use EnvironmentTrait;
 
     private ClientInterface $httpClient;
+    private GitHubUserPool $userPool;
 
     public function __construct(
-        ClientInterface $httpClient
+        ClientInterface $httpClient,
+        GitHubUserPool $userPool
     ) {
         $this->httpClient = $httpClient;
+        $this->userPool = $userPool;
+    }
+
+    public function getMe(): GitHubUser
+    {
+        try {
+            $response = $this->httpClient->request(
+                'GET',
+                '/user',
+                ['headers' => $this->getDefaultHeaders()],
+            );
+        } catch (GuzzleException $e) {
+            throw new GitHubException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
+
+        $json = $response->getBody()->getContents();
+        $assoc = json_decode($json, true);
+
+        return $this->getOrCreateUser($assoc);
     }
 
     public function createComment(string $owner, string $repo, int $issueNumber, string $body): void
@@ -51,5 +76,18 @@ class GitHubClient
                 $this->getEnv('LOXCAN_REPORTER_GITHUB_TOKEN'),
             ),
         ];
+    }
+
+    private function getOrCreateUser(array $assoc): GitHubUser
+    {
+        $id = $assoc['id'];
+        $user = $this->userPool->get($id);
+
+        if ($user === null) {
+            $user = new GitHubUser($id, $assoc['login']);
+            $this->userPool->add($user);
+        }
+
+        return $user;
     }
 }

@@ -6,9 +6,13 @@ services:
 
   Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder: ~
 
+  Siketyan\Loxcan\Reporter\GitHub\GitHubUserPool:
+    shared: true
+
   Siketyan\Loxcan\Reporter\GitHub\GitHubClient:
     arguments:
       $httpClient: '@guzzle.client.github'
+      $userPool: '@Siketyan\Loxcan\Reporter\GitHub\GitHubUserPool'
 
   Siketyan\Loxcan\Reporter\GitHub\GitHubReporter:
     arguments:
