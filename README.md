@@ -65,6 +65,7 @@ steps:
 
 - [x] Composer (PHP)
 - [x] Cargo (Rust)
+- [x] Pub (Dart)
 - [x] npm (JavaScript, Node.js)
 - [ ] Yarn (JavaScript, Node.js)
 
