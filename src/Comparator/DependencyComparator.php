@@ -7,15 +7,16 @@ namespace Siketyan\Loxcan\Comparator;
 use Siketyan\Loxcan\Exception\InvalidComparisonException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyDiff;
+use Siketyan\Loxcan\Versioning\VersionComparatorResolver;
 
 class DependencyComparator
 {
-    private VersionComparator $versionComparator;
+    private VersionComparatorResolver $versionComparatorResolver;
 
     public function __construct(
-        VersionComparator $versionComparator
+        VersionComparatorResolver $versionComparatorResolver
     ) {
-        $this->versionComparator = $versionComparator;
+        $this->versionComparatorResolver = $versionComparatorResolver;
     }
 
     public function compare(Dependency $before, Dependency $after): ?DependencyDiff
@@ -26,7 +27,12 @@ class DependencyComparator
             );
         }
 
-        $versionDiff = $this->versionComparator->compare(
+        $versionComparator = $this->versionComparatorResolver->resolve(
+            $before->getVersion(),
+            $after->getVersion(),
+        );
+
+        $versionDiff = $versionComparator->compare(
             $before->getVersion(),
             $after->getVersion(),
         );

@@ -1,0 +1,5 @@
+services:
+  Siketyan\Loxcan\Versioning\VersionComparatorResolver:
+    arguments:
+      $comparators:
+        - '@Siketyan\Loxcan\Comparator\VersionComparator'

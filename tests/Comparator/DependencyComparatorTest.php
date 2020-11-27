@@ -12,21 +12,23 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
+use Siketyan\Loxcan\Versioning\VersionComparatorResolver;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class DependencyComparatorTest extends TestCase
 {
     use ProphecyTrait;
 
-    private ObjectProphecy $versionComparator;
+    private ObjectProphecy $versionComparatorResolver;
     private DependencyComparator $comparator;
 
     protected function setUp(): void
     {
-        $this->versionComparator = $this->prophesize(VersionComparator::class);
+        $this->versionComparatorResolver = $this->prophesize(VersionComparatorResolver::class);
 
         $this->comparator = new DependencyComparator(
-            $this->versionComparator->reveal(),
+            $this->versionComparatorResolver->reveal(),
         );
     }
 
@@ -44,7 +46,13 @@ class DependencyComparatorTest extends TestCase
         $after->getPackage()->willReturn($package);
         $after->getVersion()->willReturn($afterVersion);
 
-        $this->versionComparator->compare($beforeVersion, $afterVersion)->willReturn($versionDiff);
+        $versionComparator = $this->prophesize(VersionComparatorInterface::class);
+        $versionComparator->compare($beforeVersion, $afterVersion)->willReturn($versionDiff);
+
+        $this->versionComparatorResolver
+            ->resolve($beforeVersion, $afterVersion)
+            ->willReturn($versionComparator->reveal())
+        ;
 
         $diff = $this->comparator->compare($before->reveal(), $after->reveal());
 

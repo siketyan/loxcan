@@ -3,7 +3,7 @@ services:
 
   Siketyan\Loxcan\Comparator\DependencyComparator:
     arguments:
-      $versionComparator: '@Siketyan\Loxcan\Comparator\VersionComparator'
+      $versionComparatorResolver: '@Siketyan\Loxcan\Versioning\VersionComparatorResolver'
 
   Siketyan\Loxcan\Comparator\DependencyCollectionSubtractor: ~
 

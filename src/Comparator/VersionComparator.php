@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Comparator;
 
 use Siketyan\Loxcan\Versioning\Version;
+use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
+use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class VersionComparator
+class VersionComparator implements VersionComparatorInterface
 {
-    public function compare(Version $before, Version $after): ?VersionDiff
+    public function compare(VersionInterface $before, VersionInterface $after): ?VersionDiff
     {
+        if (!($before instanceof Version) || !($after instanceof Version)) {
+            return null;
+        }
+
         $type = $this->determineType($before, $after);
 
         if ($type === null) {
@@ -22,6 +28,13 @@ class VersionComparator
             $before,
             $after,
         );
+    }
+
+    public function supports(string $beforeType, string $afterType): bool
+    {
+        return $beforeType === Version::class
+            && $afterType === Version::class
+        ;
     }
 
     private function determineType(Version $before, Version $after): ?int
