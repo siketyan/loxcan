@@ -50,6 +50,14 @@ class ScanCommand extends Command
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
+        if (count($diffs) === 0) {
+            $io->writeln(
+                '✨ No lock file changes found, looks shine!',
+            );
+
+            return 0;
+        }
+
         foreach ($diffs as $file => $diff) {
             $io->section($file);
 
@@ -95,8 +103,6 @@ class ScanCommand extends Command
                 ['', 'Package', 'Before', 'After'],
                 $rows,
             );
-
-            $this->reportUseCase->report($diff, $file);
         }
 
         $this->reportUseCase->report($diffs);

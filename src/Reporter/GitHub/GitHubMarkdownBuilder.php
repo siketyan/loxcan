@@ -11,6 +11,10 @@ class GitHubMarkdownBuilder
 {
     public function build(array $diffs): string
     {
+        if (count($diffs) === 0) {
+            return '✨ No lock file changes found, looks shine!';
+        }
+
         $sections = [];
 
         foreach ($diffs as $filename => $diff) {
