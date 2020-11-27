@@ -28,11 +28,14 @@ class GitHubReporter implements ReporterInterface
         $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
         $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
         $issueNumber = (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER');
+        $username = $this->getEnv('LOXCAN_REPORTER_GITHUB_USERNAME');
         $body = $this->markdownBuilder->build($diff, $filename);
 
-        $me = $this->client->getMe();
         $comments = $this->client->getComments($owner, $repo, $issueNumber);
-        $myComments = array_filter($comments, fn (GitHubComment $comment): bool => $comment->getAuthor() === $me);
+        $myComments = array_filter(
+            $comments,
+            fn (GitHubComment $comment): bool => $comment->getAuthor()->getLogin() === $username,
+        );
 
         if (count($myComments) > 0) {
             $this->client->updateComment(
