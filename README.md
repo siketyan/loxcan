@@ -2,6 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/siketyan/loxcan/v)](https://packagist.org/packages/siketyan/loxcan)
 [![Total Downloads](https://poser.pugx.org/siketyan/loxcan/downloads)](https://packagist.org/packages/siketyan/loxcan)
 [![License](https://poser.pugx.org/siketyan/loxcan/license)](https://packagist.org/packages/siketyan/loxcan)
+[![Codecov](https://codecov.io/gh/siketyan/loxcan/branch/master/graph/badge.svg?token=2DB0MRBL4E)](https://codecov.io/gh/siketyan/loxcan)
 ![PHP](https://github.com/siketyan/loxcan/workflows/PHP/badge.svg)
 ![Action](https://github.com/siketyan/loxcan/workflows/Action/badge.svg)
 
