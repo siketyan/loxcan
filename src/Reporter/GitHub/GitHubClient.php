@@ -105,6 +105,28 @@ class GitHubClient
         }
     }
 
+    public function updateComment(string $owner, string $repo, GitHubComment $comment, string $body): void
+    {
+        try {
+            $this->httpClient->request(
+                'PATCH',
+                sprintf('/repos/%s/%s/issues/comments/%d', $owner, $repo, $comment->getId()),
+                [
+                    'headers' => $this->getDefaultHeaders(),
+                    'body' => json_encode([
+                        'body' => $body,
+                    ]),
+                ],
+            );
+        } catch (GuzzleException $e) {
+            throw new GitHubException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
+    }
+
     private function getDefaultHeaders(): array
     {
         return [

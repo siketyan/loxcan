@@ -38,9 +38,33 @@ class GitHubReporterTest extends TestCase
         $filename = 'foo.lock';
         $markdown = '## Markdown';
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
+        $me = $this->prophesize(GitHubUser::class)->reveal();
 
         $this->markdownBuilder->build($diff, $filename)->willReturn($markdown);
+
+        $this->client->getMe()->willReturn($me);
+        $this->client->getComments('foo', 'bar', 123)->willReturn([])->shouldBeCalledOnce();
         $this->client->createComment('foo', 'bar', 123, $markdown)->shouldBeCalledOnce();
+
+        $this->reporter->report($diff, $filename);
+    }
+
+    public function testUpdate(): void
+    {
+        $filename = 'foo.lock';
+        $markdown = '## Markdown';
+        $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
+        $me = $this->prophesize(GitHubUser::class)->reveal();
+
+        $comment = $this->prophesize(GitHubComment::class);
+        $comment->getId()->willReturn(123);
+        $comment->getAuthor()->willReturn($me);
+
+        $this->markdownBuilder->build($diff, $filename)->willReturn($markdown);
+
+        $this->client->getMe()->willReturn($me);
+        $this->client->getComments('foo', 'bar', 123)->willReturn([$comment->reveal()])->shouldBeCalledOnce();
+        $this->client->updateComment('foo', 'bar', $comment->reveal(), $markdown)->shouldBeCalledOnce();
 
         $this->reporter->report($diff, $filename);
     }

@@ -105,8 +105,6 @@ EOS);
         $response = $this->prophesize(ResponseInterface::class);
         $response->getBody()->willReturn($stream->reveal());
 
-        $user = $this->prophesize(GitHubUser::class)->reveal();
-
         $this->httpClient
             ->request(
                 'GET',
@@ -169,6 +167,38 @@ EOS);
             'foo',
             'bar',
             123,
+            'dummy_body',
+        );
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function testUpdateComment(): void
+    {
+        $comment = $this->prophesize(GitHubComment::class);
+        $comment->getId()->willReturn(123);
+
+        $this->httpClient
+            ->request(
+                'PATCH',
+                '/repos/foo/bar/issues/comments/123',
+                [
+                    'body' => '{"body":"dummy_body"}',
+                    'headers' => [
+                        'Accept' => 'application/vnd.github.v3+json',
+                        'Authorization' => 'token dummy_token',
+                    ],
+                ]
+            )
+            ->willReturn($this->prophesize(ResponseInterface::class)->reveal())
+            ->shouldBeCalledOnce()
+        ;
+
+        $this->client->updateComment(
+            'foo',
+            'bar',
+            $comment->reveal(),
             'dummy_body',
         );
     }
