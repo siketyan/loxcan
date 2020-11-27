@@ -23,28 +23,6 @@ class GitHubClient
         $this->userPool = $userPool;
     }
 
-    public function getMe(): GitHubUser
-    {
-        try {
-            $response = $this->httpClient->request(
-                'GET',
-                '/user',
-                ['headers' => $this->getDefaultHeaders()],
-            );
-        } catch (GuzzleException $e) {
-            throw new GitHubException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-        }
-
-        $json = $response->getBody()->getContents();
-        $assoc = json_decode($json, true);
-
-        return $this->getOrCreateUser($assoc);
-    }
-
     /**
      * @param string $owner
      * @param string $repo
