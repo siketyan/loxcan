@@ -26,8 +26,6 @@ class GitHubMarkdownBuilderTest extends TestCase
 
     public function test(): void
     {
-        $filename = 'foo.lock';
-
         $diff = $this->prophesize(DependencyCollectionDiff::class);
         $diff->count()->willReturn(5);
         $diff->getAdded()->willReturn([$this->createDependency('added', 'v1.2.3')]);
@@ -38,7 +36,13 @@ class GitHubMarkdownBuilderTest extends TestCase
             $this->createDependencyDiff('unknown', 'v5.5.5', 'v5.5.5', VersionDiff::UNKNOWN),
         ]);
 
-        $markdown = $this->builder->build([$filename => $diff->reveal()]);
+        $emptyDiff = $this->prophesize(DependencyCollectionDiff::class);
+        $emptyDiff->count()->willReturn(0);
+
+        $markdown = $this->builder->build([
+            'foo.lock' => $diff->reveal(),
+            'bar.lock' => $emptyDiff->reveal(),
+        ]);
 
         $this->assertSame(
             <<<'EOS'
@@ -50,7 +54,20 @@ class GitHubMarkdownBuilderTest extends TestCase
 |⬇️|downgraded|v4.4.4|v3.3.3|
 |🔄|unknown|v5.5.5|v5.5.5|
 |➖|removed|v3.2.1||
+
+#### bar.lock
+🔄 The file was updated, but no dependency changes found.
 EOS,
+            $markdown,
+        );
+    }
+
+    public function testNoDiff(): void
+    {
+        $markdown = $this->builder->build([]);
+
+        $this->assertSame(
+            '✨ No lock file changes found, looks shine!',
             $markdown,
         );
     }
