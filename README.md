@@ -63,7 +63,7 @@ steps:
 (✅ = Supported, ⬜️ = Scheduled)
 
 - [x] Composer (PHP)
-- [ ] Cargo (Rust)
+- [x] Cargo (Rust)
 - [x] npm (JavaScript, Node.js)
 - [ ] Yarn (JavaScript, Node.js)
 
