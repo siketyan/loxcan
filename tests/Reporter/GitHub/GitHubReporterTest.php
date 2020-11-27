@@ -31,6 +31,7 @@ class GitHubReporterTest extends TestCase
         putenv('LOXCAN_REPORTER_GITHUB_OWNER=foo');
         putenv('LOXCAN_REPORTER_GITHUB_REPO=bar');
         putenv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER=123');
+        putenv('LOXCAN_REPORTER_GITHUB_USERNAME=me');
     }
 
     public function test(): void
@@ -38,12 +39,10 @@ class GitHubReporterTest extends TestCase
         $filename = 'foo.lock';
         $markdown = '## Markdown';
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
-        $me = $this->prophesize(GitHubUser::class)->reveal();
         $diffs = [$filename => $diff];
 
         $this->markdownBuilder->build($diffs)->willReturn($markdown);
 
-        $this->client->getMe()->willReturn($me);
         $this->client->getComments('foo', 'bar', 123)->willReturn([])->shouldBeCalledOnce();
         $this->client->createComment('foo', 'bar', 123, $markdown)->shouldBeCalledOnce();
 
@@ -55,16 +54,17 @@ class GitHubReporterTest extends TestCase
         $filename = 'foo.lock';
         $markdown = '## Markdown';
         $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
-        $me = $this->prophesize(GitHubUser::class)->reveal();
         $diffs = [$filename => $diff];
+
+        $me = $this->prophesize(GitHubUser::class);
+        $me->getLogin()->willReturn('me');
 
         $comment = $this->prophesize(GitHubComment::class);
         $comment->getId()->willReturn(123);
-        $comment->getAuthor()->willReturn($me);
+        $comment->getAuthor()->willReturn($me->reveal());
 
         $this->markdownBuilder->build($diffs)->willReturn($markdown);
 
-        $this->client->getMe()->willReturn($me);
         $this->client->getComments('foo', 'bar', 123)->willReturn([$comment->reveal()])->shouldBeCalledOnce();
         $this->client->updateComment('foo', 'bar', $comment->reveal(), $markdown)->shouldBeCalledOnce();
 
