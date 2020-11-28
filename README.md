@@ -50,7 +50,7 @@ steps:
     with:
       fetch-depth: 0
 
-  - uses: siketyan/loxcan@v0.3
+  - uses: siketyan/loxcan@v0.3.1
     with:
       owner: ${{ github.event.repository.owner.login }}
       repo: ${{ github.event.repository.name }}
