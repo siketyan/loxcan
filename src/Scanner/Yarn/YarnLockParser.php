@@ -29,18 +29,19 @@ class YarnLockParser
         $dependencies = [];
 
         foreach ($packages as $names => $package) {
+            $version = $package['version'];
+
             foreach (explode(',', $names) as $name) {
                 $name = substr($name, 0, strrpos($name, '@', -1));
-                $version = $package['version'];
-                $package = $this->packagePool->get($name);
+                $pkg = $this->packagePool->get($name);
 
-                if ($package === null) {
-                    $package = new Package($name);
-                    $this->packagePool->add($package);
+                if ($pkg === null) {
+                    $pkg = new Package($name);
+                    $this->packagePool->add($pkg);
                 }
 
                 $dependencies[] = new Dependency(
-                    $package,
+                    $pkg,
                     $this->versionParser->parse($version),
                 );
             }
