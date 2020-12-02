@@ -67,7 +67,7 @@ steps:
 - [x] Cargo (Rust)
 - [x] Pub (Dart)
 - [x] npm (JavaScript, Node.js)
-- [ ] Yarn (JavaScript, Node.js)
+- [x] Yarn (JavaScript, Node.js)
 
 ## 📋 Supported Reporters
 (✅ = Supported, ⬜️ = Scheduled)
