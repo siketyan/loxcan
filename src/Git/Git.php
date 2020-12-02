@@ -49,7 +49,7 @@ class Git
             return array_map(
                 fn (string $path) => RelativePath::fromString($path),
                 array_filter(
-                    explode(PHP_EOL, $process->getOutput()),
+                    explode("\n", $process->getOutput()),
                     fn (string $line): bool => $line !== '',
                 )
             );
