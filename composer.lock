@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b27686731dcd94141d636388ee08148",
+    "content-hash": "8ea8f9265a846d94be609e904cbcf077",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -553,6 +553,50 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "siketyan/yarn-lock",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/siketyan/php-yarn-lock.git",
+                "reference": "e2966f74223f2e24e51d30f592190ee6449350ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/siketyan/php-yarn-lock/zipball/e2966f74223f2e24e51d30f592190ee6449350ee",
+                "reference": "e2966f74223f2e24e51d30f592190ee6449350ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Siketyan\\YarnLock\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Naoki Ikeguchi",
+                    "email": "root@siketyan.dev"
+                }
+            ],
+            "description": "A Parser Library for yarn.lock in PHP.",
+            "support": {
+                "issues": "https://github.com/siketyan/php-yarn-lock/issues",
+                "source": "https://github.com/siketyan/php-yarn-lock/tree/v0.1.0"
+            },
+            "time": "2020-12-02T13:52:54+00:00"
         },
         {
             "name": "symfony/config",
