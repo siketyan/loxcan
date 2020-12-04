@@ -17,9 +17,6 @@ inputs:
   issue_number:
     required: true
     description: 'The number of a issue or pull request to add a comment.'
-  token:
-    required: true
-    description: 'An OAuth token to access to the repository as a bot.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
