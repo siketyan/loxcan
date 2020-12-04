@@ -14,9 +14,6 @@ inputs:
   base:
     required: true
     description: 'The base branch of the pull request.'
-  head:
-    required: true
-    description: 'The head branch of the pull request.'
   issue_number:
     required: true
     description: 'The number of a issue or pull request to add a comment.'
