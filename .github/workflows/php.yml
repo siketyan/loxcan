@@ -2,10 +2,12 @@ name: PHP
 
 on:
   - push
+  - pull_request
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ !(github.event.pull_request && github.actor == github.repository_owner) }}
     steps:
       - uses: actions/checkout@v2
 
