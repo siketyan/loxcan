@@ -55,7 +55,6 @@ steps:
       owner: ${{ github.event.repository.owner.login }}
       repo: ${{ github.event.repository.name }}
       base: ${{ github.event.pull_request.base.ref }}
-      head: ${{ github.event.pull_request.head.ref }}
       issue_number: ${{ github.event.pull_request.number }}
       token: ${{ github.token }}
 ```
