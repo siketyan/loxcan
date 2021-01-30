@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\SemVer;
 
-use Siketyan\Loxcan\Exception\UnsupportedVersionException;
+use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
+use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SemVerVersionParser
 {
     private const PATTERN = '/^(\d+)\.(\d+)\.(\d+)(?:\-(?<pre>[A-Za-z0-9\-\.]+))?(?:\+(?<build>[A-Za-z0-9\-\.]+))?$/';
 
-    public function parse(string $version): SemVerVersion
+    public function parse(string $version): VersionInterface
     {
         if (!preg_match(self::PATTERN, $version, $matches)) {
-            throw new UnsupportedVersionException($version);
+            return new UnknownVersion($version);
         }
 
         $preRelease = [];
