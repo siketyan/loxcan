@@ -11,9 +11,12 @@ services:
 
   Siketyan\Loxcan\Versioning\Simple\SimpleVersionComparator: ~
 
+  Siketyan\Loxcan\Versioning\Unknown\UnknownVersionComparator: ~
+
   Siketyan\Loxcan\Versioning\VersionComparatorResolver:
     arguments:
       $comparators:
         - '@Siketyan\Loxcan\Versioning\SemVer\SemVerVersionComparator'
         - '@Siketyan\Loxcan\Versioning\Simple\SimpleVersionComparator'
         - '@Siketyan\Loxcan\Versioning\Composer\ComposerVersionComparator'
+        - '@Siketyan\Loxcan\Versioning\Unknown\UnknownVersionComparator'
