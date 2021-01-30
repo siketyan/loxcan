@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning\Unknown;
 
 use PHPUnit\Framework\TestCase;
+use Siketyan\Loxcan\Versioning\SemVer\SemVerVersion;
 use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\Versioning\VersionInterface;
@@ -36,6 +37,25 @@ class UnknownVersionComparatorTest extends TestCase
             VersionDiff::UNKNOWN,
             new SimpleVersion(1, 2, 3, 4),
             new SimpleVersion(2, 3, 4, 5),
+        );
+    }
+
+    public function testSupports(): void
+    {
+        $this->assertTrue(
+            $this->comparator->supports(UnknownVersion::class, UnknownVersion::class),
+        );
+
+        $this->assertTrue(
+            $this->comparator->supports(SimpleVersion::class, UnknownVersion::class),
+        );
+
+        $this->assertTrue(
+            $this->comparator->supports(SemVerVersion::class, SimpleVersion::class),
+        );
+
+        $this->assertFalse(
+            $this->comparator->supports(UnknownVersion::class, VersionDiff::class),
         );
     }
 
