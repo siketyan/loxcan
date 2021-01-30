@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning\Composer;
 
 use PHPUnit\Framework\TestCase;
-use Siketyan\Loxcan\Exception\UnsupportedVersionException;
+use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
 
 class ComposerVersionParserTest extends TestCase
 {
@@ -35,8 +35,9 @@ class ComposerVersionParserTest extends TestCase
 
     public function testUnsupported(): void
     {
-        $this->expectException(UnsupportedVersionException::class);
-
-        $this->parser->parse('v1.2.3_not_supported');
+        $this->assertInstanceOf(
+            UnknownVersion::class,
+            $this->parser->parse('v1.2.3_not_supported'),
+        );
     }
 }
