@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Composer;
 
-use Siketyan\Loxcan\Exception\UnsupportedVersionException;
+use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
+use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class ComposerVersionParser
 {
     private const PATTERN = '/^v?(\d+)\.(\d+)\.(\d+)(?:-(dev|alpha|beta|RC)(\d+)?)?$/';
 
-    public function parse(string $version): ComposerVersion
+    public function parse(string $version): VersionInterface
     {
         if (!preg_match(self::PATTERN, $version, $matches)) {
-            throw new UnsupportedVersionException($version);
+            return new UnknownVersion($version);
         }
 
         return new ComposerVersion(
