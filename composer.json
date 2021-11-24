@@ -27,7 +27,9 @@
         "friendsofphp/php-cs-fixer": "^2.19.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.4",
+        "psr/cache": "^1 || ^2",
+        "psr/log": "^1 || ^2"
     },
     "config": {
         "sort-packages": true
