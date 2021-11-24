@@ -8,18 +8,23 @@ inputs:
   owner:
     required: true
     description: 'The owner (organization) of the repository.'
+    default: ${{ github.event.repository.owner.login }}
   repo:
     required: true
     description: 'The name of the repository.'
+    default: ${{ github.event.repository.name }}
   base:
     required: true
     description: 'The base branch of the pull request.'
+    default: ${{ github.event.pull_request.base.ref }}
   issue_number:
     required: true
     description: 'The number of a issue or pull request to add a comment.'
+    default: ${{ github.event.pull_request.number }}
   token:
     required: true
     description: 'An OAuth token to access to the repository as a bot.'
+    default: ${{ github.token }}
 runs:
   using: 'docker'
   image: 'Dockerfile'
