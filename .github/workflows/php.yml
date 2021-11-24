@@ -8,13 +8,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: ${{ !(github.event.pull_request && github.actor == github.repository_owner) }}
+    strategy:
+      matrix:
+        php:
+          - '7.4'
+          - '8.0'
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php }}
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -39,15 +44,8 @@ jobs:
         run: composer run-script codecov
 
       - uses: codecov/codecov-action@v1
+        if: ${{ matrix.php }} == '8.0'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           verbose: true
-
-      - name: Upgrade PHP to v8
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-
-      - name: Run test suite again
-        run: composer run-script test
