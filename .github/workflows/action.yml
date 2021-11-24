@@ -15,9 +15,3 @@ jobs:
           fetch-depth: 0
 
       - uses: ./
-        with:
-          owner: ${{ github.event.repository.owner.login }}
-          repo: ${{ github.event.repository.name }}
-          base: ${{ github.event.pull_request.base.ref }}
-          issue_number: ${{ github.event.pull_request.number }}
-          token: ${{ github.token }}

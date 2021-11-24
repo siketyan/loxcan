@@ -51,12 +51,6 @@ steps:
       fetch-depth: 0
 
   - uses: siketyan/loxcan@latest
-    with:
-      owner: ${{ github.event.repository.owner.login }}
-      repo: ${{ github.event.repository.name }}
-      base: ${{ github.event.pull_request.base.ref }}
-      issue_number: ${{ github.event.pull_request.number }}
-      token: ${{ github.token }}
 ```
 
 ## 📦 Supported Package Managers
