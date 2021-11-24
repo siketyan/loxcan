@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ "${GITHUB_ACTOR}" = "${GITHUB_REPOSITORY_OWNER}" ]; then
+if [ "${INPUT_REPORT_ENABLED}" = "true" ]; then
   # shellcheck disable=SC2034
   export LOXCAN_REPORTER_GITHUB="1"
   export LOXCAN_REPORTER_GITHUB_OWNER="${INPUT_OWNER}"
