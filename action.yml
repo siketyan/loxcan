@@ -5,6 +5,10 @@ branding:
   icon: 'search'
   color: 'yellow'
 inputs:
+  report_enabled:
+    required: true
+    description: 'Reports to GitHub pull request only if this input is "true".'
+    default: '${{ github.event.repository.owner.id == github.event.pull_request.head.user.id }}'
   owner:
     required: true
     description: 'The owner (organization) of the repository.'
