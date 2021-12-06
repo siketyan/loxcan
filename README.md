@@ -50,7 +50,7 @@ steps:
     with:
       fetch-depth: 0
 
-  - uses: siketyan/loxcan@latest
+  - uses: siketyan/loxcan@master
 ```
 
 ## 📦 Supported Package Managers
