@@ -127,6 +127,9 @@ class ScanCommand extends Command
             case VersionDiff::DOWNGRADED:
                 return '⬇️';
 
+            case VersionDiff::CHANGED:
+                return '💥';
+
             default:
             case VersionDiff::UNKNOWN:
                 return '🔄';

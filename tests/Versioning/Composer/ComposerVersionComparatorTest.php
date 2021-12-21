@@ -37,6 +37,12 @@ class ComposerVersionComparatorTest extends TestCase
         );
 
         $this->assertCompare(
+            VersionDiff::CHANGED,
+            new ComposerVersion(1, 2, 3, ComposerVersion::STABILITY_STABLE, 0, 'hash'),
+            new ComposerVersion(1, 2, 3, ComposerVersion::STABILITY_STABLE, 0, 'hash_changed'),
+        );
+
+        $this->assertCompare(
             null,
             new ComposerVersion(2, 3, 4),
             new ComposerVersion(2, 3, 4),

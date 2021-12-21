@@ -43,6 +43,14 @@ class ComposerVersionComparator implements VersionComparatorInterface
 
     private function determineType(ComposerVersion $before, ComposerVersion $after): ?int
     {
+        if ($before->getHash() !== $after->getHash()) {
+            return VersionDiff::CHANGED;
+        }
+
+        if ($before->getBranch() !== $after->getBranch()) {
+            return VersionDiff::UNKNOWN;
+        }
+
         if ($before->getX() < $after->getX()) {
             return VersionDiff::UPGRADED;
         }
