@@ -27,23 +27,37 @@ class ComposerVersion implements VersionInterface
     private int $z;
     private int $stability;
     private int $number;
+    private string $hash;
+    private ?string $branch;
 
     public function __construct(
         int $x,
         int $y,
         int $z,
         int $stability = self::STABILITY_STABLE,
-        int $number = 0
+        int $number = 0,
+        string $hash = "",
+        ?string $branch = null
     ) {
         $this->x = $x;
         $this->y = $y;
         $this->z = $z;
         $this->stability = $stability;
         $this->number = $number;
+        $this->hash = $hash;
+        $this->branch = $branch;
     }
 
     public function __toString(): string
     {
+        if ($this->branch) {
+            return sprintf(
+                '%s@%s',
+                $this->branch,
+                $this->hash,
+            );
+        }
+
         if ($this->stability < self::STABILITY_STABLE) {
             return sprintf(
                 'v%d.%d.%d-%s%d',
@@ -86,5 +100,15 @@ class ComposerVersion implements VersionInterface
     public function getNumber(): int
     {
         return $this->number;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+    public function getBranch(): ?string
+    {
+        return $this->branch;
     }
 }

@@ -8,6 +8,7 @@ class VersionDiff
 {
     public const UPGRADED = 1;
     public const DOWNGRADED = -1;
+    public const CHANGED = 9;
     public const UNKNOWN = 0;
 
     private int $type;

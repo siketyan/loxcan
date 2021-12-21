@@ -22,13 +22,19 @@ class ComposerLockParserTest extends TestCase
     "packages": [
         {
             "name": "foo/bar",
-            "version": "v1.2.3.4"
+            "version": "v1.2.3.4",
+            "source": {
+                "reference": "hash"
+            }
         }
     ],
     "packages-dev": [
         {
             "name": "bar/baz",
-            "version": "3.2.1"
+            "version": "3.2.1",
+            "source": {
+                "reference": "hash"
+            }
         }
     ]
 }
@@ -59,8 +65,8 @@ EOS;
         $this->packagePool->get('bar/baz')->willReturn($cache);
         $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
 
-        $this->versionParser->parse('v1.2.3.4')->willReturn($fooBarVersion);
-        $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
+        $this->versionParser->parse('v1.2.3.4', 'hash')->willReturn($fooBarVersion);
+        $this->versionParser->parse('3.2.1', 'hash')->willReturn($barBazVersion);
 
         $collection = $this->parser->parse(self::CONTENTS);
         $dependencies = $collection->getDependencies();
