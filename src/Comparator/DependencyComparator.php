@@ -8,6 +8,7 @@ use Siketyan\Loxcan\Exception\InvalidComparisonException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Versioning\VersionComparatorResolver;
+use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class DependencyComparator
 {
@@ -33,19 +34,17 @@ class DependencyComparator
         );
 
         if ($versionComparator === null) {
-            throw new InvalidComparisonException(
-                sprintf(
-                    'No comparator supports to compare versions between "%s" and "%s".',
-                    get_debug_type($before->getVersion()),
-                    get_debug_type($after->getVersion()),
-                ),
+            $versionDiff = new VersionDiff(
+                VersionDiff::UNKNOWN,
+                $before->getVersion(),
+                $after->getVersion(),
+            );
+        } else {
+            $versionDiff = $versionComparator->compare(
+                $before->getVersion(),
+                $after->getVersion(),
             );
         }
-
-        $versionDiff = $versionComparator->compare(
-            $before->getVersion(),
-            $after->getVersion(),
-        );
 
         if ($versionDiff === null) {
             return null;

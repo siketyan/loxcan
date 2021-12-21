@@ -12,6 +12,10 @@ class UnknownVersionComparator implements VersionComparatorInterface
 {
     public function compare(VersionInterface $before, VersionInterface $after): ?VersionDiff
     {
+        if (((string) $before) === ((string) $after)) {
+            return null;
+        }
+
         return new VersionDiff(
             VersionDiff::UNKNOWN,
             $before,
@@ -21,8 +25,6 @@ class UnknownVersionComparator implements VersionComparatorInterface
 
     public function supports(string $beforeType, string $afterType): bool
     {
-        return is_a($beforeType, VersionInterface::class, true)
-            && is_a($afterType, VersionInterface::class, true)
-        ;
+        return $beforeType === UnknownVersion::class && $afterType === UnknownVersion::class;
     }
 }

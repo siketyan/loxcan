@@ -46,11 +46,11 @@ class UnknownVersionComparatorTest extends TestCase
             $this->comparator->supports(UnknownVersion::class, UnknownVersion::class),
         );
 
-        $this->assertTrue(
+        $this->assertFalse(
             $this->comparator->supports(SimpleVersion::class, UnknownVersion::class),
         );
 
-        $this->assertTrue(
+        $this->assertFalse(
             $this->comparator->supports(SemVerVersion::class, SimpleVersion::class),
         );
 
