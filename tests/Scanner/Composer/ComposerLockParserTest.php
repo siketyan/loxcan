@@ -23,7 +23,7 @@ class ComposerLockParserTest extends TestCase
         {
             "name": "foo/bar",
             "version": "v1.2.3.4",
-            "source": {
+            "dist": {
                 "reference": "hash"
             }
         }
@@ -32,7 +32,7 @@ class ComposerLockParserTest extends TestCase
         {
             "name": "bar/baz",
             "version": "3.2.1",
-            "source": {
+            "dist": {
                 "reference": "hash"
             }
         }
