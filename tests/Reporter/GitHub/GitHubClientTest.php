@@ -67,7 +67,7 @@ EOS);
         $this->httpClient
             ->request(
                 'GET',
-                '/repos/foo/bar/issues/123/comments',
+                '/repos/foo/bar/pulls/123/comments',
                 [
                     'headers' => [
                         'Accept' => 'application/vnd.github.v3+json',
@@ -109,7 +109,7 @@ EOS);
         $this->httpClient
             ->request(
                 'POST',
-                '/repos/foo/bar/issues/123/comments',
+                '/repos/foo/bar/pulls/123/comments',
                 [
                     'body' => '{"body":"dummy_body"}',
                     'headers' => [
@@ -141,7 +141,7 @@ EOS);
         $this->httpClient
             ->request(
                 'PATCH',
-                '/repos/foo/bar/issues/comments/123',
+                '/repos/foo/bar/pulls/comments/123',
                 [
                     'body' => '{"body":"dummy_body"}',
                     'headers' => [

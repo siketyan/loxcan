@@ -30,7 +30,7 @@ class GitHubReporterTest extends TestCase
         putenv('LOXCAN_REPORTER_GITHUB=1');
         putenv('LOXCAN_REPORTER_GITHUB_OWNER=foo');
         putenv('LOXCAN_REPORTER_GITHUB_REPO=bar');
-        putenv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER=123');
+        putenv('LOXCAN_REPORTER_GITHUB_PULL_NUMBER=123');
         putenv('LOXCAN_REPORTER_GITHUB_USERNAME=me');
     }
 

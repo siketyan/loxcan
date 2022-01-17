@@ -29,11 +29,11 @@ class GitHubReporter implements ReporterInterface
     {
         $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
         $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
-        $issueNumber = (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER');
+        $pullNumber = (int) $this->getEnv('LOXCAN_REPORTER_GITHUB_PULL_NUMBER');
         $username = $this->getEnv('LOXCAN_REPORTER_GITHUB_USERNAME');
         $body = $this->markdownBuilder->build($diffs);
 
-        $comments = $this->client->getComments($owner, $repo, $issueNumber);
+        $comments = $this->client->getComments($owner, $repo, $pullNumber);
         $myComments = array_filter(
             $comments,
             fn (GitHubComment $comment): bool => $comment->getAuthor()->getLogin() === $username,
@@ -50,7 +50,7 @@ class GitHubReporter implements ReporterInterface
             return;
         }
 
-        $this->client->createComment($owner, $repo, $issueNumber, $body);
+        $this->client->createComment($owner, $repo, $pullNumber, $body);
     }
 
     public function supports(): bool

@@ -21,9 +21,9 @@ inputs:
     required: true
     description: 'The base branch of the pull request.'
     default: ${{ github.event.pull_request.base.ref }}
-  issue_number:
+  pull_number:
     required: true
-    description: 'The number of a issue or pull request to add a comment.'
+    description: 'The number of a pull request to add a comment.'
     default: ${{ github.event.pull_request.number }}
   token:
     required: true

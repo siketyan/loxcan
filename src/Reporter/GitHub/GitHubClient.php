@@ -26,16 +26,16 @@ class GitHubClient
     /**
      * @param string $owner
      * @param string $repo
-     * @param int    $issueNumber
+     * @param int    $pullNumber
      *
      * @return GitHubComment[]
      */
-    public function getComments(string $owner, string $repo, int $issueNumber): array
+    public function getComments(string $owner, string $repo, int $pullNumber): array
     {
         try {
             $response = $this->httpClient->request(
                 'GET',
-                sprintf('/repos/%s/%s/issues/%d/comments', $owner, $repo, $issueNumber),
+                sprintf('/repos/%s/%s/pulls/%d/comments', $owner, $repo, $pullNumber),
                 ['headers' => $this->getDefaultHeaders()],
             );
         } catch (GuzzleException $e) {
@@ -61,12 +61,12 @@ class GitHubClient
         return $comments;
     }
 
-    public function createComment(string $owner, string $repo, int $issueNumber, string $body): void
+    public function createComment(string $owner, string $repo, int $pullNumber, string $body): void
     {
         try {
             $this->httpClient->request(
                 'POST',
-                sprintf('/repos/%s/%s/issues/%d/comments', $owner, $repo, $issueNumber),
+                sprintf('/repos/%s/%s/pulls/%d/comments', $owner, $repo, $pullNumber),
                 [
                     'headers' => $this->getDefaultHeaders(),
                     'body' => json_encode([
@@ -88,7 +88,7 @@ class GitHubClient
         try {
             $this->httpClient->request(
                 'PATCH',
-                sprintf('/repos/%s/%s/issues/comments/%d', $owner, $repo, $comment->getId()),
+                sprintf('/repos/%s/%s/pulls/comments/%d', $owner, $repo, $comment->getId()),
                 [
                     'headers' => $this->getDefaultHeaders(),
                     'body' => json_encode([
