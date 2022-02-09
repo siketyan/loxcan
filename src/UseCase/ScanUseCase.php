@@ -28,13 +28,13 @@ class ScanUseCase
     }
 
     /**
-     * @param Repository $repository
-     * @param string     $base
-     * @param string     $head
+     * @param Repository  $repository
+     * @param string|null $base
+     * @param string|null $head
      *
      * @return DependencyCollectionDiff[]
      */
-    public function scan(Repository $repository, string $base, string $head): array
+    public function scan(Repository $repository, ?string $base = null, ?string $head = null): array
     {
         $diffs = [];
         $paths = $this->git->fetchChangedFiles($repository, $base, $head);

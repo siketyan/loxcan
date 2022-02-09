@@ -20,21 +20,25 @@ class Git
     }
 
     /**
-     * @param Repository $repository
-     * @param string     $base
-     * @param string     $head
+     * @param Repository  $repository
+     * @param string|null $base
+     * @param string|null $head
      *
      * @return RelativePathInterface[]
      */
-    public function fetchChangedFiles(Repository $repository, string $base, string $head = ''): array
+    public function fetchChangedFiles(Repository $repository, ?string $base = null, ?string $head = null): array
     {
         $process = $this->processFactory->create(
             $repository,
-            [
-                'diff',
-                '--name-only',
-                sprintf('%s..%s', $base, $head),
-            ],
+            array_filter(
+                [
+                    'diff',
+                    '--name-only',
+                    $base,
+                    $head,
+                ],
+                fn (?string $v): bool => $v !== null,
+            ),
         );
 
         $process->run();
@@ -62,13 +66,13 @@ class Git
         }
     }
 
-    public function fetchOriginalFile(Repository $repository, string $branch, RelativePathInterface $path): string
+    public function fetchOriginalFile(Repository $repository, ?string $branch, RelativePathInterface $path): string
     {
         $process = $this->processFactory->create(
             $repository,
             [
                 'show',
-                sprintf('%s:%s', $branch, $path->string()),
+                sprintf('%s:%s', $branch ?? '', $path->string()),
             ],
         );
 
@@ -83,14 +87,14 @@ class Git
         return $process->getOutput();
     }
 
-    public function checkFileExists(Repository $repository, string $branch, RelativePathInterface $path): bool
+    public function checkFileExists(Repository $repository, ?string $branch, RelativePathInterface $path): bool
     {
         $process = $this->processFactory->create(
             $repository,
             [
                 'cat-file',
                 '-e',
-                sprintf('%s:%s', $branch, $path->string()),
+                sprintf('%s:%s', $branch ?? '', $path->string()),
             ],
         );
 
