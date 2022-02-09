@@ -43,7 +43,7 @@ baz.lock
 EOS);
 
         $this->processFactory
-            ->create($repository, ['diff', '--name-only', 'master..feature'])
+            ->create($repository, ['diff', '--name-only', 'master', 'feature'])
             ->willReturn($process->reveal())
             ->shouldBeCalledOnce()
         ;

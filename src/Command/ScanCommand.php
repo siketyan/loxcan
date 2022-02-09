@@ -36,8 +36,8 @@ class ScanCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('base', InputArgument::REQUIRED)
-            ->addArgument('head', InputArgument::REQUIRED)
+            ->addArgument('base', InputArgument::OPTIONAL)
+            ->addArgument('head', InputArgument::OPTIONAL)
         ;
     }
 
@@ -46,8 +46,11 @@ class ScanCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $repository = new Repository(Path::fromString(getcwd()));
-        $base = (string) $input->getArgument('base');
-        $head = (string) $input->getArgument('head');
+
+        /** @var string|null $base */
+        $base = $input->getArgument('base');
+        /** @var string|null $head */
+        $head = $input->getArgument('head');
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
