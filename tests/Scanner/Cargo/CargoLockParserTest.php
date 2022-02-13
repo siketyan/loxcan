@@ -18,14 +18,14 @@ class CargoLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-[[package]]
-name = "foo/bar"
-version = "1.2.3-dev"
+        [[package]]
+        name = "foo/bar"
+        version = "1.2.3-dev"
 
-[[package]]
-name = "bar/baz"
-version = "3.2.1"
-EOS;
+        [[package]]
+        name = "bar/baz"
+        version = "3.2.1"
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;

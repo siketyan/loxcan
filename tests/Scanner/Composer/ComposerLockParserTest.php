@@ -18,27 +18,27 @@ class ComposerLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-{
-    "packages": [
         {
-            "name": "foo/bar",
-            "version": "v1.2.3.4",
-            "dist": {
-                "reference": "hash"
-            }
+            "packages": [
+                {
+                    "name": "foo/bar",
+                    "version": "v1.2.3.4",
+                    "dist": {
+                        "reference": "hash"
+                    }
+                }
+            ],
+            "packages-dev": [
+                {
+                    "name": "bar/baz",
+                    "version": "3.2.1",
+                    "dist": {
+                        "reference": "hash"
+                    }
+                }
+            ]
         }
-    ],
-    "packages-dev": [
-        {
-            "name": "bar/baz",
-            "version": "3.2.1",
-            "dist": {
-                "reference": "hash"
-            }
-        }
-    ]
-}
-EOS;
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;

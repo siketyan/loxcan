@@ -22,8 +22,8 @@ class VersionComparatorResolver
 
     public function resolve(VersionInterface $before, VersionInterface $after): ?VersionComparatorInterface
     {
-        $beforeType = get_class($before);
-        $afterType = get_class($after);
+        $beforeType = $before::class;
+        $afterType = $after::class;
 
         foreach ($this->comparators as $comparator) {
             if ($comparator->supports($beforeType, $afterType)) {

@@ -33,7 +33,7 @@ class ScanCommand extends Command
         $this->reportUseCase = $reportUseCase;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('base', InputArgument::OPTIONAL)

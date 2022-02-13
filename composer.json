@@ -45,8 +45,8 @@
         }
     },
     "scripts": {
-        "lint": "php-cs-fixer fix -v --dry-run",
-        "fix": "php-cs-fixer fix -v",
+        "lint": "php-cs-fixer fix -v --allow-risky=yes --dry-run",
+        "fix": "php-cs-fixer fix -v --allow-risky=yes",
         "coverage": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-html ./coverage",
         "codecov": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
         "test": "phpunit ./tests",

@@ -41,25 +41,25 @@ class GitHubClientTest extends TestCase
     {
         $stream = $this->prophesize(StreamInterface::class);
         $stream->getContents()->willReturn(<<<'EOS'
-[
-    {
-        "id": 123,
-        "body": "foo",
-        "user": {
-            "id": 111,
-            "login": "abc"
-        }
-    },
-    {
-        "id": 456,
-        "body": "bar",
-        "user": {
-            "id": 111,
-            "login": "abc"
-        }
-    }
-]
-EOS);
+            [
+                {
+                    "id": 123,
+                    "body": "foo",
+                    "user": {
+                        "id": 111,
+                        "login": "abc"
+                    }
+                },
+                {
+                    "id": 456,
+                    "body": "bar",
+                    "user": {
+                        "id": 111,
+                        "login": "abc"
+                    }
+                }
+            ]
+            EOS);
 
         $response = $this->prophesize(ResponseInterface::class);
         $response->getBody()->willReturn($stream->reveal());
@@ -84,7 +84,7 @@ EOS);
         $this->userPool->get(111)->willReturn(null)->shouldBeCalledTimes(2);
         $this->userPool
             ->add(Argument::type(GitHubUser::class))
-            ->will(function ($args) use ($pool) {
+            ->will(function ($args) use ($pool): void {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $pool->get(111)->willReturn($args[0]);
             })

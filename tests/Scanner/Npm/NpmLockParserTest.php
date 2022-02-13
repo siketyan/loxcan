@@ -18,17 +18,17 @@ class NpmLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-{
-    "packages": {
-        "@foo/bar": {
-            "version": "1.2.3-dev"
-        },
-        "baz": {
-            "version": "3.2.1"
+        {
+            "packages": {
+                "@foo/bar": {
+                    "version": "1.2.3-dev"
+                },
+                "baz": {
+                    "version": "3.2.1"
+                }
+            }
         }
-    }
-}
-EOS;
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;
