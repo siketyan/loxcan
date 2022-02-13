@@ -7,10 +7,13 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
+        '@PSR12:risky' => true,
         '@PHP80Migration' => true,
         '@PHP80Migration:risky' => true,
+        '@PHPUnit84Migration:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'no_trailing_whitespace_in_string' => false,
     ])
     ->setFinder($finder)
 ;
