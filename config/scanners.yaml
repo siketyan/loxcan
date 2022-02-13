@@ -35,6 +35,18 @@ services:
     arguments:
       $parser: '@Siketyan\Loxcan\Scanner\Npm\NpmLockParser'
 
+  Siketyan\Loxcan\Scanner\Pip\PipPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Pip\PipLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Pip\PipPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser'
+
+  Siketyan\Loxcan\Scanner\Pip\PipScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Pip\PipLockParser'
+
   Siketyan\Loxcan\Scanner\Pnpm\PnpmPackagePool:
     shared: true
 
@@ -77,6 +89,7 @@ services:
         - '@Siketyan\Loxcan\Scanner\Cargo\CargoScanner'
         - '@Siketyan\Loxcan\Scanner\Composer\ComposerScanner'
         - '@Siketyan\Loxcan\Scanner\Npm\NpmScanner'
+        - '@Siketyan\Loxcan\Scanner\Pip\PipScanner'
         - '@Siketyan\Loxcan\Scanner\Pnpm\PnpmScanner'
         - '@Siketyan\Loxcan\Scanner\Pub\PubScanner'
         - '@Siketyan\Loxcan\Scanner\Yarn\YarnScanner'
