@@ -6,21 +6,17 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use JetBrains\PhpStorm\ArrayShape;
 use Siketyan\Loxcan\Reporter\EnvironmentTrait;
 
 class GitHubClient
 {
     use EnvironmentTrait;
 
-    private ClientInterface $httpClient;
-    private GitHubUserPool $userPool;
-
     public function __construct(
-        ClientInterface $httpClient,
-        GitHubUserPool $userPool
+        private ClientInterface $httpClient,
+        private GitHubUserPool $userPool
     ) {
-        $this->httpClient = $httpClient;
-        $this->userPool = $userPool;
     }
 
     /**
@@ -105,6 +101,7 @@ class GitHubClient
         }
     }
 
+    #[ArrayShape(['Accept' => 'string', 'Authorization' => 'string'])]
     private function getDefaultHeaders(): array
     {
         return [

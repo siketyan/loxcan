@@ -12,15 +12,10 @@ use Siketyan\YarnLock\YarnLock;
 
 class YarnLockParser
 {
-    private YarnPackagePool $packagePool;
-    private SemVerVersionParser $versionParser;
-
     public function __construct(
-        YarnPackagePool $packagePool,
-        SemVerVersionParser $versionParser
+        private YarnPackagePool $packagePool,
+        private SemVerVersionParser $versionParser
     ) {
-        $this->packagePool = $packagePool;
-        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $lock): DependencyCollection

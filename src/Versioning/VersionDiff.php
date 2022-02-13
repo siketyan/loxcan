@@ -11,18 +11,11 @@ class VersionDiff
     public const CHANGED = 9;
     public const UNKNOWN = 0;
 
-    private int $type;
-    private VersionInterface $before;
-    private VersionInterface $after;
-
     public function __construct(
-        int $type,
-        VersionInterface $before,
-        VersionInterface $after
+        private int $type,
+        private VersionInterface $before,
+        private VersionInterface $after
     ) {
-        $this->type = $type;
-        $this->before = $before;
-        $this->after = $after;
     }
 
     public function getType(): int

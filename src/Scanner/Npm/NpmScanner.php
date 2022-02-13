@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 
 class NpmScanner implements ScannerInterface
 {
-    private NpmLockParser $parser;
-
     public function __construct(
-        NpmLockParser $parser
+        private NpmLockParser $parser
     ) {
-        $this->parser = $parser;
     }
 
     public function scan(FileDiff $diff): DependencyCollectionPair

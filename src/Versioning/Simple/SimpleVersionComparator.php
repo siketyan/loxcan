@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Simple;
 
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SimpleVersionComparator implements VersionComparatorInterface
 {
+    #[Pure]
     public function compare(VersionInterface $before, VersionInterface $after): ?VersionDiff
     {
         if (!($before instanceof SimpleVersion) || !($after instanceof SimpleVersion)) {
@@ -36,8 +38,10 @@ class SimpleVersionComparator implements VersionComparatorInterface
         ;
     }
 
+    #[Pure]
     private function determineType(SimpleVersion $before, SimpleVersion $after): ?int
     {
+        /** @noinspection DuplicatedCode */
         if ($before->getMajor() < $after->getMajor()) {
             return VersionDiff::UPGRADED;
         }

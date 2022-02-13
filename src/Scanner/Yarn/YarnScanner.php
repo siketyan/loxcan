@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 
 class YarnScanner implements ScannerInterface
 {
-    private YarnLockParser $parser;
-
     public function __construct(
-        YarnLockParser $parser
+        private YarnLockParser $parser
     ) {
-        $this->parser = $parser;
     }
 
     public function scan(FileDiff $diff): DependencyCollectionPair

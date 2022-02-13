@@ -6,15 +6,10 @@ namespace Siketyan\Loxcan\Model;
 
 class DependencyCollectionPair
 {
-    private DependencyCollection $before;
-    private DependencyCollection $after;
-
     public function __construct(
-        DependencyCollection $before,
-        DependencyCollection $after
+        private DependencyCollection $before,
+        private DependencyCollection $after
     ) {
-        $this->before = $before;
-        $this->after = $after;
     }
 
     public function getBefore(): DependencyCollection

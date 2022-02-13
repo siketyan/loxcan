@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Model\Repository;
 
 class Git
 {
-    private GitProcessFactory $processFactory;
-
     public function __construct(
-        GitProcessFactory $processFactory
+        private GitProcessFactory $processFactory
     ) {
-        $this->processFactory = $processFactory;
     }
 
     /**

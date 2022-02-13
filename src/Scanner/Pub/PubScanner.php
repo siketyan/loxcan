@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 
 class PubScanner implements ScannerInterface
 {
-    private PubLockParser $parser;
-
     public function __construct(
-        PubLockParser $parser
+        private PubLockParser $parser
     ) {
-        $this->parser = $parser;
     }
 
     public function scan(FileDiff $diff): DependencyCollectionPair

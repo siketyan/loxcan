@@ -7,33 +7,15 @@ namespace Siketyan\Loxcan\Model;
 class DependencyCollectionDiff
 {
     /**
-     * @var Dependency[]
-     */
-    private array $added;
-
-    /**
-     * @var DependencyDiff[]
-     */
-    private array $updated;
-
-    /**
-     * @var Dependency[]
-     */
-    private array $removed;
-
-    /**
      * @param Dependency[]     $added
      * @param DependencyDiff[] $updated
      * @param Dependency[]     $removed
      */
     public function __construct(
-        array $added = [],
-        array $updated = [],
-        array $removed = []
+        private array $added = [],
+        private array $updated = [],
+        private array $removed = []
     ) {
-        $this->added = $added;
-        $this->updated = $updated;
-        $this->removed = $removed;
     }
 
     /**

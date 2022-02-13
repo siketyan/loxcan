@@ -12,15 +12,10 @@ use Symfony\Component\Yaml\Yaml;
 
 class PnpmLockParser
 {
-    private PnpmPackagePool $packagePool;
-    private SemVerVersionParser $versionParser;
-
     public function __construct(
-        PnpmPackagePool $packagePool,
-        SemVerVersionParser $versionParser
+        private PnpmPackagePool $packagePool,
+        private SemVerVersionParser $versionParser
     ) {
-        $this->packagePool = $packagePool;
-        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $yaml): DependencyCollection

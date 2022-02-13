@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\SemVer;
 
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SemVerVersionComparator implements VersionComparatorInterface
 {
+    #[Pure]
     public function compare(VersionInterface $before, VersionInterface $after): ?VersionDiff
     {
         if (!($before instanceof SemVerVersion) || !($after instanceof SemVerVersion)) {
@@ -34,8 +36,10 @@ class SemVerVersionComparator implements VersionComparatorInterface
         return $beforeType === SemVerVersion::class && $afterType === SemVerVersion::class;
     }
 
+    #[Pure]
     private function determineType(SemVerVersion $before, SemVerVersion $after): ?int
     {
+        /** @noinspection DuplicatedCode */
         if ($before->getMajor() < $after->getMajor()) {
             return VersionDiff::UPGRADED;
         }
