@@ -8,7 +8,7 @@ use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
 
 class SimpleVersionParser
 {
-    private const PATTERN = '/^(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?$/';
+    private const PATTERN = '/^(\d+)\.(\d+)(?:\.(\d+)(?:\.(\d+))?)?$/';
 
     public function parse(string $version): SimpleVersion|UnknownVersion
     {
@@ -19,7 +19,7 @@ class SimpleVersionParser
         return new SimpleVersion(
             (int) $matches[1],
             (int) $matches[2],
-            (int) $matches[3],
+            count($matches) > 3 ? (int) $matches[3] : null,
             count($matches) > 4 ? (int) $matches[4] : null,
         );
     }

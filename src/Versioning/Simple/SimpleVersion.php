@@ -12,7 +12,7 @@ class SimpleVersion implements VersionInterface
     public function __construct(
         private int $major,
         private int $minor,
-        private int $patch,
+        private ?int $patch,
         private ?int $revision
     ) {
     }
@@ -27,7 +27,7 @@ class SimpleVersion implements VersionInterface
         return $this->minor;
     }
 
-    public function getPatch(): int
+    public function getPatch(): ?int
     {
         return $this->patch;
     }
@@ -41,17 +41,17 @@ class SimpleVersion implements VersionInterface
     public function __toString(): string
     {
         $version = sprintf(
-            'v%d.%d.%d',
-            $this->major,
-            $this->minor,
-            $this->patch,
+            'v%d.%d',
+            $this->getMajor(),
+            $this->getMinor(),
         );
 
-        if ($this->getRevision() !== null) {
-            $version .= sprintf(
-                '.%d',
-                $this->revision,
-            );
+        if (($patch = $this->getPatch()) !== null) {
+            $version .= sprintf('.%d', $patch);
+        }
+
+        if (($revision = $this->getRevision()) !== null) {
+            $version .= sprintf('.%d', $revision);
         }
 
         return $version;
