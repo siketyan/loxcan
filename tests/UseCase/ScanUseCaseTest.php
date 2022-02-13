@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\UseCase;
 
-use Eloquent\Pathogen\Exception\NonRelativePathException;
 use Eloquent\Pathogen\PathInterface;
 use Eloquent\Pathogen\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
@@ -43,9 +42,6 @@ class ScanUseCaseTest extends TestCase
         );
     }
 
-    /**
-     * @throws NonRelativePathException
-     */
     public function test(): void
     {
         $base = 'main';

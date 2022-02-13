@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 
 class CargoScanner implements ScannerInterface
 {
-    private CargoLockParser $parser;
-
     public function __construct(
-        CargoLockParser $parser
+        private CargoLockParser $parser
     ) {
-        $this->parser = $parser;
     }
 
     public function scan(FileDiff $diff): DependencyCollectionPair

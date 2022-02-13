@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Command;
 
 use Eloquent\Pathogen\Path;
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\Versioning\VersionDiff;
@@ -20,20 +21,14 @@ class ScanCommand extends Command
 {
     private const NAME = 'scan';
 
-    private ScanUseCase $useCase;
-    private ReportUseCase $reportUseCase;
-
     public function __construct(
-        ScanUseCase $useCase,
-        ReportUseCase $reportUseCase
+        private ScanUseCase $useCase,
+        private ReportUseCase $reportUseCase
     ) {
         parent::__construct(self::NAME);
-
-        $this->useCase = $useCase;
-        $this->reportUseCase = $reportUseCase;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('base', InputArgument::OPTIONAL)
@@ -121,6 +116,7 @@ class ScanCommand extends Command
         }
     }
 
+    #[Pure]
     private function getVersionDiffTypeEmoji(VersionDiff $diff): string
     {
         switch ($diff->getType()) {

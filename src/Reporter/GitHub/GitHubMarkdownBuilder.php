@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class GitHubMarkdownBuilder
 {
+    #[Pure]
     public function build(array $diffs): string
     {
         if (count($diffs) === 0) {
@@ -24,6 +26,7 @@ class GitHubMarkdownBuilder
         return implode("\n\n", $sections);
     }
 
+    #[Pure]
     public function buildSection(DependencyCollectionDiff $diff, string $filename): string
     {
         $rows = [
@@ -47,6 +50,7 @@ class GitHubMarkdownBuilder
      *
      * @return string[]
      */
+    #[Pure]
     private function buildTable(DependencyCollectionDiff $diff): array
     {
         $rows = [
@@ -84,6 +88,7 @@ class GitHubMarkdownBuilder
         return $rows;
     }
 
+    #[Pure]
     private function getVersionDiffTypeEmoji(VersionDiff $diff): string
     {
         switch ($diff->getType()) {

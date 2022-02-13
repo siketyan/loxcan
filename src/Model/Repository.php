@@ -8,12 +8,9 @@ use Eloquent\Pathogen\PathInterface;
 
 class Repository
 {
-    private PathInterface $path;
-
     public function __construct(
-        PathInterface $path
+        private PathInterface $path
     ) {
-        $this->path = $path;
     }
 
     public function getPath(): PathInterface

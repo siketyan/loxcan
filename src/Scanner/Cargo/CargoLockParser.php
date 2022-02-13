@@ -12,15 +12,10 @@ use Yosymfony\Toml\Toml;
 
 class CargoLockParser
 {
-    private CargoPackagePool $packagePool;
-    private SemVerVersionParser $versionParser;
-
     public function __construct(
-        CargoPackagePool $packagePool,
-        SemVerVersionParser $versionParser
+        private CargoPackagePool $packagePool,
+        private SemVerVersionParser $versionParser
     ) {
-        $this->packagePool = $packagePool;
-        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $toml): DependencyCollection

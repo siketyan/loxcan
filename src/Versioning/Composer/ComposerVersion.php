@@ -21,31 +21,16 @@ class ComposerVersion implements VersionInterface
     public const STABILITY_BETA = 20;
     public const STABILITY_RC = 30;
     public const STABILITY_STABLE = 100;
-    
-    private int $x;
-    private int $y;
-    private int $z;
-    private int $stability;
-    private int $number;
-    private string $hash;
-    private ?string $branch;
 
     public function __construct(
-        int $x,
-        int $y,
-        int $z,
-        int $stability = self::STABILITY_STABLE,
-        int $number = 0,
-        string $hash = "",
-        ?string $branch = null
+        private int $x,
+        private int $y,
+        private int $z,
+        private int $stability = self::STABILITY_STABLE,
+        private int $number = 0,
+        private string $hash = "",
+        private ?string $branch = null
     ) {
-        $this->x = $x;
-        $this->y = $y;
-        $this->z = $z;
-        $this->stability = $stability;
-        $this->number = $number;
-        $this->hash = $hash;
-        $this->branch = $branch;
     }
 
     public function __toString(): string

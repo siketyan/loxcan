@@ -11,12 +11,9 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 
 class ComposerScanner implements ScannerInterface
 {
-    private ComposerLockParser $parser;
-
     public function __construct(
-        ComposerLockParser $parser
+        private ComposerLockParser $parser
     ) {
-        $this->parser = $parser;
     }
 
     public function scan(FileDiff $diff): DependencyCollectionPair

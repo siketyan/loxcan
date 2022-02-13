@@ -12,12 +12,9 @@ class DependencyCollectionIntersector
 {
     use DependencyCollectionTrait;
 
-    private DependencyComparator $comparator;
-
     public function __construct(
-        DependencyComparator $comparator
+        private DependencyComparator $comparator
     ) {
-        $this->comparator = $comparator;
     }
 
     /**

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning\Simple;
 
 use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
-use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SimpleVersionParser
 {
     private const PATTERN = '/^(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?$/';
 
-    public function parse(string $version): VersionInterface
+    public function parse(string $version): SimpleVersion|UnknownVersion
     {
         if (!preg_match(self::PATTERN, $version, $matches)) {
             return new UnknownVersion($version);

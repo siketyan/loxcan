@@ -9,17 +9,11 @@ use Eloquent\Pathogen\PathInterface;
 class ScannerResolver
 {
     /**
-     * @var ScannerInterface[]
-     */
-    private array $scanners;
-
-    /**
      * @param ScannerInterface[] $scanners
      */
     public function __construct(
-        array $scanners
+        private array $scanners
     ) {
-        $this->scanners = $scanners;
     }
 
     public function resolve(PathInterface $path): ?ScannerInterface

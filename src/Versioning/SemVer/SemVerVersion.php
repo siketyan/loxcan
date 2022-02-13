@@ -8,32 +8,20 @@ use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SemVerVersion implements VersionInterface
 {
-    private int $major;
-    private int $minor;
-    private int $patch;
-
     /**
-     * @var mixed[]
+     * @param int      $major
+     * @param int      $minor
+     * @param int      $patch
+     * @param string[] $preRelease
+     * @param string[] $build
      */
-    private array $preRelease;
-
-    /**
-     * @var mixed[]
-     */
-    private array $build;
-
     public function __construct(
-        int $major,
-        int $minor,
-        int $patch,
-        array $preRelease = [],
-        array $build = []
+        private int $major,
+        private int $minor,
+        private int $patch,
+        private array $preRelease = [],
+        private array $build = []
     ) {
-        $this->major = $major;
-        $this->minor = $minor;
-        $this->patch = $patch;
-        $this->preRelease = $preRelease;
-        $this->build = $build;
     }
 
     public function __toString(): string
@@ -78,7 +66,7 @@ class SemVerVersion implements VersionInterface
     }
 
     /**
-     * @return mixed[]
+     * @return string[]
      */
     public function getPreRelease(): array
     {
@@ -86,7 +74,7 @@ class SemVerVersion implements VersionInterface
     }
 
     /**
-     * @return mixed[]
+     * @return string[]
      */
     public function getBuild(): array
     {

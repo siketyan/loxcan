@@ -13,15 +13,10 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 
 class NpmLockParser
 {
-    private NpmPackagePool $packagePool;
-    private SemVerVersionParser $versionParser;
-
     public function __construct(
-        NpmPackagePool $packagePool,
-        SemVerVersionParser $versionParser
+        private NpmPackagePool $packagePool,
+        private SemVerVersionParser $versionParser
     ) {
-        $this->packagePool = $packagePool;
-        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $json): DependencyCollection

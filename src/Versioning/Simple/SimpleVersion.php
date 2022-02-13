@@ -4,25 +4,17 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Simple;
 
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SimpleVersion implements VersionInterface
 {
-    private int $major;
-    private int $minor;
-    private int $patch;
-    private ?int $revision;
-
     public function __construct(
-        int $major,
-        int $minor,
-        int $patch,
-        ?int $revision
+        private int $major,
+        private int $minor,
+        private int $patch,
+        private ?int $revision
     ) {
-        $this->major = $major;
-        $this->minor = $minor;
-        $this->patch = $patch;
-        $this->revision = $revision;
     }
 
     public function getMajor(): int
@@ -45,6 +37,7 @@ class SimpleVersion implements VersionInterface
         return $this->revision;
     }
 
+    #[Pure]
     public function __toString(): string
     {
         $version = sprintf(

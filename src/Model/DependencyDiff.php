@@ -8,15 +8,10 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class DependencyDiff
 {
-    private Package $package;
-    private VersionDiff $versionDiff;
-
     public function __construct(
-        Package $package,
-        VersionDiff $versionDiff
+        private Package $package,
+        private VersionDiff $versionDiff
     ) {
-        $this->package = $package;
-        $this->versionDiff = $versionDiff;
     }
 
     public function getPackage(): Package

@@ -18,12 +18,12 @@ class PnpmLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-dependencies:
-  foo: 1.2.3-dev
- 
-devDependencies:
-  bar: 3.2.1
-EOS;
+        dependencies:
+          foo: 1.2.3-dev
+         
+        devDependencies:
+          bar: 3.2.1
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;

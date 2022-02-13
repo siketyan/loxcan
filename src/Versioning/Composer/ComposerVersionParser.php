@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning\Composer;
 
 use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
-use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class ComposerVersionParser
 {
     private const PATTERN = '/^v?(\d+)\.(\d+)\.(\d+)(?:-(dev|alpha|beta|RC)(\d+)?)?$/';
 
-    public function parse(string $version, string $hash): VersionInterface
+    public function parse(string $version, string $hash): ComposerVersion|UnknownVersion
     {
         if (str_starts_with($version, 'dev-')) {
             return new ComposerVersion(

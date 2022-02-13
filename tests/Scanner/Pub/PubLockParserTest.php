@@ -18,12 +18,12 @@ class PubLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-packages:
-  foo:
-    version: "1.2.3-dev"
-  bar:
-    version: "3.2.1"
-EOS;
+        packages:
+          foo:
+            version: "1.2.3-dev"
+          bar:
+            version: "3.2.1"
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;

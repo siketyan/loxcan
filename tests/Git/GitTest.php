@@ -38,9 +38,9 @@ class GitTest extends TestCase
         $process->run()->willReturn(0)->shouldBeCalledOnce();
         $process->isSuccessful()->willReturn(true);
         $process->getOutput()->willReturn(<<<'EOS'
-foo/bar.json
-baz.lock
-EOS);
+            foo/bar.json
+            baz.lock
+            EOS);
 
         $this->processFactory
             ->create($repository, ['diff', '--name-only', 'master', 'feature'])
@@ -59,9 +59,9 @@ EOS);
     {
         $repository = $this->prophesize(Repository::class)->reveal();
         $expected = <<<'EOS'
-dummy
-foobar
-EOS;
+            dummy
+            foobar
+            EOS;
 
         $process = $this->prophesize(Process::class);
         $process->run()->willReturn(0)->shouldBeCalledOnce();

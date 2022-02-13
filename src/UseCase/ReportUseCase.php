@@ -10,17 +10,11 @@ use Siketyan\Loxcan\Reporter\ReporterInterface;
 class ReportUseCase
 {
     /**
-     * @var ReporterInterface[]
-     */
-    private array $reporters;
-
-    /**
      * @param ReporterInterface[] $reporters
      */
     public function __construct(
-        array $reporters
+        private array $reporters
     ) {
-        $this->reporters = $reporters;
     }
 
     /**

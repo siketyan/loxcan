@@ -13,15 +13,10 @@ use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
 
 class ComposerLockParser
 {
-    private ComposerPackagePool $packagePool;
-    private ComposerVersionParser $versionParser;
-
     public function __construct(
-        ComposerPackagePool $packagePool,
-        ComposerVersionParser $versionParser
+        private ComposerPackagePool $packagePool,
+        private ComposerVersionParser $versionParser
     ) {
-        $this->packagePool = $packagePool;
-        $this->versionParser = $versionParser;
     }
 
     public function parse(?string $json): DependencyCollection

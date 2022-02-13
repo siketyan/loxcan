@@ -11,15 +11,10 @@ class GitHubReporter implements ReporterInterface
 {
     use EnvironmentTrait;
 
-    private GitHubMarkdownBuilder $markdownBuilder;
-    private GitHubClient $client;
-
     public function __construct(
-        GitHubMarkdownBuilder $markdownBuilder,
-        GitHubClient $client
+        private GitHubMarkdownBuilder $markdownBuilder,
+        private GitHubClient $client
     ) {
-        $this->markdownBuilder = $markdownBuilder;
-        $this->client = $client;
     }
 
     /**

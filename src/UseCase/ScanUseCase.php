@@ -13,18 +13,11 @@ use Siketyan\Loxcan\Scanner\ScannerResolver;
 
 class ScanUseCase
 {
-    private Git $git;
-    private ScannerResolver $scannerResolver;
-    private DependencyCollectionComparator $comparator;
-
     public function __construct(
-        Git $git,
-        ScannerResolver $scannerResolver,
-        DependencyCollectionComparator $comparator
+        private Git $git,
+        private ScannerResolver $scannerResolver,
+        private DependencyCollectionComparator $comparator
     ) {
-        $this->git = $git;
-        $this->scannerResolver = $scannerResolver;
-        $this->comparator = $comparator;
     }
 
     /**

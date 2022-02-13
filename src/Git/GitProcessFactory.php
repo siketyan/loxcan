@@ -9,12 +9,9 @@ use Symfony\Component\Process\Process;
 
 class GitProcessFactory
 {
-    private string $path;
-
     public function __construct(
-        string $path = 'git'
+        private string $path = 'git'
     ) {
-        $this->path = $path;
     }
 
     public function create(Repository $repository, array $command): Process

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Composer;
 
+use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Exception\RuntimeException;
 use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
@@ -41,6 +42,7 @@ class ComposerVersionComparator implements VersionComparatorInterface
         return $beforeType === ComposerVersion::class && $afterType === ComposerVersion::class;
     }
 
+    #[Pure]
     private function determineType(ComposerVersion $before, ComposerVersion $after): ?int
     {
         if ($before->getX() < $after->getX()) {

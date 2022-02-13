@@ -35,9 +35,9 @@ class VersionComparatorResolverTest extends TestCase
         $baz = $this->prophesize(BazVersion::class)->reveal();
         $dummy = $this->prophesize(VersionInterface::class)->reveal();
 
-        $this->fooComparator->supports(get_class($foo), get_class($bar))->willReturn(true);
+        $this->fooComparator->supports($foo::class, $bar::class)->willReturn(true);
         $this->fooComparator->supports(Argument::type('string'), Argument::type('string'))->willReturn(false);
-        $this->barComparator->supports(get_class($bar), get_class($baz))->willReturn(true);
+        $this->barComparator->supports($bar::class, $baz::class)->willReturn(true);
         $this->barComparator->supports(Argument::type('string'), Argument::type('string'))->willReturn(false);
 
         $this->assertSame($this->fooComparator->reveal(), $this->resolver->resolve($foo, $bar));

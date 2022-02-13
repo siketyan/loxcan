@@ -7,17 +7,11 @@ namespace Siketyan\Loxcan\Model;
 class DependencyCollection
 {
     /**
-     * @var Dependency[]
-     */
-    private array $dependencies;
-
-    /**
      * @param Dependency[] $dependencies
      */
     public function __construct(
-        array $dependencies
+        private array $dependencies
     ) {
-        $this->dependencies = $dependencies;
     }
 
     /**

@@ -6,18 +6,11 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 
 class GitHubComment
 {
-    private int $id;
-    private string $body;
-    private GitHubUser $author;
-
     public function __construct(
-        int $id,
-        string $body,
-        GitHubUser $author
+        private int $id,
+        private string $body,
+        private GitHubUser $author
     ) {
-        $this->id = $id;
-        $this->body = $body;
-        $this->author = $author;
     }
 
     public function getId(): int

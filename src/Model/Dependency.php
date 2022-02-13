@@ -8,15 +8,10 @@ use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class Dependency
 {
-    private Package $package;
-    private VersionInterface $version;
-
     public function __construct(
-        Package $package,
-        VersionInterface $version
+        private Package $package,
+        private VersionInterface $version
     ) {
-        $this->package = $package;
-        $this->version = $version;
     }
 
     public function getPackage(): Package

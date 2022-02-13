@@ -9,17 +9,11 @@ use Siketyan\Loxcan\Model\Package;
 abstract class AbstractPackagePool
 {
     /**
-     * @var Package[]
-     */
-    private array $packages;
-
-    /**
      * @param Package[] $packages
      */
     public function __construct(
-        array $packages = []
+        private array $packages = []
     ) {
-        $this->packages = $packages;
     }
 
     public function get(string $name): ?Package

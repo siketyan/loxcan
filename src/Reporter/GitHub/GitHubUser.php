@@ -6,15 +6,10 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 
 class GitHubUser
 {
-    private int $id;
-    private string $login;
-
     public function __construct(
-        int $id,
-        string $login
+        private int $id,
+        private string $login
     ) {
-        $this->id = $id;
-        $this->login = $login;
     }
 
     public function getId(): int

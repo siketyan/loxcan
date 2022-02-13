@@ -6,12 +6,9 @@ namespace Siketyan\Loxcan\Model;
 
 class Package
 {
-    private string $name;
-
     public function __construct(
-        string $name
+        private string $name
     ) {
-        $this->name = $name;
     }
 
     public function getName(): string

@@ -18,12 +18,12 @@ class YarnLockParserTest extends TestCase
     use ProphecyTrait;
 
     private const CONTENTS = <<<'EOS'
-@foo/bar@^1.2:
-    version "1.2.3-dev"
+        @foo/bar@^1.2:
+            version "1.2.3-dev"
 
-baz@*:
-    version "3.2.1"
-EOS;
+        baz@*:
+            version "3.2.1"
+        EOS;
 
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;

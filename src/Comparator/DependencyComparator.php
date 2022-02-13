@@ -12,12 +12,9 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class DependencyComparator
 {
-    private VersionComparatorResolver $versionComparatorResolver;
-
     public function __construct(
-        VersionComparatorResolver $versionComparatorResolver
+        private VersionComparatorResolver $versionComparatorResolver
     ) {
-        $this->versionComparatorResolver = $versionComparatorResolver;
     }
 
     public function compare(Dependency $before, Dependency $after): ?DependencyDiff
