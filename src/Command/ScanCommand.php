@@ -11,6 +11,7 @@ use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
+use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -94,9 +95,9 @@ class ScanCommand extends Command
                 $versionDiff = $dependencyDiff->getVersionDiff();
                 $rows[] = [
                     $this->getVersionDiffTypeEmoji($versionDiff),
-                    $dependencyDiff->getPackage()->getName(),
-                    $versionDiff->getBefore(),
-                    $versionDiff->getAfter(),
+                    $this->emphasizeBreakingChanges($versionDiff, $dependencyDiff->getPackage()->getName()),
+                    $this->emphasizeBreakingChanges($versionDiff, (string) $versionDiff->getBefore()),
+                    $this->emphasizeBreakingChanges($versionDiff, (string) $versionDiff->getAfter()),
                 ];
             }
 
@@ -133,5 +134,16 @@ class ScanCommand extends Command
             case VersionDiff::UNKNOWN:
                 return '🔄';
         }
+    }
+
+    private function emphasizeBreakingChanges(VersionDiff $diff, string $str): string
+    {
+        $emphasize = new Color('bright-white', '', ['bold']);
+
+        if ($diff->hasBreakingChanges()) {
+            return $emphasize->apply($str);
+        }
+
+        return $str;
     }
 }

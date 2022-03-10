@@ -99,6 +99,7 @@ class GitHubMarkdownBuilderTest extends TestCase
         $afterVersion->__toString()->willReturn($after);
 
         $versionDiff = $this->prophesize(VersionDiff::class);
+        $versionDiff->hasBreakingChanges()->willReturn(false);
         $versionDiff->getType()->willReturn($type);
         $versionDiff->getBefore()->willReturn($beforeVersion->reveal());
         $versionDiff->getAfter()->willReturn($afterVersion->reveal());

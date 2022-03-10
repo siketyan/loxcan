@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\SemVer;
 
+use JetBrains\PhpStorm\Pure;
+use Siketyan\Loxcan\Versioning\HasSemVerLikeCompatibility;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
 class SemVerVersion implements VersionInterface
 {
+    use HasSemVerLikeCompatibility;
+
     /**
      * @param int      $major
      * @param int      $minor
@@ -85,4 +89,18 @@ class SemVerVersion implements VersionInterface
     {
         return count($this->preRelease) > 0;
     }
+
+    // region Aliases for HasSemVerLikeCompatibility trait
+    #[Pure]
+    protected function getX(): int
+    {
+        return $this->getMajor();
+    }
+
+    #[Pure]
+    protected function getY(): int
+    {
+        return $this->getMinor();
+    }
+    // endregion
 }
