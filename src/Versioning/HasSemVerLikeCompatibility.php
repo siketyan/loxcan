@@ -24,6 +24,6 @@ trait HasSemVerLikeCompatibility
             return -$this->getY();
         }
 
-        return $this->getX() * 10;
+        return $this->getX();
     }
 }
