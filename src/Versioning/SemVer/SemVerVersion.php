@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning\SemVer;
 
 use JetBrains\PhpStorm\Pure;
+use Siketyan\Loxcan\Versioning\CompatibilityAwareInterface;
 use Siketyan\Loxcan\Versioning\HasSemVerLikeCompatibility;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class SemVerVersion implements VersionInterface
+class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
 {
     use HasSemVerLikeCompatibility;
 

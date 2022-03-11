@@ -110,7 +110,7 @@ class GitHubMarkdownBuilder
     #[Pure]
     private function emphasizeBreakingChanges(VersionDiff $diff, string $str): string
     {
-        if ($diff->hasBreakingChanges()) {
+        if (!$diff->isCompatible()) {
             return "**$str**";
         }
 

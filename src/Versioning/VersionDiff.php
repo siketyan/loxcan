@@ -21,13 +21,12 @@ class VersionDiff
     }
 
     /**
-     * Determine if any breaking changes are occurred between the two versions.
-     * Refer CompatibilityAwareInterface::getCompatibilityNumber for how to determine that.
+     * Determine if two versions are compatible.
      *
-     * @return bool true if there are breaking changes
+     * @return bool true if there are compatible
      */
     #[Pure]
-    public function hasBreakingChanges(): bool
+    public function isCompatible(): bool
     {
         if (!(($before = $this->getBefore()) instanceof CompatibilityAwareInterface) ||
             !(($after = $this->getAfter()) instanceof CompatibilityAwareInterface)) {
@@ -38,7 +37,7 @@ class VersionDiff
          * @var CompatibilityAwareInterface $before
          * @var CompatibilityAwareInterface $after
          */
-        return $before->getCompatibilityNumber() !== $after->getCompatibilityNumber();
+        return $before->isCompatibleWith($after);
     }
 
     public function getType(): int

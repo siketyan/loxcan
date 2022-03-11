@@ -140,7 +140,7 @@ class ScanCommand extends Command
     {
         $emphasize = new Color('bright-white', '', ['bold']);
 
-        if ($diff->hasBreakingChanges()) {
+        if (!$diff->isCompatible()) {
             return $emphasize->apply($str);
         }
 

@@ -11,19 +11,13 @@ use JetBrains\PhpStorm\Pure;
  */
 trait HasSemVerLikeCompatibility
 {
-    /**
-     * {@inheritDoc}
-     */
     #[Pure]
-    public function getCompatibilityNumber(): int
+    public function isCompatibleWith(CompatibilityAwareInterface $another): bool
     {
-        // For 0.Y.* versions, uses Y as a compatibility number instead of X in X.*.* versions.
-        if ($this->getX() === 0) {
-            // To avoid returning the same number from 0.Y.* and X.*.*,
-            // inverts the number to minus here assuming both X and Y are positive.
-            return -$this->getY();
-        }
-
-        return $this->getX();
+        // Let the version has a format of X.Y.Z.
+        return $this::class === $another::class  // Two different version systems are not compatible.
+            && $this->getX() === $another->getX()  // Basically, two version that have the same X are compatible.
+            && ($this->getX() !== 0 || $this->getY() === $another->getY()) // For 0.Y.Z versions, the same Y are also needed.
+        ;
     }
 }
