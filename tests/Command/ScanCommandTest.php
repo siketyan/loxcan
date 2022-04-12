@@ -103,7 +103,7 @@ class ScanCommandTest extends TestCase
                     🔄 The file was updated, but no dependency changes found.
 
                     EOS,
-                $this->tester->getDisplay(),
+                $this->removeTextStyles($this->tester->getDisplay()),
             );
         } else {
             $this->assertSame(
@@ -128,7 +128,7 @@ class ScanCommandTest extends TestCase
                     🔄 The file was updated, but no dependency changes found.
 
                     EOS,
-                $this->tester->getDisplay(),
+                $this->removeTextStyles($this->tester->getDisplay()),
             );
         }
     }
@@ -198,5 +198,10 @@ class ScanCommandTest extends TestCase
         $diff->getVersionDiff()->willReturn($versionDiff->reveal());
 
         return $diff->reveal();
+    }
+
+    private function removeTextStyles(string $text): string
+    {
+        return preg_replace('/\e\[[0-9;]*m/', '', $text) ?? $text;
     }
 }
