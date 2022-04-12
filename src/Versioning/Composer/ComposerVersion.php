@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Composer;
 
+use Siketyan\Loxcan\Versioning\CompatibilityAwareInterface;
+use Siketyan\Loxcan\Versioning\HasSemVerLikeCompatibility;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class ComposerVersion implements VersionInterface
+class ComposerVersion implements VersionInterface, CompatibilityAwareInterface
 {
+    use HasSemVerLikeCompatibility;
+
     public const STABILITIES = [
         'dev' => self::STABILITY_DEV,
         'alpha' => self::STABILITY_ALPHA,

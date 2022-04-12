@@ -71,9 +71,9 @@ class GitHubMarkdownBuilder
             $rows[] = sprintf(
                 '|%s|%s|%s|%s|',
                 $this->getVersionDiffTypeEmoji($versionDiff),
-                $dependencyDiff->getPackage()->getName(),
-                $versionDiff->getBefore(),
-                $versionDiff->getAfter(),
+                $this->emphasizeBreakingChanges($versionDiff, $dependencyDiff->getPackage()->getName()),
+                $this->emphasizeBreakingChanges($versionDiff, (string) $versionDiff->getBefore()),
+                $this->emphasizeBreakingChanges($versionDiff, (string) $versionDiff->getAfter()),
             );
         }
 
@@ -105,5 +105,15 @@ class GitHubMarkdownBuilder
             case VersionDiff::UNKNOWN:
                 return '🔄';
         }
+    }
+
+    #[Pure]
+    private function emphasizeBreakingChanges(VersionDiff $diff, string $str): string
+    {
+        if (!$diff->isCompatible()) {
+            return "**$str**";
+        }
+
+        return $str;
     }
 }
