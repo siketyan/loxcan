@@ -46,7 +46,7 @@ Use `pull_request` events to trigger the action.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v3
     with:
       fetch-depth: 0
 
