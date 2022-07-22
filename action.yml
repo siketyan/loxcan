@@ -31,4 +31,4 @@ inputs:
     default: ${{ github.token }}
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://ghcr.io/siketyan/loxcan@sha256:e39eab840c1cf2e4cea9c2067eb33015e7b80f5aceee40adce8b4981068b88e6'
