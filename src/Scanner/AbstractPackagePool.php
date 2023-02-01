@@ -12,7 +12,7 @@ abstract class AbstractPackagePool
      * @param Package[] $packages
      */
     public function __construct(
-        private array $packages = []
+        private array $packages = [],
     ) {
     }
 

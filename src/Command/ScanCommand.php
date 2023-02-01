@@ -8,9 +8,9 @@ use Eloquent\Pathogen\Path;
 use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\Repository;
-use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
+use Siketyan\Loxcan\Versioning\VersionDiff;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +24,7 @@ class ScanCommand extends Command
 {
     public function __construct(
         private ScanUseCase $useCase,
-        private ReportUseCase $reportUseCase
+        private ReportUseCase $reportUseCase,
     ) {
         parent::__construct();
     }
@@ -43,9 +43,9 @@ class ScanCommand extends Command
 
         $repository = new Repository(Path::fromString(getcwd()));
 
-        /** @var string|null $base */
+        /** @var null|string $base */
         $base = $input->getArgument('base');
-        /** @var string|null $head */
+        /** @var null|string $head */
         $head = $input->getArgument('head');
 
         $diffs = $this->useCase->scan($repository, $base, $head);
@@ -64,7 +64,6 @@ class ScanCommand extends Command
     }
 
     /**
-     * @param SymfonyStyle               $io
      * @param DependencyCollectionDiff[] $diffs
      */
     private function printDiffs(SymfonyStyle $io, array $diffs): void

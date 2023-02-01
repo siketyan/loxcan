@@ -10,7 +10,7 @@ class DependencyDiff
 {
     public function __construct(
         private Package $package,
-        private VersionDiff $versionDiff
+        private VersionDiff $versionDiff,
     ) {
     }
 

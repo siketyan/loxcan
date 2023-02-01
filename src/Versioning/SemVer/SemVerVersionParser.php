@@ -8,7 +8,7 @@ use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
 
 class SemVerVersionParser
 {
-    private const PATTERN = /** @lang text */
+    private const PATTERN = /* @lang text */
         '/^(\d+)\.(\d+)\.(\d+)(?:\-(?<pre>[A-Za-z0-9\-\.]+))?(?:\+(?<build>[A-Za-z0-9\-\.]+))?$/';
 
     public function parse(string $version): SemVerVersion|UnknownVersion

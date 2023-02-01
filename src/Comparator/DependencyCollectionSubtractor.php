@@ -12,9 +12,6 @@ class DependencyCollectionSubtractor
     use DependencyCollectionTrait;
 
     /**
-     * @param DependencyCollection $a
-     * @param DependencyCollection $b
-     *
      * @return Dependency[]
      */
     public function subtract(DependencyCollection $a, DependencyCollection $b): array

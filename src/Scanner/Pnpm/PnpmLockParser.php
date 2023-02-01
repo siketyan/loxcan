@@ -14,7 +14,7 @@ class PnpmLockParser
 {
     public function __construct(
         private PnpmPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private SemVerVersionParser $versionParser,
     ) {
     }
 

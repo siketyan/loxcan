@@ -13,7 +13,7 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 class DependencyComparator
 {
     public function __construct(
-        private VersionComparatorResolver $versionComparatorResolver
+        private VersionComparatorResolver $versionComparatorResolver,
     ) {
     }
 

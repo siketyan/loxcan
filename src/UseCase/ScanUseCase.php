@@ -16,15 +16,11 @@ class ScanUseCase
     public function __construct(
         private Git $git,
         private ScannerResolver $scannerResolver,
-        private DependencyCollectionComparator $comparator
+        private DependencyCollectionComparator $comparator,
     ) {
     }
 
     /**
-     * @param Repository  $repository
-     * @param string|null $base
-     * @param string|null $head
-     *
      * @return DependencyCollectionDiff[]
      */
     public function scan(Repository $repository, ?string $base = null, ?string $head = null): array

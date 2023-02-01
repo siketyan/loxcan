@@ -13,14 +13,11 @@ class DependencyCollectionIntersector
     use DependencyCollectionTrait;
 
     public function __construct(
-        private DependencyComparator $comparator
+        private DependencyComparator $comparator,
     ) {
     }
 
     /**
-     * @param DependencyCollection $a
-     * @param DependencyCollection $b
-     *
      * @return DependencyDiff[]
      */
     public function intersect(DependencyCollection $a, DependencyCollection $b): array

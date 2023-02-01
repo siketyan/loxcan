@@ -16,7 +16,7 @@ class VersionDiff
     public function __construct(
         private int $type,
         private VersionInterface $before,
-        private VersionInterface $after
+        private VersionInterface $after,
     ) {
     }
 
@@ -28,12 +28,12 @@ class VersionDiff
     #[Pure]
     public function isCompatible(): bool
     {
-        if (!(($before = $this->getBefore()) instanceof CompatibilityAwareInterface) ||
-            !(($after = $this->getAfter()) instanceof CompatibilityAwareInterface)) {
+        if (!(($before = $this->getBefore()) instanceof CompatibilityAwareInterface)
+            || !(($after = $this->getAfter()) instanceof CompatibilityAwareInterface)) {
             return false;
         }
 
-        /**
+        /*
          * @var CompatibilityAwareInterface $before
          * @var CompatibilityAwareInterface $after
          */

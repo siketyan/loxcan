@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 class YarnScanner implements ScannerInterface
 {
     public function __construct(
-        private YarnLockParser $parser
+        private YarnLockParser $parser,
     ) {
     }
 

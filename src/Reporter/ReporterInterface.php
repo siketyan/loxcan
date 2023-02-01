@@ -12,5 +12,6 @@ interface ReporterInterface
      * @param DependencyCollectionDiff[] $diffs
      */
     public function report(array $diffs): void;
+
     public function supports(): bool;
 }

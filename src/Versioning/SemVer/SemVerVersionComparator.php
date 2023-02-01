@@ -39,7 +39,7 @@ class SemVerVersionComparator implements VersionComparatorInterface
     #[Pure]
     private function determineType(SemVerVersion $before, SemVerVersion $after): ?int
     {
-        /** @noinspection DuplicatedCode */
+        /* @noinspection DuplicatedCode */
         if ($before->getMajor() < $after->getMajor()) {
             return VersionDiff::UPGRADED;
         }

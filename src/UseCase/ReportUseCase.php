@@ -13,7 +13,7 @@ class ReportUseCase
      * @param ReporterInterface[] $reporters
      */
     public function __construct(
-        private array $reporters
+        private array $reporters,
     ) {
     }
 

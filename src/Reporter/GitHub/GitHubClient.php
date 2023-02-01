@@ -15,15 +15,11 @@ class GitHubClient
 
     public function __construct(
         private ClientInterface $httpClient,
-        private GitHubUserPool $userPool
+        private GitHubUserPool $userPool,
     ) {
     }
 
     /**
-     * @param string $owner
-     * @param string $repo
-     * @param int    $issueNumber
-     *
      * @return GitHubComment[]
      */
     public function getComments(string $owner, string $repo, int $issueNumber): array

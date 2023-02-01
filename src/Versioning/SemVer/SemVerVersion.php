@@ -14,9 +14,6 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
     use HasSemVerLikeCompatibility;
 
     /**
-     * @param int      $major
-     * @param int      $minor
-     * @param int      $patch
      * @param string[] $preRelease
      * @param string[] $build
      */
@@ -25,7 +22,7 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
         private int $minor,
         private int $patch,
         private array $preRelease = [],
-        private array $build = []
+        private array $build = [],
     ) {
     }
 

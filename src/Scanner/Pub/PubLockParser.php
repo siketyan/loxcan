@@ -14,7 +14,7 @@ class PubLockParser
 {
     public function __construct(
         private PubPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private SemVerVersionParser $versionParser,
     ) {
     }
 

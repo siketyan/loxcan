@@ -13,7 +13,7 @@ class SimpleVersion implements VersionInterface
         private int $major,
         private int $minor,
         private ?int $patch,
-        private ?int $revision
+        private ?int $revision,
     ) {
     }
 

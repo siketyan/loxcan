@@ -11,7 +11,7 @@ class DependencyCollectionComparator
 {
     public function __construct(
         private DependencyCollectionSubtractor $subtractor,
-        private DependencyCollectionIntersector $intersector
+        private DependencyCollectionIntersector $intersector,
     ) {
     }
 

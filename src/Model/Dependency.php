@@ -10,7 +10,7 @@ class Dependency
 {
     public function __construct(
         private Package $package,
-        private VersionInterface $version
+        private VersionInterface $version,
     ) {
     }
 

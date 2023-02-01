@@ -32,8 +32,8 @@ class ComposerVersion implements VersionInterface, CompatibilityAwareInterface
         private int $z,
         private int $stability = self::STABILITY_STABLE,
         private int $number = 0,
-        private string $hash = "",
-        private ?string $branch = null
+        private string $hash = '',
+        private ?string $branch = null,
     ) {
     }
 

@@ -8,7 +8,7 @@ class FileDiff
 {
     public function __construct(
         private ?string $before,
-        private ?string $after
+        private ?string $after,
     ) {
     }
 

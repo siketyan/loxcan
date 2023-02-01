@@ -14,7 +14,7 @@ class DependencyCollectionDiff
     public function __construct(
         private array $added = [],
         private array $updated = [],
-        private array $removed = []
+        private array $removed = [],
     ) {
     }
 

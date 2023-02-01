@@ -46,8 +46,6 @@ class GitHubMarkdownBuilder
     }
 
     /**
-     * @param DependencyCollectionDiff $diff
-     *
      * @return string[]
      */
     #[Pure]
@@ -111,7 +109,7 @@ class GitHubMarkdownBuilder
     private function emphasizeBreakingChanges(VersionDiff $diff, string $str): string
     {
         if (!$diff->isCompatible()) {
-            return "**$str**";
+            return "**{$str}**";
         }
 
         return $str;

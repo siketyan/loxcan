@@ -82,7 +82,7 @@ class ScanUseCaseTest extends TestCase
 
         $scanner = $this->prophesize(ScannerInterface::class);
 
-        /** @noinspection PhpParamsInspection */
+        /* @noinspection PhpParamsInspection */
         $scanner
             ->scan(Argument::that(fn (FileDiff $d): bool => $d->getBefore() === 'foo'))
             ->willReturn($pair)

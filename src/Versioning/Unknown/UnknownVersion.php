@@ -9,7 +9,7 @@ use Siketyan\Loxcan\Versioning\VersionInterface;
 class UnknownVersion implements VersionInterface
 {
     public function __construct(
-        private string $version
+        private string $version,
     ) {
     }
 

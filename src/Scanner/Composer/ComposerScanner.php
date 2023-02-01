@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 class ComposerScanner implements ScannerInterface
 {
     public function __construct(
-        private ComposerLockParser $parser
+        private ComposerLockParser $parser,
     ) {
     }
 

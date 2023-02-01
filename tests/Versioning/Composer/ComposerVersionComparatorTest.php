@@ -20,7 +20,7 @@ class ComposerVersionComparatorTest extends TestCase
     {
         $this->assertCompare(
             VersionDiff::UPGRADED,
-            new ComposerVersion(1, 2, 3, ),
+            new ComposerVersion(1, 2, 3),
             new ComposerVersion(2, 0, 0),
         );
 

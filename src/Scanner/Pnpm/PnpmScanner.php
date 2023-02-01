@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 class PnpmScanner implements ScannerInterface
 {
     public function __construct(
-        private PnpmLockParser $parser
+        private PnpmLockParser $parser,
     ) {
     }
 

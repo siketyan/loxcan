@@ -10,7 +10,7 @@ class DependencyCollection
      * @param Dependency[] $dependencies
      */
     public function __construct(
-        private array $dependencies
+        private array $dependencies,
     ) {
     }
 

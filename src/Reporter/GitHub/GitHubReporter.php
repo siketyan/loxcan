@@ -13,12 +13,12 @@ class GitHubReporter implements ReporterInterface
 
     public function __construct(
         private GitHubMarkdownBuilder $markdownBuilder,
-        private GitHubClient $client
+        private GitHubClient $client,
     ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function report(array $diffs): void
     {

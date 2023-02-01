@@ -12,7 +12,7 @@ class ScannerResolver
      * @param ScannerInterface[] $scanners
      */
     public function __construct(
-        private array $scanners
+        private array $scanners,
     ) {
     }
 

@@ -41,7 +41,7 @@ class SimpleVersionComparator implements VersionComparatorInterface
     #[Pure]
     private function determineType(SimpleVersion $before, SimpleVersion $after): ?int
     {
-        /** @noinspection DuplicatedCode */
+        /* @noinspection DuplicatedCode */
         if ($before->getMajor() < $after->getMajor()) {
             return VersionDiff::UPGRADED;
         }

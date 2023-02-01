@@ -8,7 +8,7 @@ class DependencyCollectionPair
 {
     public function __construct(
         private DependencyCollection $before,
-        private DependencyCollection $after
+        private DependencyCollection $after,
     ) {
     }
 

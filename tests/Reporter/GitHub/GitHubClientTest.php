@@ -73,7 +73,7 @@ class GitHubClientTest extends TestCase
                         'Accept' => 'application/vnd.github.v3+json',
                         'Authorization' => 'token dummy_token',
                     ],
-                ]
+                ],
             )
             ->willReturn($response->reveal())
             ->shouldBeCalledOnce()
@@ -85,10 +85,11 @@ class GitHubClientTest extends TestCase
         $this->userPool
             ->add(Argument::type(GitHubUser::class))
             ->will(function ($args) use ($pool): void {
-                /** @noinspection PhpUndefinedMethodInspection */
+                /* @noinspection PhpUndefinedMethodInspection */
                 $pool->get(111)->willReturn($args[0]);
             })
-            ->shouldBeCalledOnce();
+            ->shouldBeCalledOnce()
+        ;
 
         $comments = $this->client->getComments('foo', 'bar', 123);
 
@@ -116,7 +117,7 @@ class GitHubClientTest extends TestCase
                         'Accept' => 'application/vnd.github.v3+json',
                         'Authorization' => 'token dummy_token',
                     ],
-                ]
+                ],
             )
             ->willReturn($this->prophesize(ResponseInterface::class)->reveal())
             ->shouldBeCalledOnce()
@@ -148,7 +149,7 @@ class GitHubClientTest extends TestCase
                         'Accept' => 'application/vnd.github.v3+json',
                         'Authorization' => 'token dummy_token',
                     ],
-                ]
+                ],
             )
             ->willReturn($this->prophesize(ResponseInterface::class)->reveal())
             ->shouldBeCalledOnce()

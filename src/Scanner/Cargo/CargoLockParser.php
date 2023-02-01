@@ -14,7 +14,7 @@ class CargoLockParser
 {
     public function __construct(
         private CargoPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private SemVerVersionParser $versionParser,
     ) {
     }
 

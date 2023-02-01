@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 class PipScanner implements ScannerInterface
 {
     public function __construct(
-        private PipLockParser $parser
+        private PipLockParser $parser,
     ) {
     }
 

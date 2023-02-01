@@ -14,7 +14,7 @@ class YarnLockParser
 {
     public function __construct(
         private YarnPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private SemVerVersionParser $versionParser,
     ) {
     }
 

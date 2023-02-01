@@ -147,13 +147,13 @@ class ScanCommandTest extends TestCase
         ;
 
         $exitCode = $this->tester->execute([
-           'base' => 'foo',
-           'head' => 'bar',
+            'base' => 'foo',
+            'head' => 'bar',
         ]);
 
         $this->assertSame(0, $exitCode);
         $this->assertSame(
-            <<<EOS
+            <<<'EOS'
                 ✨ No lock file changes found, looks shine!
 
                 EOS,

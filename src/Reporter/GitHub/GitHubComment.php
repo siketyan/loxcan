@@ -9,7 +9,7 @@ class GitHubComment
     public function __construct(
         private int $id,
         private string $body,
-        private GitHubUser $author
+        private GitHubUser $author,
     ) {
     }
 
