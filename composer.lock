@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e7fa0e5c4025fd9ca34e89eb316d5e9",
+    "content-hash": "5a1509f6f76db70193aa702ea6bc01cc",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -338,83 +338,30 @@
             "time": "2022-10-26T14:07:24+00:00"
         },
         {
-            "name": "icecave/isolator",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/icecave/isolator.git",
-                "reference": "97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/icecave/isolator/zipball/97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5",
-                "reference": "97c51fafa39c57a8f1a31f978a48fbe6cea4a5d5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "icecave/archer": "~1"
-            },
-            "suggest": {
-                "eloquent/asplode": "Drop-in exception-based error handling."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Icecave\\Isolator\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Harris",
-                    "email": "james.harris@icecave.com.au",
-                    "homepage": "https://github.com/jmalloc"
-                }
-            ],
-            "description": "Dependency injection for global functions.",
-            "homepage": "https://github.com/IcecaveStudios/isolator",
-            "keywords": [
-                "fake",
-                "mock",
-                "phake",
-                "phpunit",
-                "test",
-                "unit"
-            ],
-            "support": {
-                "issues": "https://github.com/icecave/isolator/issues",
-                "source": "https://github.com/icecave/isolator/tree/2.3.0"
-            },
-            "time": "2014-08-12T03:16:11+00:00"
-        },
-        {
             "name": "mschop/pathogen",
-            "version": "0.6.1",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mschop/pathogen.git",
-                "reference": "baa1376e1de56ad462cd67794de808d690904fb8"
+                "reference": "3566c3798c930f5dccad0a24d3416cac0926e334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mschop/pathogen/zipball/baa1376e1de56ad462cd67794de808d690904fb8",
-                "reference": "baa1376e1de56ad462cd67794de808d690904fb8",
+                "url": "https://api.github.com/repos/mschop/pathogen/zipball/3566c3798c930f5dccad0a24d3416cac0926e334",
+                "reference": "3566c3798c930f5dccad0a24d3416cac0926e334",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*",
-                "icecave/isolator": "~2",
-                "php": ">=5.3"
+                "mschop/simplified-isolator": "^0.1",
+                "php": ">=7.4",
+                "symfony/polyfill-mbstring": "*"
             },
             "require-dev": {
-                "eloquent/liberator": "~2",
-                "icecave/archer": "~1"
+                "eloquent/liberator": "~3",
+                "ext-xdebug": "*",
+                "infection/infection": "^0.26.5",
+                "phake/phake": "^4.2",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -428,18 +375,13 @@
             ],
             "authors": [
                 {
-                    "name": "Erin Millard",
-                    "email": "ezzatron@gmail.com",
-                    "homepage": "http://ezzatron.com/"
-                },
-                {
-                    "name": "Darian Brown",
-                    "email": "darianbr@gmail.com",
-                    "homepage": "http://www.darian-brown.com/"
+                    "name": "Martin Schophaus",
+                    "email": "mschopdev@gmail.com",
+                    "homepage": "https://mschop.de"
                 }
             ],
             "description": "General-purpose path library for PHP.",
-            "homepage": "https://github.com/eloquent/pathogen",
+            "homepage": "https://github.com/mschop/pathogen",
             "keywords": [
                 "file",
                 "filesystem",
@@ -447,9 +389,64 @@
                 "path"
             ],
             "support": {
-                "source": "https://github.com/mschop/pathogen/tree/0.6.1"
+                "issues": "https://github.com/mschop/pathogen/issues",
+                "source": "https://github.com/mschop/pathogen/tree/0.7.1"
             },
-            "time": "2014-10-22T01:04:35+00:00"
+            "time": "2022-02-21T19:04:17+00:00"
+        },
+        {
+            "name": "mschop/simplified-isolator",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mschop/simplified-isolator.git",
+                "reference": "907fe6f2ca3c7bb349fe54b89235da149b129d79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mschop/simplified-isolator/zipball/907fe6f2ca3c7bb349fe54b89235da149b129d79",
+                "reference": "907fe6f2ca3c7bb349fe54b89235da149b129d79",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SimplifiedIsolator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Schophaus",
+                    "email": "mschopdev@gmail.com",
+                    "homepage": "https://mschop.de"
+                }
+            ],
+            "description": "Simplified isolator without dynamic code generation as replacement for icecave/isolator.",
+            "homepage": "https://github.com/mschop/simplified-isolator",
+            "keywords": [
+                "Double",
+                "fake",
+                "mock",
+                "phpunit",
+                "stub",
+                "test",
+                "unit"
+            ],
+            "support": {
+                "issues": "https://github.com/mschop/simplified-isolator/issues",
+                "source": "https://github.com/mschop/simplified-isolator/tree/v0.1.0"
+            },
+            "time": "2022-02-20T11:47:35+00:00"
         },
         {
             "name": "psr/container",
