@@ -47,8 +47,8 @@
     "scripts": {
         "lint": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix -v --allow-risky=yes --dry-run",
         "fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix -v --allow-risky=yes",
-        "coverage": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-html ./coverage",
-        "codecov": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
+        "coverage": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-html ./coverage",
+        "codecov": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
         "test": "phpunit ./tests",
         "tests": [
             "@lint",
