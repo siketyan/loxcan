@@ -6,12 +6,12 @@
     "authors": [
         {
             "name": "Naoki Ikeguchi",
-            "email": "root@siketyan.dev"
+            "email": "me@s6n.jp"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.2",
         "mschop/pathogen": "^0.6.1",
