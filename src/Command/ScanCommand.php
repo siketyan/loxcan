@@ -50,7 +50,7 @@ class ScanCommand extends Command
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
-        if (count($diffs) === 0) {
+        if (\count($diffs) === 0) {
             $io->writeln(
                 '✨ No lock file changes found, looks shine!',
             );

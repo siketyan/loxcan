@@ -20,13 +20,13 @@ class SemVerVersionParser
         $preRelease = [];
         $build = [];
 
-        if (array_key_exists('pre', $matches)) {
+        if (\array_key_exists('pre', $matches)) {
             foreach (explode('.', $matches['pre']) as $identifier) {
                 $preRelease[] = is_numeric($identifier) ? (int) $identifier : $identifier;
             }
         }
 
-        if (array_key_exists('build', $matches)) {
+        if (\array_key_exists('build', $matches)) {
             foreach (explode('.', $matches['build']) as $identifier) {
                 $build[] = is_numeric($identifier) ? (int) $identifier : $identifier;
             }

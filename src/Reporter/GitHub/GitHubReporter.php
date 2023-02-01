@@ -34,7 +34,7 @@ class GitHubReporter implements ReporterInterface
             fn (GitHubComment $comment): bool => $comment->getAuthor()->getLogin() === $username,
         );
 
-        if (count($myComments) > 0) {
+        if (\count($myComments) > 0) {
             $this->client->updateComment(
                 $owner,
                 $repo,
@@ -52,6 +52,6 @@ class GitHubReporter implements ReporterInterface
     {
         $env = getenv('LOXCAN_REPORTER_GITHUB');
 
-        return is_string($env) && $env !== '';
+        return \is_string($env) && $env !== '';
     }
 }

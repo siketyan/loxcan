@@ -12,7 +12,7 @@ trait EnvironmentTrait
     {
         $env = getenv($key);
 
-        if (!is_string($env) || $env === '') {
+        if (!\is_string($env) || $env === '') {
             throw new InvalidConfigurationException(
                 sprintf(
                     'The environment variable "%s" is needed, but it is not set.',

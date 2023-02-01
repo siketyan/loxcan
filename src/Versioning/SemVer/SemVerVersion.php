@@ -35,14 +35,14 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
             $this->patch,
         );
 
-        if (count($this->preRelease)) {
+        if (\count($this->preRelease)) {
             $version .= sprintf(
                 '-%s',
                 implode('.', $this->preRelease),
             );
         }
 
-        if (count($this->build)) {
+        if (\count($this->build)) {
             $version .= sprintf(
                 '+%s',
                 implode('.', $this->build),
@@ -85,7 +85,7 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
 
     public function isPreRelease(): bool
     {
-        return count($this->preRelease) > 0;
+        return \count($this->preRelease) > 0;
     }
 
     // region Aliases for HasSemVerLikeCompatibility trait

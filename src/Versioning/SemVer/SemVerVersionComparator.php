@@ -75,7 +75,7 @@ class SemVerVersionComparator implements VersionComparatorInterface
         $beforePreRelease = $before->getPreRelease();
         $afterPreRelease = $after->getPreRelease();
 
-        for ($i = 0; $i < max(count($beforePreRelease), count($afterPreRelease)); ++$i) {
+        for ($i = 0; $i < max(\count($beforePreRelease), \count($afterPreRelease)); ++$i) {
             $beforeIdentifier = $beforePreRelease[$i] ?? 0;
             $afterIdentifier = $afterPreRelease[$i] ?? 0;
 
@@ -83,15 +83,15 @@ class SemVerVersionComparator implements VersionComparatorInterface
                 continue;
             }
 
-            if (is_int($beforeIdentifier) && is_int($afterIdentifier)) {
+            if (\is_int($beforeIdentifier) && \is_int($afterIdentifier)) {
                 return $beforeIdentifier < $afterIdentifier ? VersionDiff::UPGRADED : VersionDiff::DOWNGRADED;
             }
 
-            if (is_string($beforeIdentifier) && is_string($afterIdentifier)) {
+            if (\is_string($beforeIdentifier) && \is_string($afterIdentifier)) {
                 return strcmp($beforeIdentifier, $afterIdentifier) < 0 ? VersionDiff::UPGRADED : VersionDiff::DOWNGRADED;
             }
 
-            return is_int($beforeIdentifier) ? VersionDiff::UPGRADED : VersionDiff::DOWNGRADED;
+            return \is_int($beforeIdentifier) ? VersionDiff::UPGRADED : VersionDiff::DOWNGRADED;
         }
 
         return null;

@@ -44,6 +44,6 @@ class DependencyCollectionDiff
 
     public function count(): int
     {
-        return count($this->added) + count($this->updated) + count($this->removed);
+        return \count($this->added) + \count($this->updated) + \count($this->removed);
     }
 }

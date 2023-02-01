@@ -25,7 +25,7 @@ class ComposerLockParser
         }
 
         try {
-            $assoc = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new ParseErrorException(
                 $e->getMessage(),

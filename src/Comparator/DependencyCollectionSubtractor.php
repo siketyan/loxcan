@@ -21,7 +21,7 @@ class DependencyCollectionSubtractor
         return array_values(
             array_filter(
                 $a->getDependencies(),
-                fn (?Dependency $d): bool => !in_array($d->getPackage(), $packages, true),
+                fn (?Dependency $d): bool => !\in_array($d->getPackage(), $packages, true),
             ),
         );
     }
