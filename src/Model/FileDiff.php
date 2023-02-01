@@ -7,8 +7,8 @@ namespace Siketyan\Loxcan\Model;
 class FileDiff
 {
     public function __construct(
-        private ?string $before,
-        private ?string $after,
+        private readonly ?string $before,
+        private readonly ?string $after,
     ) {
     }
 

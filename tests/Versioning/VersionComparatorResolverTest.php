@@ -46,7 +46,7 @@ class VersionComparatorResolverTest extends TestCase
     }
 }
 
-abstract class AbstractVersion implements VersionInterface
+abstract class AbstractVersion implements VersionInterface, \Stringable
 {
     public function __toString(): string
     {
