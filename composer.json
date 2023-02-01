@@ -16,11 +16,11 @@
         "guzzlehttp/guzzle": "^7.5",
         "mschop/pathogen": "^0.7.1",
         "siketyan/yarn-lock": "^0.1.1",
-        "symfony/config": "^5.4",
-        "symfony/console": "^5.4",
-        "symfony/dependency-injection": "^5.4",
-        "symfony/process": "^5.4",
-        "symfony/yaml": "^5.4",
+        "symfony/config": "^6.2",
+        "symfony/console": "^6.2",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/process": "^6.2",
+        "symfony/yaml": "^6.2",
         "yosymfony/toml": "^1.0"
     },
     "require-dev": {

@@ -11,6 +11,7 @@ use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,15 +19,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand('scan')]
 class ScanCommand extends Command
 {
-    private const NAME = 'scan';
-
     public function __construct(
         private ScanUseCase $useCase,
         private ReportUseCase $reportUseCase
     ) {
-        parent::__construct(self::NAME);
+        parent::__construct();
     }
 
     protected function configure(): void
