@@ -55,11 +55,11 @@
         "bin/loxcan"
     ],
     "scripts": {
-        "analyse": "static-analysis-kit analyse --no-phpstan",
-        "fix": "static-analysis-kit fix",
-        "fix:all": "static-analysis-kit fix --risky --rector",
-        "fix:rector": "static-analysis-kit fix --rector",
-        "fix:risky": "static-analysis-kit fix --risky",
+        "analyse": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit analyse --no-phpstan",
+        "fix": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix",
+        "fix:all": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --risky --rector",
+        "fix:rector": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --rector",
+        "fix:risky": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --risky",
         "coverage": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-html ./coverage",
         "codecov": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
         "test": "phpunit -c ./phpunit.xml",
