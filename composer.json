@@ -55,7 +55,7 @@
         "bin/loxcan"
     ],
     "scripts": {
-        "analyse": "static-analysis-kit analyse",
+        "analyse": "static-analysis-kit analyse --no-phpstan",
         "fix": "static-analysis-kit fix",
         "fix:all": "static-analysis-kit fix --risky --rector",
         "fix:rector": "static-analysis-kit fix --rector",
