@@ -12,5 +12,8 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 return (new Config())
+    ->addRiskyRules([
+        'no_trailing_whitespace_in_string' => false,
+    ])
     ->setFinder($finder)
 ;
