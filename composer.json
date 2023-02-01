@@ -29,8 +29,15 @@
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.5",
         "psr/cache": "^1",
-        "psr/log": "^1"
+        "psr/log": "^1",
+        "quartetcom/static-analysis-kit": "~8.1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/quartetcom/static-analysis-kit.git"
+        }
+    ],
     "config": {
         "sort-packages": true
     },
@@ -44,18 +51,29 @@
             "Siketyan\\Loxcan\\": "tests/"
         }
     },
+    "bin": [
+        "bin/loxcan"
+    ],
     "scripts": {
-        "lint": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix -v --allow-risky=yes --dry-run",
-        "fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix -v --allow-risky=yes",
+        "analyse": "static-analysis-kit analyse",
+        "fix": "static-analysis-kit fix",
+        "fix:all": "static-analysis-kit fix --risky --rector",
+        "fix:rector": "static-analysis-kit fix --rector",
+        "fix:risky": "static-analysis-kit fix --risky",
         "coverage": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-html ./coverage",
         "codecov": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
-        "test": "phpunit ./tests",
+        "test": "# To run your tests using this command, you must define your test script in composer.json.",
         "tests": [
-            "@lint",
+            "@analyse",
             "@test"
         ]
     },
-    "bin": [
-        "bin/loxcan"
-    ]
+    "scripts-descriptions": {
+        "analyse": "Analyses code in this project fully.",
+        "fix": "Tries to fix code in this project automatically.",
+        "fix:all": "Tries to fix code in this project automatically fully.",
+        "fix:rector": "Tries to fix code in this project automatically with rector enabled.",
+        "fix:risky": "Tries to fix code in this project automatically with risky rules.",
+        "test": "Runs the tests."
+    }
 }
