@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Comparator;
 
+use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
@@ -13,14 +14,11 @@ class DependencyCollectionIntersector
     use DependencyCollectionTrait;
 
     public function __construct(
-        private DependencyComparator $comparator
+        private readonly DependencyComparator $comparator,
     ) {
     }
 
     /**
-     * @param DependencyCollection $a
-     * @param DependencyCollection $b
-     *
      * @return DependencyDiff[]
      */
     public function intersect(DependencyCollection $a, DependencyCollection $b): array
@@ -36,7 +34,7 @@ class DependencyCollectionIntersector
             $before = $this->getDependencyByPackage($a, $package);
             $after = $this->getDependencyByPackage($b, $package);
 
-            if ($before === null || $after === null) {
+            if (!$before instanceof Dependency || !$after instanceof Dependency) {
                 continue;
             }
 
@@ -45,7 +43,7 @@ class DependencyCollectionIntersector
 
         return array_filter(
             $diff,
-            fn (?DependencyDiff $d) => $d !== null,
+            fn (?DependencyDiff $d): bool => $d !== null,
         );
     }
 }

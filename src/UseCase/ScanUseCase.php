@@ -9,22 +9,19 @@ use Siketyan\Loxcan\Git\Git;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\FileDiff;
 use Siketyan\Loxcan\Model\Repository;
+use Siketyan\Loxcan\Scanner\ScannerInterface;
 use Siketyan\Loxcan\Scanner\ScannerResolver;
 
 class ScanUseCase
 {
     public function __construct(
-        private Git $git,
-        private ScannerResolver $scannerResolver,
-        private DependencyCollectionComparator $comparator
+        private readonly Git $git,
+        private readonly ScannerResolver $scannerResolver,
+        private readonly DependencyCollectionComparator $comparator,
     ) {
     }
 
     /**
-     * @param Repository  $repository
-     * @param string|null $base
-     * @param string|null $head
-     *
      * @return DependencyCollectionDiff[]
      */
     public function scan(Repository $repository, ?string $base = null, ?string $head = null): array
@@ -36,7 +33,7 @@ class ScanUseCase
             $absolutePath = $repository->getPath()->join($path);
             $scanner = $this->scannerResolver->resolve($absolutePath);
 
-            if ($scanner === null) {
+            if (!$scanner instanceof ScannerInterface) {
                 continue;
             }
 

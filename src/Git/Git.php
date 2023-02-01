@@ -12,15 +12,11 @@ use Siketyan\Loxcan\Model\Repository;
 class Git
 {
     public function __construct(
-        private GitProcessFactory $processFactory
+        private readonly GitProcessFactory $processFactory,
     ) {
     }
 
     /**
-     * @param Repository  $repository
-     * @param string|null $base
-     * @param string|null $head
-     *
      * @return RelativePathInterface[]
      */
     public function fetchChangedFiles(Repository $repository, ?string $base = null, ?string $head = null): array
@@ -48,11 +44,11 @@ class Git
 
         try {
             return array_map(
-                fn (string $path) => RelativePath::fromString($path),
+                fn (string $path): RelativePathInterface => RelativePath::fromString($path),
                 array_filter(
                     explode("\n", $process->getOutput()),
                     fn (string $line): bool => $line !== '',
-                )
+                ),
             );
         } catch (NonRelativePathException $e) {
             throw new GitException(
@@ -97,11 +93,7 @@ class Git
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
-            return false;
-        }
-
-        return true;
+        return $process->isSuccessful();
     }
 
     public function supports(Repository $repository): bool

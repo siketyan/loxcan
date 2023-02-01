@@ -8,9 +8,10 @@ use Eloquent\Pathogen\Path;
 use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\Repository;
-use Siketyan\Loxcan\Versioning\VersionDiff;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
 use Siketyan\Loxcan\UseCase\ScanUseCase;
+use Siketyan\Loxcan\Versioning\VersionDiff;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,15 +19,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand('scan')]
 class ScanCommand extends Command
 {
-    private const NAME = 'scan';
-
     public function __construct(
-        private ScanUseCase $useCase,
-        private ReportUseCase $reportUseCase
+        private readonly ScanUseCase $useCase,
+        private readonly ReportUseCase $reportUseCase,
     ) {
-        parent::__construct(self::NAME);
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -43,14 +43,14 @@ class ScanCommand extends Command
 
         $repository = new Repository(Path::fromString(getcwd()));
 
-        /** @var string|null $base */
+        /** @var null|string $base */
         $base = $input->getArgument('base');
-        /** @var string|null $head */
+        /** @var null|string $head */
         $head = $input->getArgument('head');
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
-        if (count($diffs) === 0) {
+        if ($diffs === []) {
             $io->writeln(
                 '✨ No lock file changes found, looks shine!',
             );
@@ -64,7 +64,6 @@ class ScanCommand extends Command
     }
 
     /**
-     * @param SymfonyStyle               $io
      * @param DependencyCollectionDiff[] $diffs
      */
     private function printDiffs(SymfonyStyle $io, array $diffs): void

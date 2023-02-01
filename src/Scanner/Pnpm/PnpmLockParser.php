@@ -13,8 +13,8 @@ use Symfony\Component\Yaml\Yaml;
 class PnpmLockParser
 {
     public function __construct(
-        private PnpmPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private readonly PnpmPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -31,7 +31,7 @@ class PnpmLockParser
         foreach ($packages as $name => $version) {
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

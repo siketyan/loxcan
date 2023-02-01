@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Npm;
 
-use JsonException;
 use Siketyan\Loxcan\Exception\ParseErrorException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
@@ -14,8 +13,8 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 class NpmLockParser
 {
     public function __construct(
-        private NpmPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private readonly NpmPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -26,8 +25,8 @@ class NpmLockParser
         }
 
         try {
-            $assoc = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
+            $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             throw new ParseErrorException(
                 $e->getMessage(),
                 $e->getCode(),
@@ -39,7 +38,7 @@ class NpmLockParser
         $dependencies = [];
 
         foreach ($packages as $name => $package) {
-            $name = preg_replace('/^node_modules\//', '', $name);
+            $name = preg_replace('/^node_modules\//', '', (string) $name);
             $version = $package['version'];
             $package = $this->packagePool->get($name);
 
@@ -47,7 +46,7 @@ class NpmLockParser
                 continue;
             }
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

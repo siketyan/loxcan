@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Composer;
 
-use JsonException;
 use Siketyan\Loxcan\Exception\ParseErrorException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
@@ -14,8 +13,8 @@ use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
 class ComposerLockParser
 {
     public function __construct(
-        private ComposerPackagePool $packagePool,
-        private ComposerVersionParser $versionParser
+        private readonly ComposerPackagePool $packagePool,
+        private readonly ComposerVersionParser $versionParser,
     ) {
     }
 
@@ -26,8 +25,8 @@ class ComposerLockParser
         }
 
         try {
-            $assoc = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
+            $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             throw new ParseErrorException(
                 $e->getMessage(),
                 $e->getCode(),
@@ -48,7 +47,7 @@ class ComposerLockParser
             $hash = $package['dist']['reference'] ?? '';
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

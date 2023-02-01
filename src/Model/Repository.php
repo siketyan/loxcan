@@ -9,7 +9,7 @@ use Eloquent\Pathogen\PathInterface;
 class Repository
 {
     public function __construct(
-        private PathInterface $path
+        private readonly PathInterface $path,
     ) {
     }
 

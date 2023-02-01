@@ -19,8 +19,8 @@ class SimpleVersionParser
         return new SimpleVersion(
             (int) $matches[1],
             (int) $matches[2],
-            count($matches) > 3 ? (int) $matches[3] : null,
-            count($matches) > 4 ? (int) $matches[4] : null,
+            \count($matches) > 3 ? (int) $matches[3] : null,
+            \count($matches) > 4 ? (int) $matches[4] : null,
         );
     }
 }

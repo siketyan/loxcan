@@ -6,7 +6,6 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use JetBrains\PhpStorm\ArrayShape;
 use Siketyan\Loxcan\Reporter\EnvironmentTrait;
 
 class GitHubClient
@@ -14,17 +13,15 @@ class GitHubClient
     use EnvironmentTrait;
 
     public function __construct(
-        private ClientInterface $httpClient,
-        private GitHubUserPool $userPool
+        private readonly ClientInterface $httpClient,
+        private readonly GitHubUserPool $userPool,
     ) {
     }
 
     /**
-     * @param string $owner
-     * @param string $repo
-     * @param int    $issueNumber
-     *
      * @return GitHubComment[]
+     *
+     * @throws \JsonException
      */
     public function getComments(string $owner, string $repo, int $issueNumber): array
     {
@@ -43,7 +40,7 @@ class GitHubClient
         }
 
         $json = $response->getBody()->getContents();
-        $assoc = json_decode($json, true);
+        $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
         $comments = [];
 
         foreach ($assoc as $row) {
@@ -57,6 +54,9 @@ class GitHubClient
         return $comments;
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function createComment(string $owner, string $repo, int $issueNumber, string $body): void
     {
         try {
@@ -67,7 +67,7 @@ class GitHubClient
                     'headers' => $this->getDefaultHeaders(),
                     'body' => json_encode([
                         'body' => $body,
-                    ]),
+                    ], \JSON_THROW_ON_ERROR),
                 ],
             );
         } catch (GuzzleException $e) {
@@ -79,6 +79,9 @@ class GitHubClient
         }
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function updateComment(string $owner, string $repo, GitHubComment $comment, string $body): void
     {
         try {
@@ -89,7 +92,7 @@ class GitHubClient
                     'headers' => $this->getDefaultHeaders(),
                     'body' => json_encode([
                         'body' => $body,
-                    ]),
+                    ], \JSON_THROW_ON_ERROR),
                 ],
             );
         } catch (GuzzleException $e) {
@@ -101,7 +104,9 @@ class GitHubClient
         }
     }
 
-    #[ArrayShape(['Accept' => 'string', 'Authorization' => 'string'])]
+    /**
+     * @return array{Accept: string, Authorization: string}
+     */
     private function getDefaultHeaders(): array
     {
         return [
@@ -118,7 +123,7 @@ class GitHubClient
         $id = $assoc['id'];
         $user = $this->userPool->get($id);
 
-        if ($user === null) {
+        if (!$user instanceof GitHubUser) {
             $user = new GitHubUser($id, $assoc['login']);
             $this->userPool->add($user);
         }

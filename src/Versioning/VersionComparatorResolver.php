@@ -10,7 +10,7 @@ class VersionComparatorResolver
      * @param VersionComparatorInterface[] $comparators
      */
     public function __construct(
-        private array $comparators
+        private readonly array $comparators,
     ) {
     }
 

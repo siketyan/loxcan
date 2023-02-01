@@ -12,9 +12,6 @@ class DependencyCollectionSubtractor
     use DependencyCollectionTrait;
 
     /**
-     * @param DependencyCollection $a
-     * @param DependencyCollection $b
-     *
      * @return Dependency[]
      */
     public function subtract(DependencyCollection $a, DependencyCollection $b): array
@@ -24,7 +21,7 @@ class DependencyCollectionSubtractor
         return array_values(
             array_filter(
                 $a->getDependencies(),
-                fn (?Dependency $d): bool => !in_array($d->getPackage(), $packages, true),
+                fn (?Dependency $d): bool => !\in_array($d->getPackage(), $packages, true),
             ),
         );
     }

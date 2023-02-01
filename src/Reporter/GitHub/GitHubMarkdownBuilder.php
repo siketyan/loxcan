@@ -13,7 +13,7 @@ class GitHubMarkdownBuilder
     #[Pure]
     public function build(array $diffs): string
     {
-        if (count($diffs) === 0) {
+        if ($diffs === []) {
             return '✨ No lock file changes found, looks shine!';
         }
 
@@ -46,8 +46,6 @@ class GitHubMarkdownBuilder
     }
 
     /**
-     * @param DependencyCollectionDiff $diff
-     *
      * @return string[]
      */
     #[Pure]
@@ -111,7 +109,7 @@ class GitHubMarkdownBuilder
     private function emphasizeBreakingChanges(VersionDiff $diff, string $str): string
     {
         if (!$diff->isCompatible()) {
-            return "**$str**";
+            return "**{$str}**";
         }
 
         return $str;

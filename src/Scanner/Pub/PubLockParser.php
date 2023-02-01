@@ -13,8 +13,8 @@ use Symfony\Component\Yaml\Yaml;
 class PubLockParser
 {
     public function __construct(
-        private PubPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private readonly PubPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -32,7 +32,7 @@ class PubLockParser
             $version = $package['version'];
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

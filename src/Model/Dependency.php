@@ -9,8 +9,8 @@ use Siketyan\Loxcan\Versioning\VersionInterface;
 class Dependency
 {
     public function __construct(
-        private Package $package,
-        private VersionInterface $version
+        private readonly Package $package,
+        private readonly VersionInterface $version,
     ) {
     }
 

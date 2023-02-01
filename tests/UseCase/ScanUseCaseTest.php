@@ -44,11 +44,18 @@ class ScanUseCaseTest extends TestCase
 
     public function test(): void
     {
+        $makeRelativePath = function (string $path): RelativePathInterface {
+            $prophecy = $this->prophesize(RelativePathInterface::class);
+            $prophecy->string()->willReturn($path);
+
+            return $prophecy->reveal();
+        };
+
         $base = 'main';
         $head = 'feature';
         $files = [
-            $this->prophesize(RelativePathInterface::class)->reveal(),
-            $this->prophesize(RelativePathInterface::class)->reveal(),
+            $makeRelativePath('./file1.php'),
+            $makeRelativePath('./file2.php'),
         ];
 
         $file0Path = $this->prophesize(PathInterface::class);
@@ -75,7 +82,7 @@ class ScanUseCaseTest extends TestCase
 
         $scanner = $this->prophesize(ScannerInterface::class);
 
-        /** @noinspection PhpParamsInspection */
+        /* @noinspection PhpParamsInspection */
         $scanner
             ->scan(Argument::that(fn (FileDiff $d): bool => $d->getBefore() === 'foo'))
             ->willReturn($pair)

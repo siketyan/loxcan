@@ -11,5 +11,6 @@ use Siketyan\Loxcan\Model\FileDiff;
 interface ScannerInterface
 {
     public function scan(FileDiff $diff): DependencyCollectionPair;
+
     public function supports(PathInterface $path): bool;
 }

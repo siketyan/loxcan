@@ -7,8 +7,8 @@ namespace Siketyan\Loxcan\Model;
 class DependencyCollectionPair
 {
     public function __construct(
-        private DependencyCollection $before,
-        private DependencyCollection $after
+        private readonly DependencyCollection $before,
+        private readonly DependencyCollection $after,
     ) {
     }
 

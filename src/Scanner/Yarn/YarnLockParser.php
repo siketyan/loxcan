@@ -13,8 +13,8 @@ use Siketyan\YarnLock\YarnLock;
 class YarnLockParser
 {
     public function __construct(
-        private YarnPackagePool $packagePool,
-        private SemVerVersionParser $versionParser
+        private readonly YarnPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -30,7 +30,7 @@ class YarnLockParser
                 $name = substr($name, 0, strrpos($name, '@', -1));
                 $pkg = $this->packagePool->get($name);
 
-                if ($pkg === null) {
+                if (!$pkg instanceof Package) {
                     $pkg = new Package($name);
                     $this->packagePool->add($pkg);
                 }

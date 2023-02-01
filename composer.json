@@ -6,31 +6,38 @@
     "authors": [
         {
             "name": "Naoki Ikeguchi",
-            "email": "root@siketyan.dev"
+            "email": "me@s6n.jp"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "^7.2",
-        "mschop/pathogen": "^0.6.1",
+        "guzzlehttp/guzzle": "^7.5",
+        "mschop/pathogen": "^0.7.1",
         "siketyan/yarn-lock": "^0.1.1",
-        "symfony/config": "^5.1",
-        "symfony/console": "^5.1",
-        "symfony/dependency-injection": "^5.1",
-        "symfony/process": "^5.1",
-        "symfony/yaml": "^5.1",
+        "symfony/config": "^6.2",
+        "symfony/console": "^6.2",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/process": "^6.2",
+        "symfony/yaml": "^6.2",
         "yosymfony/toml": "^1.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.6",
+        "friendsofphp/php-cs-fixer": "^3.14",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.4",
+        "phpunit/phpunit": "^9.5",
         "psr/cache": "^1",
-        "psr/log": "^1"
+        "psr/log": "^1",
+        "quartetcom/static-analysis-kit": "~8.1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/quartetcom/static-analysis-kit.git"
+        }
+    ],
     "config": {
         "sort-packages": true
     },
@@ -44,18 +51,29 @@
             "Siketyan\\Loxcan\\": "tests/"
         }
     },
+    "bin": [
+        "bin/loxcan"
+    ],
     "scripts": {
-        "lint": "php-cs-fixer fix -v --allow-risky=yes --dry-run",
-        "fix": "php-cs-fixer fix -v --allow-risky=yes",
-        "coverage": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-html ./coverage",
-        "codecov": "phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
-        "test": "phpunit ./tests",
+        "analyse": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit analyse --no-phpstan",
+        "fix": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix",
+        "fix:all": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --risky --rector",
+        "fix:rector": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --rector",
+        "fix:risky": "PHP_CS_FIXER_IGNORE_ENV=1 static-analysis-kit fix --risky",
+        "coverage": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-html ./coverage",
+        "codecov": "XDEBUG_MODE=coverage phpunit -c ./phpunit.xml --coverage-clover ./coverage.xml",
+        "test": "phpunit -c ./phpunit.xml",
         "tests": [
-            "@lint",
+            "@analyse",
             "@test"
         ]
     },
-    "bin": [
-        "bin/loxcan"
-    ]
+    "scripts-descriptions": {
+        "analyse": "Analyses code in this project fully.",
+        "fix": "Tries to fix code in this project automatically.",
+        "fix:all": "Tries to fix code in this project automatically fully.",
+        "fix:rector": "Tries to fix code in this project automatically with rector enabled.",
+        "fix:risky": "Tries to fix code in this project automatically with risky rules.",
+        "test": "Runs the tests."
+    }
 }

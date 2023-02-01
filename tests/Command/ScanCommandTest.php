@@ -77,60 +77,30 @@ class ScanCommandTest extends TestCase
         ]);
 
         $this->assertSame(0, $exitCode);
+        $this->assertSame(
+            <<<'EOS'
 
-        // In PHP 8.1.0, the problem is fixed that some emojis are counted as 2 chars.
-        // So we need to switch the expectation in this test.
-        if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
-            $this->assertSame(
-                <<<'EOS'
+                foo.lock
+                --------
 
-                    foo.lock
-                    --------
+                 ---- ------------ -------- -------- 
+                       Package      Before   After   
+                 ---- ------------ -------- -------- 
+                  ➕   added                 v1.2.3  
+                  ⬆️   upgraded     v1.1.1   v2.2.2  
+                  ⬇️   downgraded   v4.4.4   v3.3.3  
+                  🔄   unknown      v5.5.5   v5.5.5  
+                  ➖   removed      v3.2.1           
+                 ---- ------------ -------- -------- 
 
-                     ---- ------------ -------- -------- 
-                           Package      Before   After   
-                     ---- ------------ -------- -------- 
-                      ➕   added                 v1.2.3  
-                      ⬆️   upgraded     v1.1.1   v2.2.2  
-                      ⬇️   downgraded   v4.4.4   v3.3.3  
-                      🔄   unknown      v5.5.5   v5.5.5  
-                      ➖   removed      v3.2.1           
-                     ---- ------------ -------- -------- 
+                bar.lock
+                --------
 
-                    bar.lock
-                    --------
+                🔄 The file was updated, but no dependency changes found.
 
-                    🔄 The file was updated, but no dependency changes found.
-
-                    EOS,
-                $this->removeTextStyles($this->tester->getDisplay()),
-            );
-        } else {
-            $this->assertSame(
-                <<<'EOS'
-
-                    foo.lock
-                    --------
-
-                     ---- ------------ -------- -------- 
-                           Package      Before   After   
-                     ---- ------------ -------- -------- 
-                      ➕    added                 v1.2.3  
-                      ⬆️   upgraded     v1.1.1   v2.2.2  
-                      ⬇️   downgraded   v4.4.4   v3.3.3  
-                      🔄    unknown      v5.5.5   v5.5.5  
-                      ➖    removed      v3.2.1           
-                     ---- ------------ -------- -------- 
-
-                    bar.lock
-                    --------
-
-                    🔄 The file was updated, but no dependency changes found.
-
-                    EOS,
-                $this->removeTextStyles($this->tester->getDisplay()),
-            );
-        }
+                EOS,
+            $this->removeTextStyles($this->tester->getDisplay()),
+        );
     }
 
     public function testNoDiff(): void
@@ -147,13 +117,13 @@ class ScanCommandTest extends TestCase
         ;
 
         $exitCode = $this->tester->execute([
-           'base' => 'foo',
-           'head' => 'bar',
+            'base' => 'foo',
+            'head' => 'bar',
         ]);
 
         $this->assertSame(0, $exitCode);
         $this->assertSame(
-            <<<EOS
+            <<<'EOS'
                 ✨ No lock file changes found, looks shine!
 
                 EOS,

@@ -12,13 +12,13 @@ class GitHubReporter implements ReporterInterface
     use EnvironmentTrait;
 
     public function __construct(
-        private GitHubMarkdownBuilder $markdownBuilder,
-        private GitHubClient $client
+        private readonly GitHubMarkdownBuilder $markdownBuilder,
+        private readonly GitHubClient $client,
     ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function report(array $diffs): void
     {
@@ -34,7 +34,7 @@ class GitHubReporter implements ReporterInterface
             fn (GitHubComment $comment): bool => $comment->getAuthor()->getLogin() === $username,
         );
 
-        if (count($myComments) > 0) {
+        if ($myComments !== []) {
             $this->client->updateComment(
                 $owner,
                 $repo,
@@ -52,6 +52,6 @@ class GitHubReporter implements ReporterInterface
     {
         $env = getenv('LOXCAN_REPORTER_GITHUB');
 
-        return is_string($env) && $env !== '';
+        return \is_string($env) && $env !== '';
     }
 }

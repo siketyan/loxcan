@@ -10,7 +10,7 @@ class GitHubUserPool
      * @param GitHubUser[] $users
      */
     public function __construct(
-        private array $users = []
+        private array $users = [],
     ) {
     }
 

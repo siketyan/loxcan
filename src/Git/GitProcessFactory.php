@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 class GitProcessFactory
 {
     public function __construct(
-        private string $path = 'git'
+        private readonly string $path = 'git',
     ) {
     }
 

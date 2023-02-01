@@ -9,23 +9,20 @@ use Siketyan\Loxcan\Versioning\CompatibilityAwareInterface;
 use Siketyan\Loxcan\Versioning\HasSemVerLikeCompatibility;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
+class SemVerVersion implements VersionInterface, CompatibilityAwareInterface, \Stringable
 {
     use HasSemVerLikeCompatibility;
 
     /**
-     * @param int      $major
-     * @param int      $minor
-     * @param int      $patch
      * @param string[] $preRelease
      * @param string[] $build
      */
     public function __construct(
-        private int $major,
-        private int $minor,
-        private int $patch,
-        private array $preRelease = [],
-        private array $build = []
+        private readonly int $major,
+        private readonly int $minor,
+        private readonly int $patch,
+        private readonly array $preRelease = [],
+        private readonly array $build = [],
     ) {
     }
 
@@ -38,14 +35,14 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
             $this->patch,
         );
 
-        if (count($this->preRelease)) {
+        if ($this->preRelease !== []) {
             $version .= sprintf(
                 '-%s',
                 implode('.', $this->preRelease),
             );
         }
 
-        if (count($this->build)) {
+        if ($this->build !== []) {
             $version .= sprintf(
                 '+%s',
                 implode('.', $this->build),
@@ -88,7 +85,7 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface
 
     public function isPreRelease(): bool
     {
-        return count($this->preRelease) > 0;
+        return $this->preRelease !== [];
     }
 
     // region Aliases for HasSemVerLikeCompatibility trait

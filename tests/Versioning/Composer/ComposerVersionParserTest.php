@@ -18,7 +18,7 @@ class ComposerVersionParserTest extends TestCase
 
     public function test(): void
     {
-        /* @var ComposerVersion $version */
+        /** @var ComposerVersion $version */
         $version = $this->parser->parse('v1.2.3-dev123', 'hash');
         $this->assertSame(1, $version->getX());
         $this->assertSame(2, $version->getY());
@@ -27,7 +27,7 @@ class ComposerVersionParserTest extends TestCase
         $this->assertSame(123, $version->getNumber());
         $this->assertSame('hash', $version->getHash());
 
-        /* @var ComposerVersion $version */
+        /** @var ComposerVersion $version */
         $version = $this->parser->parse('4.3.2', 'hash');
         $this->assertSame(4, $version->getX());
         $this->assertSame(3, $version->getY());
@@ -36,7 +36,7 @@ class ComposerVersionParserTest extends TestCase
         $this->assertSame(0, $version->getNumber());
         $this->assertSame('hash', $version->getHash());
 
-        /* @var ComposerVersion $version */
+        /** @var ComposerVersion $version */
         $version = $this->parser->parse('dev-branch', 'hash');
         $this->assertSame('dev-branch', $version->getBranch());
         $this->assertSame('hash', $version->getHash());

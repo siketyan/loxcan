@@ -32,8 +32,8 @@ class ComposerVersionParser
             (int) $matches[1],
             (int) $matches[2],
             (int) $matches[3],
-            count($matches) > 4 ? ComposerVersion::STABILITIES[$matches[4]] : ComposerVersion::STABILITY_STABLE,
-            count($matches) > 5 ? (int) $matches[5] : 0,
+            \count($matches) > 4 ? ComposerVersion::STABILITIES[$matches[4]] : ComposerVersion::STABILITY_STABLE,
+            \count($matches) > 5 ? (int) $matches[5] : 0,
             $hash,
         );
     }

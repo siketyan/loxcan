@@ -10,8 +10,8 @@ use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 class DependencyCollectionComparator
 {
     public function __construct(
-        private DependencyCollectionSubtractor $subtractor,
-        private DependencyCollectionIntersector $intersector
+        private readonly DependencyCollectionSubtractor $subtractor,
+        private readonly DependencyCollectionIntersector $intersector,
     ) {
     }
 

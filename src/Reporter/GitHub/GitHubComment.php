@@ -7,9 +7,9 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 class GitHubComment
 {
     public function __construct(
-        private int $id,
-        private string $body,
-        private GitHubUser $author
+        private readonly int $id,
+        private readonly string $body,
+        private readonly GitHubUser $author,
     ) {
     }
 
