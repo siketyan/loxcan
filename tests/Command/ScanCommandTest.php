@@ -83,15 +83,15 @@ class ScanCommandTest extends TestCase
                 foo.lock
                 --------
 
-                 ---- ------------ -------- --------
-                       Package      Before   After
-                 ---- ------------ -------- --------
-                  ➕   added                 v1.2.3
-                  ⬆️   upgraded     v1.1.1   v2.2.2
-                  ⬇️   downgraded   v4.4.4   v3.3.3
-                  🔄   unknown      v5.5.5   v5.5.5
-                  ➖   removed      v3.2.1
-                 ---- ------------ -------- --------
+                 ---- ------------ -------- -------- 
+                       Package      Before   After   
+                 ---- ------------ -------- -------- 
+                  ➕   added                 v1.2.3  
+                  ⬆️   upgraded     v1.1.1   v2.2.2  
+                  ⬇️   downgraded   v4.4.4   v3.3.3  
+                  🔄   unknown      v5.5.5   v5.5.5  
+                  ➖   removed      v3.2.1           
+                 ---- ------------ -------- -------- 
 
                 bar.lock
                 --------
