@@ -38,7 +38,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Run linter
-        run: composer run-script lint
+        run: composer run-script analyse
 
       - name: Run test suite
         run: composer run-script codecov
