@@ -13,8 +13,8 @@ use Yosymfony\Toml\Toml;
 class CargoLockParser
 {
     public function __construct(
-        private CargoPackagePool $packagePool,
-        private SemVerVersionParser $versionParser,
+        private readonly CargoPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -32,7 +32,7 @@ class CargoLockParser
             $version = $package['version'];
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

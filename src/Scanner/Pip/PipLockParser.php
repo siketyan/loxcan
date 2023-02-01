@@ -13,8 +13,8 @@ use Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser;
 class PipLockParser
 {
     public function __construct(
-        private PipPackagePool $packagePool,
-        private SimpleVersionParser $versionParser,
+        private readonly PipPackagePool $packagePool,
+        private readonly SimpleVersionParser $versionParser,
     ) {
     }
 
@@ -38,7 +38,7 @@ class PipLockParser
         $dependencies = [];
 
         foreach ($packages as $name => $package) {
-            $version = $package['version'];
+            $version = (string) $package['version'];
             if (!str_starts_with($version, '==')) {
                 continue;
             }
@@ -46,7 +46,7 @@ class PipLockParser
             $version = substr($version, 2);
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

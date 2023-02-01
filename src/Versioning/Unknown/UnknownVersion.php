@@ -6,10 +6,10 @@ namespace Siketyan\Loxcan\Versioning\Unknown;
 
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class UnknownVersion implements VersionInterface
+class UnknownVersion implements VersionInterface, \Stringable
 {
     public function __construct(
-        private string $version,
+        private readonly string $version,
     ) {
     }
 

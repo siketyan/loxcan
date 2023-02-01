@@ -8,7 +8,7 @@ use Siketyan\Loxcan\Versioning\CompatibilityAwareInterface;
 use Siketyan\Loxcan\Versioning\HasSemVerLikeCompatibility;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class ComposerVersion implements VersionInterface, CompatibilityAwareInterface
+class ComposerVersion implements VersionInterface, CompatibilityAwareInterface, \Stringable
 {
     use HasSemVerLikeCompatibility;
 
@@ -27,13 +27,13 @@ class ComposerVersion implements VersionInterface, CompatibilityAwareInterface
     public const STABILITY_STABLE = 100;
 
     public function __construct(
-        private int $x,
-        private int $y,
-        private int $z,
-        private int $stability = self::STABILITY_STABLE,
-        private int $number = 0,
-        private string $hash = '',
-        private ?string $branch = null,
+        private readonly int $x,
+        private readonly int $y,
+        private readonly int $z,
+        private readonly int $stability = self::STABILITY_STABLE,
+        private readonly int $number = 0,
+        private readonly string $hash = '',
+        private readonly ?string $branch = null,
     ) {
     }
 

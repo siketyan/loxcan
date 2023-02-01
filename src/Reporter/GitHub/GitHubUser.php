@@ -7,8 +7,8 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 class GitHubUser
 {
     public function __construct(
-        private int $id,
-        private string $login,
+        private readonly int $id,
+        private readonly string $login,
     ) {
     }
 

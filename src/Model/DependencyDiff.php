@@ -9,8 +9,8 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 class DependencyDiff
 {
     public function __construct(
-        private Package $package,
-        private VersionDiff $versionDiff,
+        private readonly Package $package,
+        private readonly VersionDiff $versionDiff,
     ) {
     }
 

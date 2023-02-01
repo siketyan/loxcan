@@ -14,9 +14,9 @@ class VersionDiff
     public const UNKNOWN = 0;
 
     public function __construct(
-        private int $type,
-        private VersionInterface $before,
-        private VersionInterface $after,
+        private readonly int $type,
+        private readonly VersionInterface $before,
+        private readonly VersionInterface $after,
     ) {
     }
 
@@ -33,10 +33,8 @@ class VersionDiff
             return false;
         }
 
-        /*
-         * @var CompatibilityAwareInterface $before
-         * @var CompatibilityAwareInterface $after
-         */
+        /* @var CompatibilityAwareInterface $before
+         * @var CompatibilityAwareInterface $after */
         return $before->isCompatibleWith($after);
     }
 

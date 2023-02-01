@@ -23,8 +23,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ScanCommand extends Command
 {
     public function __construct(
-        private ScanUseCase $useCase,
-        private ReportUseCase $reportUseCase,
+        private readonly ScanUseCase $useCase,
+        private readonly ReportUseCase $reportUseCase,
     ) {
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class ScanCommand extends Command
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
-        if (\count($diffs) === 0) {
+        if ($diffs === []) {
             $io->writeln(
                 '✨ No lock file changes found, looks shine!',
             );

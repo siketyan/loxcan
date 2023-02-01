@@ -12,8 +12,8 @@ class GitHubReporter implements ReporterInterface
     use EnvironmentTrait;
 
     public function __construct(
-        private GitHubMarkdownBuilder $markdownBuilder,
-        private GitHubClient $client,
+        private readonly GitHubMarkdownBuilder $markdownBuilder,
+        private readonly GitHubClient $client,
     ) {
     }
 
@@ -34,7 +34,7 @@ class GitHubReporter implements ReporterInterface
             fn (GitHubComment $comment): bool => $comment->getAuthor()->getLogin() === $username,
         );
 
-        if (\count($myComments) > 0) {
+        if ($myComments !== []) {
             $this->client->updateComment(
                 $owner,
                 $repo,

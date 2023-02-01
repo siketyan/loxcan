@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Model\Repository;
 class Git
 {
     public function __construct(
-        private GitProcessFactory $processFactory,
+        private readonly GitProcessFactory $processFactory,
     ) {
     }
 
@@ -44,7 +44,7 @@ class Git
 
         try {
             return array_map(
-                fn (string $path) => RelativePath::fromString($path),
+                fn (string $path): RelativePathInterface => RelativePath::fromString($path),
                 array_filter(
                     explode("\n", $process->getOutput()),
                     fn (string $line): bool => $line !== '',
@@ -93,9 +93,7 @@ class Git
 
         $process->run();
 
-        return !(!$process->isSuccessful())
-
-        ;
+        return $process->isSuccessful();
     }
 
     public function supports(Repository $repository): bool

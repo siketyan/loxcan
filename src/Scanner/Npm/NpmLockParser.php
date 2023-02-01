@@ -13,8 +13,8 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 class NpmLockParser
 {
     public function __construct(
-        private NpmPackagePool $packagePool,
-        private SemVerVersionParser $versionParser,
+        private readonly NpmPackagePool $packagePool,
+        private readonly SemVerVersionParser $versionParser,
     ) {
     }
 
@@ -38,7 +38,7 @@ class NpmLockParser
         $dependencies = [];
 
         foreach ($packages as $name => $package) {
-            $name = preg_replace('/^node_modules\//', '', $name);
+            $name = preg_replace('/^node_modules\//', '', (string) $name);
             $version = $package['version'];
             $package = $this->packagePool->get($name);
 
@@ -46,7 +46,7 @@ class NpmLockParser
                 continue;
             }
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

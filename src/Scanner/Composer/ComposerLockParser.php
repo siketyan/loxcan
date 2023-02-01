@@ -13,8 +13,8 @@ use Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser;
 class ComposerLockParser
 {
     public function __construct(
-        private ComposerPackagePool $packagePool,
-        private ComposerVersionParser $versionParser,
+        private readonly ComposerPackagePool $packagePool,
+        private readonly ComposerVersionParser $versionParser,
     ) {
     }
 
@@ -47,7 +47,7 @@ class ComposerLockParser
             $hash = $package['dist']['reference'] ?? '';
             $package = $this->packagePool->get($name);
 
-            if ($package === null) {
+            if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }

@@ -13,7 +13,7 @@ class GitHubMarkdownBuilder
     #[Pure]
     public function build(array $diffs): string
     {
-        if (\count($diffs) === 0) {
+        if ($diffs === []) {
             return '✨ No lock file changes found, looks shine!';
         }
 

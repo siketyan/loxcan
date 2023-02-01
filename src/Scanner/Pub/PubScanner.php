@@ -12,7 +12,7 @@ use Siketyan\Loxcan\Scanner\ScannerInterface;
 class PubScanner implements ScannerInterface
 {
     public function __construct(
-        private PubLockParser $parser,
+        private readonly PubLockParser $parser,
     ) {
     }
 

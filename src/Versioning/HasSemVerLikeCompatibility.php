@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * @implements CompatibilityAwareInterface
  */
 trait HasSemVerLikeCompatibility
 {
-    #[Pure]
     public function isCompatibleWith(CompatibilityAwareInterface $another): bool
     {
         // Let the version has a format of X.Y.Z.

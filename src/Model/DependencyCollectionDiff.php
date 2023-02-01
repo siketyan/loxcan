@@ -12,9 +12,9 @@ class DependencyCollectionDiff
      * @param Dependency[]     $removed
      */
     public function __construct(
-        private array $added = [],
-        private array $updated = [],
-        private array $removed = [],
+        private readonly array $added = [],
+        private readonly array $updated = [],
+        private readonly array $removed = [],
     ) {
     }
 

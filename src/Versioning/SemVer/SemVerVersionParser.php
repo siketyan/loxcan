@@ -36,8 +36,8 @@ class SemVerVersionParser
             (int) $matches[1],
             (int) $matches[2],
             (int) $matches[3],
-            array_filter($preRelease, fn ($i) => $i !== ''),
-            array_filter($build, fn ($i) => $i !== ''),
+            array_filter($preRelease, fn ($i): bool => $i !== ''),
+            array_filter($build, fn ($i): bool => $i !== ''),
         );
     }
 }

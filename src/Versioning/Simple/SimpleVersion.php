@@ -7,13 +7,13 @@ namespace Siketyan\Loxcan\Versioning\Simple;
 use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Versioning\VersionInterface;
 
-class SimpleVersion implements VersionInterface
+class SimpleVersion implements VersionInterface, \Stringable
 {
     public function __construct(
-        private int $major,
-        private int $minor,
-        private ?int $patch,
-        private ?int $revision,
+        private readonly int $major,
+        private readonly int $minor,
+        private readonly ?int $patch,
+        private readonly ?int $revision,
     ) {
     }
 
