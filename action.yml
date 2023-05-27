@@ -30,5 +30,22 @@ inputs:
     description: 'An OAuth token to access to the repository as a bot.'
     default: ${{ github.token }}
 runs:
-  using: 'docker'
-  image: 'docker://ghcr.io/siketyan/loxcan@sha256:6d9b332528755dfbf664606a94bdb7106a65cff620ed2c0bee51fcf134f87160'
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: |
+        pushd '${{ github.action_path }}' && composer i -n && popd
+        
+        if [ "${{ inputs.report_enabled }}" = "true" ]; then
+          export LOXCAN_REPORTER_GITHUB="1"
+          export LOXCAN_REPORTER_GITHUB_OWNER="${{ inputs.owner }}"
+          export LOXCAN_REPORTER_GITHUB_REPO="${{ inputs.repo }}"
+          export LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER="${{ inputs.issue_number }}"
+          export LOXCAN_REPORTER_GITHUB_TOKEN="${{ inputs.token }}"
+          export LOXCAN_REPORTER_GITHUB_USERNAME="github-actions[bot]"
+        fi
+        
+        BRANCH_BASE="origin/${{ inputs.base }}"
+        BRANCH_HEAD="${{ github.sha }}"
+        
+        ${{ github.action_path }}/bin/loxcan "${BRANCH_BASE}" "${BRANCH_HEAD}"
