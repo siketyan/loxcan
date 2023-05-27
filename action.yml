@@ -38,7 +38,7 @@ runs:
         
         if [ "${{ inputs.report_enabled }}" = "true" ]; then
           export LOXCAN_REPORTER_GITHUB="1"
-          export LOXCAN_REPORTER_GITHUB_OWNER="${{ inputs.owner }}}"
+          export LOXCAN_REPORTER_GITHUB_OWNER="${{ inputs.owner }}"
           export LOXCAN_REPORTER_GITHUB_REPO="${{ inputs.repo }}"
           export LOXCAN_REPORTER_GITHUB_ISSUE_NUMBER="${{ inputs.issue_number }}"
           export LOXCAN_REPORTER_GITHUB_TOKEN="${{ inputs.token }}"
