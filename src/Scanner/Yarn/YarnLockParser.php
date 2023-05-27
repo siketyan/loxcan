@@ -8,6 +8,7 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
+use Siketyan\YarnLock\ConstraintInterface;
 use Siketyan\YarnLock\YarnLock;
 
 class YarnLockParser
@@ -20,14 +21,15 @@ class YarnLockParser
 
     public function parse(?string $lock): DependencyCollection
     {
-        $packages = YarnLock::parse($lock ?? '');
+        $packages = YarnLock::parsePackages(YarnLock::parse($lock ?? ''));
         $dependencies = [];
 
-        foreach ($packages as $names => $package) {
-            $version = $package['version'];
+        foreach ($packages as $package) {
+            $version = $package->getVersion();
 
-            foreach (explode(',', $names) as $name) {
-                $name = substr($name, 0, strrpos($name, '@', -1));
+            /** @var ConstraintInterface $constraint */
+            foreach ($package->getConstraints()->all() as $constraint) {
+                $name = $constraint->getName();
                 $pkg = $this->packagePool->get($name);
 
                 if (!$pkg instanceof Package) {
