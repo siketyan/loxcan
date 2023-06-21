@@ -24,11 +24,17 @@ class PnpmLockParser
             $yaml = '';
         }
 
+        /**
+         * @var array{
+         *     dependencies?: array<string, array{version: string}|string>,
+         *     devDependencies?: array<string, array{version: string}|string>,
+         * } $assoc
+         */
         $assoc = Yaml::parse($yaml) ?? [];
-        $packages = array_merge($assoc['dependencies'] ?? [], $assoc['devDependencies'] ?? []) ?? [];
+        $packages = array_merge($assoc['dependencies'] ?? [], $assoc['devDependencies'] ?? []);
         $dependencies = [];
 
-        foreach ($packages as $name => $versionInfo) {
+        foreach ($packages as $name => $version) {
             $package = $this->packagePool->get($name);
 
             if (!$package instanceof Package) {
@@ -36,11 +42,12 @@ class PnpmLockParser
                 $this->packagePool->add($package);
             }
 
-            $version = match (true) {
-                \is_array($versionInfo) => $versionInfo['version'],
-                default => $versionInfo,
-            };
-            $version = preg_replace('/\(.+\)/', '', (string) $version);
+            if (\is_array($version)) {
+                $version = $version['version'];
+            }
+
+            /** @var string $version */
+            $version = preg_replace('/\(.+\)/', '', $version);
 
             $dependencies[] = new Dependency(
                 $package,
