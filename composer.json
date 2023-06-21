@@ -28,7 +28,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.5",
-        "psr/cache": "^1",
+        "psr/cache": "^3",
         "psr/log": "^1",
         "quartetcom/static-analysis-kit": "~8.1.16"
     },
