@@ -1,13 +1,16 @@
 name: PHP
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ !(github.event.pull_request && github.actor == github.repository_owner) }}
     strategy:
       matrix:
         php:
