@@ -43,7 +43,7 @@ class DependencyCollectionIntersector
 
         return array_filter(
             $diff,
-            fn (?DependencyDiff $d): bool => $d !== null,
+            fn (?DependencyDiff $d): bool => $d instanceof DependencyDiff,
         );
     }
 }
