@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abee5f2e7dfda8e67b11f976c41d24e1",
+    "content-hash": "0eaa5888d3299b7f89fb3decb1ac53d9",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -701,25 +701,26 @@
         },
         {
             "name": "siketyan/yarn-lock",
-            "version": "v0.2.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/siketyan/php-yarn-lock.git",
-                "reference": "f992b0bc83a382e4a0db1d256ec5f5947449901b"
+                "reference": "c42e79a0e0702347cd6e006c8048c097116940c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/siketyan/php-yarn-lock/zipball/f992b0bc83a382e4a0db1d256ec5f5947449901b",
-                "reference": "f992b0bc83a382e4a0db1d256ec5f5947449901b",
+                "url": "https://api.github.com/repos/siketyan/php-yarn-lock/zipball/c42e79a0e0702347cd6e006c8048c097116940c7",
+                "reference": "c42e79a0e0702347cd6e006c8048c097116940c7",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4|^8.0",
+                "php": "^8.1",
                 "symfony/yaml": "^5|^6"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "phpunit/phpunit": "^9.4"
+                "friendsofphp/php-cs-fixer": "^3.17",
+                "phpunit/phpunit": "^10.1",
+                "quartetcom/static-analysis-kit": "~8.1.15"
             },
             "type": "library",
             "autoload": {
@@ -740,7 +741,7 @@
             "description": "A Parser Library for yarn.lock in PHP.",
             "support": {
                 "issues": "https://github.com/siketyan/php-yarn-lock/issues",
-                "source": "https://github.com/siketyan/php-yarn-lock/tree/v0.2.0"
+                "source": "https://github.com/siketyan/php-yarn-lock/tree/v1.0.0"
             },
             "funding": [
                 {
@@ -752,7 +753,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-05-27T07:37:24+00:00"
+            "time": "2023-05-27T09:33:32+00:00"
         },
         {
             "name": "symfony/config",
