@@ -17,14 +17,6 @@ class PnpmLockParserTest extends TestCase
 {
     use ProphecyTrait;
 
-    private const CONTENTS = <<<'EOS'
-        dependencies:
-          foo: 1.2.3-dev
-
-        devDependencies:
-          bar: 3.2.1
-        EOS;
-
     private ObjectProphecy $packagePool;
     private ObjectProphecy $versionParser;
     private PnpmLockParser $parser;
@@ -40,7 +32,10 @@ class PnpmLockParserTest extends TestCase
         );
     }
 
-    public function test(): void
+    /**
+     * @dataProvider providerYaml
+     */
+    public function test(string $yaml): void
     {
         $cache = $this->prophesize(Package::class)->reveal();
         $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
@@ -53,7 +48,7 @@ class PnpmLockParserTest extends TestCase
         $this->versionParser->parse('1.2.3-dev')->willReturn($fooBarVersion);
         $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
 
-        $collection = $this->parser->parse(self::CONTENTS);
+        $collection = $this->parser->parse($yaml);
         $dependencies = $collection->getDependencies();
 
         $this->assertCount(2, $dependencies);
@@ -64,5 +59,35 @@ class PnpmLockParserTest extends TestCase
 
         $this->assertSame($cache, $dependencies[1]->getPackage());
         $this->assertSame($barBazVersion, $dependencies[1]->getVersion());
+    }
+
+    /**
+     * @return \Iterator<string, array{0: string}>
+     */
+    public function providerYaml(): \Iterator
+    {
+        yield 'simple version pattern' => [
+            <<<'EOS'
+                dependencies:
+                  foo: 1.2.3-dev
+                  
+                devDependencies:
+                  bar: 3.2.1
+                EOS,
+        ];
+
+        yield 'nested version pattern' => [
+            <<<'EOS'
+                dependencies:
+                  foo:
+                    specification: ^1.0.0-dev
+                    version: 1.2.3-dev
+                    
+                devDependencies:
+                  bar:
+                    specification: ^3.0.0
+                    version: 3.2.1(foo@1.2.3-dev)(baz@4.5.6)
+                EOS,
+        ];
     }
 }

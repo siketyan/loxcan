@@ -28,13 +28,19 @@ class PnpmLockParser
         $packages = array_merge($assoc['dependencies'] ?? [], $assoc['devDependencies'] ?? []) ?? [];
         $dependencies = [];
 
-        foreach ($packages as $name => $version) {
+        foreach ($packages as $name => $versionInfo) {
             $package = $this->packagePool->get($name);
 
             if (!$package instanceof Package) {
                 $package = new Package($name);
                 $this->packagePool->add($package);
             }
+
+            $version = match (true) {
+                \is_array($versionInfo) => $versionInfo['version'],
+                default => $versionInfo,
+            };
+            $version = preg_replace('/\(.+\)/', '', (string) $version);
 
             $dependencies[] = new Dependency(
                 $package,
