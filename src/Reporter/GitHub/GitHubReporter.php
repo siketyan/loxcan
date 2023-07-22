@@ -18,8 +18,6 @@ class GitHubReporter implements ReporterInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \JsonException
      */
     public function report(array $diffs): void

@@ -41,7 +41,7 @@ class PnpmLockParserTest extends TestCase
     }
 
     /**
-     * @dataProvider providerYaml
+     * @dataProvider provideCases
      */
     public function test(string $yaml): void
     {
@@ -72,7 +72,7 @@ class PnpmLockParserTest extends TestCase
     /**
      * @return \Iterator<string, array{0: string}>
      */
-    public function providerYaml(): \Iterator
+    public function provideCases(): iterable
     {
         yield 'simple version pattern' => [
             <<<'EOS'
