@@ -7,5 +7,4 @@ services:
 
   Siketyan\Loxcan\UseCase\ReportUseCase:
     arguments:
-      $reporters:
-        - '@Siketyan\Loxcan\Reporter\GitHub\GitHubReporter'
+      $reporterResolver: '@Siketyan\Loxcan\Reporter\ReporterResolver'

@@ -20,7 +20,7 @@ class GitHubReporter implements ReporterInterface
     /**
      * @throws \JsonException
      */
-    public function report(array $diffs): void
+    public function report(array $diffs, array $context = []): void
     {
         $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
         $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
@@ -53,5 +53,10 @@ class GitHubReporter implements ReporterInterface
         $env = getenv('LOXCAN_REPORTER_GITHUB');
 
         return \is_string($env) && $env !== '';
+    }
+
+    public function name(): string
+    {
+        return 'github';
     }
 }

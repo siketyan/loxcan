@@ -10,8 +10,11 @@ interface ReporterInterface
 {
     /**
      * @param array<string, DependencyCollectionDiff> $diffs
+     * @param array<string, mixed>                    $context
      */
-    public function report(array $diffs): void;
+    public function report(array $diffs, array $context = []): void;
 
     public function supports(): bool;
+
+    public function name(): string;
 }

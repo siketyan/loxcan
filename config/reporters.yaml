@@ -18,3 +18,13 @@ services:
     arguments:
       $markdownBuilder: '@Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder'
       $client: '@Siketyan\Loxcan\Reporter\GitHub\GitHubClient'
+    tags:
+      - 'loxcan.reporters'
+
+  Siketyan\Loxcan\Reporter\Console\ConsoleReporter:
+    tags:
+      - 'loxcan.reporters'
+
+  Siketyan\Loxcan\Reporter\ReporterResolver:
+    arguments:
+      $reporters: !tagged 'loxcan.reporters'

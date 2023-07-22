@@ -5,26 +5,27 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\UseCase;
 
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
-use Siketyan\Loxcan\Reporter\ReporterInterface;
+use Siketyan\Loxcan\Reporter\ReporterResolver;
 
 class ReportUseCase
 {
-    /**
-     * @param list<ReporterInterface> $reporters
-     */
     public function __construct(
-        private readonly array $reporters,
+        private readonly ReporterResolver $reporterResolver,
     ) {
     }
 
     /**
      * @param array<string, DependencyCollectionDiff> $diffs
+     * @param list<string>                            $reporters
+     * @param array<string, mixed>                    $context
      */
-    public function report(array $diffs): void
+    public function report(array $diffs, array $reporters, array $context): void
     {
-        foreach ($this->reporters as $reporter) {
+        $reporters = $this->reporterResolver->resolveAll($reporters);
+
+        foreach ($reporters as $reporter) {
             if ($reporter->supports()) {
-                $reporter->report($diffs);
+                $reporter->report($diffs, $context);
             }
         }
     }
