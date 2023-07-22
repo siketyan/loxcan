@@ -24,9 +24,21 @@ class ScanUseCaseTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<Git>
+     */
     private ObjectProphecy $git;
+
+    /**
+     * @var ObjectProphecy<ScannerResolver>
+     */
     private ObjectProphecy $scannerResolver;
+
+    /**
+     * @var ObjectProphecy<DependencyCollectionComparator>
+     */
     private ObjectProphecy $comparator;
+
     private ScanUseCase $useCase;
 
     protected function setUp(): void

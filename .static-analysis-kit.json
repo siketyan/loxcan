@@ -1,6 +1,7 @@
 {
     "ignore": [
         "/.php-cs-fixer.dist.php",
+        "/phpstan.neon",
         "/rector.php"
     ]
 }

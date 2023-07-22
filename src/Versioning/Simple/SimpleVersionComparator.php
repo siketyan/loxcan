@@ -34,8 +34,7 @@ class SimpleVersionComparator implements VersionComparatorInterface
     public function supports(string $beforeType, string $afterType): bool
     {
         return $beforeType === SimpleVersion::class
-            && $afterType === SimpleVersion::class
-        ;
+            && $afterType === SimpleVersion::class;
     }
 
     #[Pure]

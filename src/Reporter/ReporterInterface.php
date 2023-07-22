@@ -9,7 +9,7 @@ use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 interface ReporterInterface
 {
     /**
-     * @param DependencyCollectionDiff[] $diffs
+     * @param array<string, DependencyCollectionDiff> $diffs
      */
     public function report(array $diffs): void;
 

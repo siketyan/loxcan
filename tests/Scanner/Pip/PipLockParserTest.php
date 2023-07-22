@@ -32,8 +32,16 @@ class PipLockParserTest extends TestCase
         }
         EOS;
 
+    /**
+     * @var ObjectProphecy<PipPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SimpleVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private PipLockParser $parser;
 
     protected function setUp(): void

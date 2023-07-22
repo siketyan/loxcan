@@ -17,7 +17,7 @@ class Git
     }
 
     /**
-     * @return RelativePathInterface[]
+     * @return list<RelativePathInterface>
      */
     public function fetchChangedFiles(Repository $repository, ?string $base = null, ?string $head = null): array
     {

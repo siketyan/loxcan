@@ -24,6 +24,7 @@ class PubLockParser
             $yaml = '';
         }
 
+        /** @var array{packages?: array<string, array{version: string}>} $assoc */
         $assoc = Yaml::parse($yaml);
         $packages = $assoc['packages'] ?? [];
         $dependencies = [];

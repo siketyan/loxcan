@@ -16,7 +16,11 @@ class GitTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<GitProcessFactory>
+     */
     private ObjectProphecy $processFactory;
+
     private Git $git;
 
     protected function setUp(): void

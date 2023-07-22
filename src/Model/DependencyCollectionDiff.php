@@ -7,9 +7,9 @@ namespace Siketyan\Loxcan\Model;
 class DependencyCollectionDiff
 {
     /**
-     * @param Dependency[]     $added
-     * @param DependencyDiff[] $updated
-     * @param Dependency[]     $removed
+     * @param list<Dependency>     $added
+     * @param list<DependencyDiff> $updated
+     * @param list<Dependency>     $removed
      */
     public function __construct(
         private readonly array $added = [],
@@ -19,7 +19,7 @@ class DependencyCollectionDiff
     }
 
     /**
-     * @return Dependency[]
+     * @return list<Dependency>
      */
     public function getAdded(): array
     {
@@ -27,7 +27,7 @@ class DependencyCollectionDiff
     }
 
     /**
-     * @return DependencyDiff[]
+     * @return list<DependencyDiff>
      */
     public function getUpdated(): array
     {
@@ -35,7 +35,7 @@ class DependencyCollectionDiff
     }
 
     /**
-     * @return Dependency[]
+     * @return list<Dependency>
      */
     public function getRemoved(): array
     {

@@ -15,6 +15,9 @@ class PubScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<PubLockParser>
+     */
     private ObjectProphecy $parser;
     private PubScanner $scanner;
 

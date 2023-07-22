@@ -20,7 +20,11 @@ class DependencyComparatorTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<VersionComparatorResolver>
+     */
     private ObjectProphecy $versionComparatorResolver;
+
     private DependencyComparator $comparator;
 
     protected function setUp(): void

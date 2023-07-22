@@ -33,8 +33,16 @@ class YarnLockParserTest extends TestCase
           integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
         EOS;
 
+    /**
+     * @var ObjectProphecy<YarnPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private YarnLockParser $parser;
 
     protected function setUp(): void

@@ -9,7 +9,7 @@ use Siketyan\Loxcan\Model\Package;
 abstract class AbstractPackagePool
 {
     /**
-     * @param Package[] $packages
+     * @param array<string, Package> $packages
      */
     public function __construct(
         private array $packages = [],

@@ -17,8 +17,16 @@ class PnpmLockParserTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<PnpmPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private PnpmLockParser $parser;
 
     protected function setUp(): void
@@ -33,7 +41,7 @@ class PnpmLockParserTest extends TestCase
     }
 
     /**
-     * @dataProvider providerYaml
+     * @dataProvider provideCases
      */
     public function test(string $yaml): void
     {
@@ -64,13 +72,13 @@ class PnpmLockParserTest extends TestCase
     /**
      * @return \Iterator<string, array{0: string}>
      */
-    public function providerYaml(): \Iterator
+    public function provideCases(): \Iterator
     {
         yield 'simple version pattern' => [
             <<<'EOS'
                 dependencies:
                   foo: 1.2.3-dev
-                  
+
                 devDependencies:
                   bar: 3.2.1
                 EOS,
@@ -82,7 +90,7 @@ class PnpmLockParserTest extends TestCase
                   foo:
                     specification: ^1.0.0-dev
                     version: 1.2.3-dev
-                    
+
                 devDependencies:
                   bar:
                     specification: ^3.0.0

@@ -25,6 +25,7 @@ class NpmLockParser
         }
 
         try {
+            /** @var array{packages?: array<string, array{version: string}>} $assoc */
             $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new ParseErrorException(
@@ -34,11 +35,12 @@ class NpmLockParser
             );
         }
 
+        /** @var array<string, array{version: string}> $packages */
         $packages = $assoc['packages'] ?? [];
         $dependencies = [];
 
         foreach ($packages as $name => $package) {
-            $name = preg_replace('/^node_modules\//', '', (string) $name);
+            $name = preg_replace('/^node_modules\//', '', $name) ?: $name;
             $version = $package['version'];
             $package = $this->packagePool->get($name);
 

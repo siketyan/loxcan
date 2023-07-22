@@ -9,7 +9,7 @@ use JetBrains\PhpStorm\Pure;
 class InvalidPathException extends RuntimeException
 {
     #[Pure]
-    public function __construct($path, $code = 0, ?\Throwable $previous = null)
+    public function __construct(string $path, int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct(
             sprintf(

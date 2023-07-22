@@ -14,8 +14,16 @@ class ScannerResolverTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<ScannerInterface>
+     */
     private ObjectProphecy $fooScanner;
+
+    /**
+     * @var ObjectProphecy<ScannerInterface>
+     */
     private ObjectProphecy $barScanner;
+
     private ScannerResolver $resolver;
 
     protected function setUp(): void

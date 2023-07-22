@@ -16,8 +16,16 @@ class DependencyCollectionComparatorTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<DependencyCollectionSubtractor>
+     */
     private ObjectProphecy $subtractor;
+
+    /**
+     * @var ObjectProphecy<DependencyCollectionIntersector>
+     */
     private ObjectProphecy $intersector;
+
     private DependencyCollectionComparator $comparator;
 
     protected function setUp(): void

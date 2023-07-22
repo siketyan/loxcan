@@ -22,7 +22,7 @@ class ScanUseCase
     }
 
     /**
-     * @return DependencyCollectionDiff[]
+     * @return array<string, DependencyCollectionDiff>
      */
     public function scan(Repository $repository, ?string $base = null, ?string $head = null): array
     {

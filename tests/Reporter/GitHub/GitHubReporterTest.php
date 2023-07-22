@@ -13,8 +13,16 @@ class GitHubReporterTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<GitHubMarkdownBuilder>
+     */
     private ObjectProphecy $markdownBuilder;
+
+    /**
+     * @var ObjectProphecy<GitHubClient>
+     */
     private ObjectProphecy $client;
+
     private GitHubReporter $reporter;
 
     protected function setUp(): void

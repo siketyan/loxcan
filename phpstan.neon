@@ -1,5 +1,6 @@
 includes:
     - ./vendor/quartetcom/static-analysis-kit/phpstan.include.neon
+    - ./vendor/jangregor/phpstan-prophecy/extension.neon
 
 parameters:
     paths:

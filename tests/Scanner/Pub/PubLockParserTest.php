@@ -25,8 +25,16 @@ class PubLockParserTest extends TestCase
             version: "3.2.1"
         EOS;
 
+    /**
+     * @var ObjectProphecy<PubPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private PubLockParser $parser;
 
     protected function setUp(): void

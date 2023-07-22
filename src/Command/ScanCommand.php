@@ -41,7 +41,7 @@ class ScanCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $repository = new Repository(Path::fromString(getcwd()));
+        $repository = new Repository(Path::fromString(getcwd() ?: '.'));
 
         /** @var null|string $base */
         $base = $input->getArgument('base');
@@ -64,7 +64,7 @@ class ScanCommand extends Command
     }
 
     /**
-     * @param DependencyCollectionDiff[] $diffs
+     * @param array<string, DependencyCollectionDiff> $diffs
      */
     private function printDiffs(SymfonyStyle $io, array $diffs): void
     {

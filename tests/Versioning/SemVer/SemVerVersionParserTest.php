@@ -19,6 +19,7 @@ class SemVerVersionParserTest extends TestCase
     public function test(): void
     {
         $version = $this->parser->parse('1.2.3-dev.1.23+build.456.alpha');
+        $this->assertInstanceOf(SemVerVersion::class, $version);
         $this->assertSame(1, $version->getMajor());
         $this->assertSame(2, $version->getMinor());
         $this->assertSame(3, $version->getPatch());
@@ -26,6 +27,7 @@ class SemVerVersionParserTest extends TestCase
         $this->assertSame(['build', 456, 'alpha'], $version->getBuild());
 
         $version = $this->parser->parse('3.4.5-dev');
+        $this->assertInstanceOf(SemVerVersion::class, $version);
         $this->assertSame(3, $version->getMajor());
         $this->assertSame(4, $version->getMinor());
         $this->assertSame(5, $version->getPatch());
@@ -33,6 +35,7 @@ class SemVerVersionParserTest extends TestCase
         $this->assertSame([], $version->getBuild());
 
         $version = $this->parser->parse('2.3.4+abc12345');
+        $this->assertInstanceOf(SemVerVersion::class, $version);
         $this->assertSame(2, $version->getMajor());
         $this->assertSame(3, $version->getMinor());
         $this->assertSame(4, $version->getPatch());
@@ -40,6 +43,7 @@ class SemVerVersionParserTest extends TestCase
         $this->assertSame(['abc12345'], $version->getBuild());
 
         $version = $this->parser->parse('4.3.2');
+        $this->assertInstanceOf(SemVerVersion::class, $version);
         $this->assertSame(4, $version->getMajor());
         $this->assertSame(3, $version->getMinor());
         $this->assertSame(2, $version->getPatch());

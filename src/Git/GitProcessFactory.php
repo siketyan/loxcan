@@ -14,6 +14,9 @@ class GitProcessFactory
     ) {
     }
 
+    /**
+     * @param list<string> $command
+     */
     public function create(Repository $repository, array $command): Process
     {
         return new Process(
