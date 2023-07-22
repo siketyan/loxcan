@@ -21,7 +21,7 @@ class YarnLockParser
 
     public function parse(?string $lock): DependencyCollection
     {
-        $packages = YarnLock::parsePackages(YarnLock::parse($lock ?? ''));
+        $packages = YarnLock::packages($lock ?? '');
         $dependencies = [];
 
         foreach ($packages as $package) {
