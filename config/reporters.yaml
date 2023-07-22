@@ -4,7 +4,7 @@ services:
     arguments:
       - 'base_uri': 'https://api.github.com/'
 
-  Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder: ~
+  Siketyan\Loxcan\Reporter\MarkdownBuilder: ~
 
   Siketyan\Loxcan\Reporter\GitHub\GitHubUserPool:
     shared: true
@@ -16,5 +16,17 @@ services:
 
   Siketyan\Loxcan\Reporter\GitHub\GitHubReporter:
     arguments:
-      $markdownBuilder: '@Siketyan\Loxcan\Reporter\GitHub\GitHubMarkdownBuilder'
+      $markdownBuilder: '@Siketyan\Loxcan\Reporter\MarkdownBuilder'
       $client: '@Siketyan\Loxcan\Reporter\GitHub\GitHubClient'
+    tags:
+      - 'loxcan.reporters'
+
+  Siketyan\Loxcan\Reporter\Console\ConsoleReporter:
+    arguments:
+      $markdownBuilder: '@Siketyan\Loxcan\Reporter\MarkdownBuilder'
+    tags:
+      - 'loxcan.reporters'
+
+  Siketyan\Loxcan\Reporter\ReporterResolver:
+    arguments:
+      $reporters: !tagged 'loxcan.reporters'

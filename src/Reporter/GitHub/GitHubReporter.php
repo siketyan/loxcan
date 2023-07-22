@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use Siketyan\Loxcan\Reporter\EnvironmentTrait;
+use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 use Siketyan\Loxcan\Reporter\ReporterInterface;
 
 class GitHubReporter implements ReporterInterface
@@ -12,7 +13,7 @@ class GitHubReporter implements ReporterInterface
     use EnvironmentTrait;
 
     public function __construct(
-        private readonly GitHubMarkdownBuilder $markdownBuilder,
+        private readonly MarkdownBuilder $markdownBuilder,
         private readonly GitHubClient $client,
     ) {
     }
@@ -20,7 +21,7 @@ class GitHubReporter implements ReporterInterface
     /**
      * @throws \JsonException
      */
-    public function report(array $diffs): void
+    public function report(array $diffs, array $context = []): void
     {
         $owner = $this->getEnv('LOXCAN_REPORTER_GITHUB_OWNER');
         $repo = $this->getEnv('LOXCAN_REPORTER_GITHUB_REPO');
@@ -53,5 +54,10 @@ class GitHubReporter implements ReporterInterface
         $env = getenv('LOXCAN_REPORTER_GITHUB');
 
         return \is_string($env) && $env !== '';
+    }
+
+    public function name(): string
+    {
+        return 'github';
     }
 }

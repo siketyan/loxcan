@@ -8,13 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
+use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 
 class GitHubReporterTest extends TestCase
 {
     use ProphecyTrait;
 
     /**
-     * @var ObjectProphecy<GitHubMarkdownBuilder>
+     * @var ObjectProphecy<MarkdownBuilder>
      */
     private ObjectProphecy $markdownBuilder;
 
@@ -27,7 +28,7 @@ class GitHubReporterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->markdownBuilder = $this->prophesize(GitHubMarkdownBuilder::class);
+        $this->markdownBuilder = $this->prophesize(MarkdownBuilder::class);
         $this->client = $this->prophesize(GitHubClient::class);
 
         $this->reporter = new GitHubReporter(

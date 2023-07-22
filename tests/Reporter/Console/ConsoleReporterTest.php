@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Reporter\GitHub;
+namespace Siketyan\Loxcan\Reporter\Console;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -13,17 +13,13 @@ use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionDiff;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GitHubMarkdownBuilderTest extends TestCase
+class ConsoleReporterTest extends TestCase
 {
     use ProphecyTrait;
-
-    private MarkdownBuilder $builder;
-
-    protected function setUp(): void
-    {
-        $this->builder = new MarkdownBuilder();
-    }
 
     public function test(): void
     {
@@ -40,36 +36,63 @@ class GitHubMarkdownBuilderTest extends TestCase
         $emptyDiff = $this->prophesize(DependencyCollectionDiff::class);
         $emptyDiff->count()->willReturn(0);
 
-        $markdown = $this->builder->build([
+        $diffs = [
             'foo.lock' => $diff->reveal(),
             'bar.lock' => $emptyDiff->reveal(),
+        ];
+
+        $input = new ArrayInput([]);
+        $output = new BufferedOutput();
+        $io = new SymfonyStyle($input, $output);
+
+        $reporter = new ConsoleReporter(new MarkdownBuilder());
+        $reporter->report($diffs, [
+            ConsoleReporter::CONTEXT_SYMFONY_IO => $io,
         ]);
 
         $this->assertSame(
             <<<'EOS'
-                #### foo.lock
-                ||Package|Before|After|
-                |---|---|---|---|
-                |➕|added||v1.2.3|
-                |⬆️|**upgraded**|**v1.1.1**|**v2.2.2**|
-                |⬇️|**downgraded**|**v4.4.4**|**v3.3.3**|
-                |🔄|**unknown**|**v5.5.5**|**v5.5.5**|
-                |➖|removed|v3.2.1||
 
-                #### bar.lock
+                foo.lock
+                --------
+
+                 ---- ------------ -------- -------- 
+                       Package      Before   After   
+                 ---- ------------ -------- -------- 
+                  ➕   added                 v1.2.3  
+                  ⬆️   upgraded     v1.1.1   v2.2.2  
+                  ⬇️   downgraded   v4.4.4   v3.3.3  
+                  🔄   unknown      v5.5.5   v5.5.5  
+                  ➖   removed      v3.2.1           
+                 ---- ------------ -------- -------- 
+
+                bar.lock
+                --------
+
                 🔄 The file was updated, but no dependency changes found.
+
                 EOS,
-            $markdown,
+            $this->removeTextStyles($output->fetch()),
         );
     }
 
     public function testNoDiff(): void
     {
-        $markdown = $this->builder->build([]);
+        $input = new ArrayInput([]);
+        $output = new BufferedOutput();
+        $io = new SymfonyStyle($input, $output);
+
+        $reporter = new ConsoleReporter(new MarkdownBuilder());
+        $reporter->report([], [
+            ConsoleReporter::CONTEXT_SYMFONY_IO => $io,
+        ]);
 
         $this->assertSame(
-            '✨ No lock file changes found, looks shine!',
-            $markdown,
+            <<<'EOS'
+                ✨ No lock file changes found, looks shine!
+
+                EOS,
+            $output->fetch(),
         );
     }
 
@@ -110,5 +133,10 @@ class GitHubMarkdownBuilderTest extends TestCase
         $diff->getVersionDiff()->willReturn($versionDiff->reveal());
 
         return $diff->reveal();
+    }
+
+    private function removeTextStyles(string $text): string
+    {
+        return preg_replace('/\e\[[0-9;]*m/', '', $text) ?? $text;
     }
 }
