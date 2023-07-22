@@ -62,8 +62,8 @@ class YarnLockParserTest extends TestCase
         $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
         $barBazVersion = $this->prophesize(SemVerVersion::class)->reveal();
 
-        $this->packagePool->get('@types/node')->willReturn(null);
-        $this->packagePool->get('typescript')->willReturn($cache);
+        $this->packagePool->get('@types/node', '^18')->willReturn(null);
+        $this->packagePool->get('typescript', '^5')->willReturn($cache);
         $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
 
         $this->versionParser->parse('18.16.16')->willReturn($fooBarVersion);

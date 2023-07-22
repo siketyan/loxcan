@@ -26,8 +26,8 @@ class PnpmLockParser
 
         /**
          * @var array{
-         *     dependencies?: array<string, array{version: string}|string>,
-         *     devDependencies?: array<string, array{version: string}|string>,
+         *     dependencies?: array<string, array{specifier?: string, specification?: string, version: string}|string>,
+         *     devDependencies?: array<string, array{specifier?: string, specification?: string, version: string}|string>,
          * } $assoc
          */
         $assoc = Yaml::parse($yaml) ?? [];
@@ -35,15 +35,17 @@ class PnpmLockParser
         $dependencies = [];
 
         foreach ($packages as $name => $version) {
-            $package = $this->packagePool->get($name);
-
-            if (!$package instanceof Package) {
-                $package = new Package($name);
-                $this->packagePool->add($package);
+            $constraint = null;
+            if (\is_array($version)) {
+                $constraint = $version['specifier'] ?? $version['specification'] ?? null;
+                $version = $version['version'];
             }
 
-            if (\is_array($version)) {
-                $version = $version['version'];
+            $package = $this->packagePool->get($name, $constraint);
+
+            if (!$package instanceof Package) {
+                $package = new Package($name, $constraint);
+                $this->packagePool->add($package);
             }
 
             /** @var string $version */

@@ -30,10 +30,10 @@ class YarnLockParser
             /** @var ConstraintInterface $constraint */
             foreach ($package->getConstraints()->all() as $constraint) {
                 $name = $constraint->getName();
-                $pkg = $this->packagePool->get($name);
+                $pkg = $this->packagePool->get($name, $constraint->getRange());
 
                 if (!$pkg instanceof Package) {
-                    $pkg = new Package($name);
+                    $pkg = new Package($name, $constraint->getRange());
                     $this->packagePool->add($pkg);
                 }
 
