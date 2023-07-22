@@ -14,6 +14,7 @@ $finder = PhpCsFixer\Finder::create()
 return (new Config())
     ->addRiskyRules([
         'no_trailing_whitespace_in_string' => false,
+        'php_unit_data_provider_return_type' => false,
     ])
     ->setFinder($finder)
 ;
