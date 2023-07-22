@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use Siketyan\Loxcan\Reporter\EnvironmentTrait;
+use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 use Siketyan\Loxcan\Reporter\ReporterInterface;
 
 class GitHubReporter implements ReporterInterface
@@ -12,7 +13,7 @@ class GitHubReporter implements ReporterInterface
     use EnvironmentTrait;
 
     public function __construct(
-        private readonly GitHubMarkdownBuilder $markdownBuilder,
+        private readonly MarkdownBuilder $markdownBuilder,
         private readonly GitHubClient $client,
     ) {
     }

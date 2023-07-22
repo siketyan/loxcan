@@ -10,6 +10,7 @@ use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\DependencyDiff;
 use Siketyan\Loxcan\Model\Package;
+use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 use Siketyan\Loxcan\Versioning\Simple\SimpleVersion;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 
@@ -17,11 +18,11 @@ class GitHubMarkdownBuilderTest extends TestCase
 {
     use ProphecyTrait;
 
-    private GitHubMarkdownBuilder $builder;
+    private MarkdownBuilder $builder;
 
     protected function setUp(): void
     {
-        $this->builder = new GitHubMarkdownBuilder();
+        $this->builder = new MarkdownBuilder();
     }
 
     public function test(): void

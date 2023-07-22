@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Siketyan\Loxcan\Reporter\GitHub;
+namespace Siketyan\Loxcan\Reporter;
 
 use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 
-class GitHubMarkdownBuilder
+class MarkdownBuilder
 {
     /**
      * @param array<string, DependencyCollectionDiff> $diffs

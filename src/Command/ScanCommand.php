@@ -36,8 +36,15 @@ class ScanCommand extends Command
                 'reporter',
                 'r',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Reporter names to use for exporting diffs found.',
+                'Reporter names to use for exporting diffs found. [available: console, github]',
                 ['console'],
+            )
+            ->addOption(
+                'flavor',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Output flavor for console exporter. [available: pretty, markdown]',
+                'pretty',
             )
         ;
     }
@@ -54,11 +61,14 @@ class ScanCommand extends Command
         $head = $input->getArgument('head');
         /** @var list<string> $reporters */
         $reporters = $input->getOption('reporter');
+        /** @var string $flavor $flavor */
+        $flavor = $input->getOption('flavor');
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 
         $this->reportUseCase->report($diffs, $reporters, [
             ConsoleReporter::CONTEXT_SYMFONY_IO => $io,
+            ConsoleReporter::CONTEXT_FLAVOR => $flavor,
         ]);
 
         return 0;

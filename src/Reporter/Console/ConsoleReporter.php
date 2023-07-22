@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\Console;
 
 use JetBrains\PhpStorm\Pure;
+use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 use Siketyan\Loxcan\Reporter\ReporterInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
 use Symfony\Component\Console\Color;
@@ -13,6 +14,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ConsoleReporter implements ReporterInterface
 {
     public const CONTEXT_SYMFONY_IO = 'console.symfony-style';
+    public const CONTEXT_FLAVOR = 'console.flavor';
+
+    public const FLAVOR_MARKDOWN = 'markdown';
+
+    public function __construct(
+        private readonly MarkdownBuilder $markdownBuilder,
+    ) {
+    }
 
     public function report(array $diffs, array $context = []): void
     {
@@ -23,6 +32,12 @@ class ConsoleReporter implements ReporterInterface
             $io->writeln(
                 '✨ No lock file changes found, looks shine!',
             );
+
+            return;
+        }
+
+        if (($context[self::CONTEXT_FLAVOR] ?? null) === self::FLAVOR_MARKDOWN) {
+            echo $this->markdownBuilder->build($diffs) . \PHP_EOL;
 
             return;
         }
