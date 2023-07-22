@@ -8,11 +8,17 @@ class Package
 {
     public function __construct(
         private readonly string $name,
+        private readonly ?string $constraint = null,
     ) {
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getConstraint(): ?string
+    {
+        return $this->constraint;
     }
 }

@@ -27,11 +27,30 @@ abstract class AbstractPackagePoolTest extends TestCase
 
         $package = $this->prophesize(Package::class);
         $package->getName()->willReturn($name);
+        $package->getConstraint()->willReturn(null);
         $package = $package->reveal();
 
         $this->pool->add($package);
 
         $this->assertSame($package, $this->pool->get($name));
+        $this->assertNull($this->pool->get('not/exists'));
+    }
+
+    public function testWithConstraint(): void
+    {
+        $name = 'dummy/dummy';
+        $constraint = '^1.2.3';
+
+        $package = $this->prophesize(Package::class);
+        $package->getName()->willReturn($name);
+        $package->getConstraint()->willReturn($constraint);
+        $package = $package->reveal();
+
+        $this->pool->add($package);
+
+        $this->assertSame($package, $this->pool->get($name, $constraint));
+        $this->assertNull($this->pool->get($name), '^4.5.6');
+        $this->assertNull($this->pool->get($name));
         $this->assertNull($this->pool->get('not/exists'));
     }
 }

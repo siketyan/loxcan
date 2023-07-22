@@ -49,8 +49,8 @@ class PnpmLockParserTest extends TestCase
         $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
         $barBazVersion = $this->prophesize(SemVerVersion::class)->reveal();
 
-        $this->packagePool->get('foo')->willReturn(null);
-        $this->packagePool->get('bar')->willReturn($cache);
+        $this->packagePool->get('foo', Argument::any())->willReturn(null);
+        $this->packagePool->get('bar', Argument::any())->willReturn($cache);
         $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
 
         $this->versionParser->parse('1.2.3-dev')->willReturn($fooBarVersion);

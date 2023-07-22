@@ -16,13 +16,23 @@ abstract class AbstractPackagePool
     ) {
     }
 
-    public function get(string $name): ?Package
+    public function get(string $name, ?string $constraint = null): ?Package
     {
-        return $this->packages[$name] ?? null;
+        return $this->packages[$this->getKey($name, $constraint)] ?? null;
     }
 
     public function add(Package $package): void
     {
-        $this->packages[$package->getName()] = $package;
+        $this->packages[$this->getKey($package->getName(), $package->getConstraint())] = $package;
+    }
+
+    private function getKey(string $name, ?string $constraint): string
+    {
+        $key = $name;
+        if ($constraint !== null) {
+            $key .= '__' . $constraint;
+        }
+
+        return $key;
     }
 }
