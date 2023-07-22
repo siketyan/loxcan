@@ -60,12 +60,7 @@ class UnknownVersionComparatorTest extends TestCase
     {
         $diff = $this->comparator->compare($before, $after);
 
-        if (VersionDiff::UNKNOWN === null) {
-            $this->assertNull($diff);
-
-            return;
-        }
-
+        $this->assertNotNull($diff);
         $this->assertSame(VersionDiff::UNKNOWN, $diff->getType());
         $this->assertSame($before, $diff->getBefore());
         $this->assertSame($after, $diff->getAfter());

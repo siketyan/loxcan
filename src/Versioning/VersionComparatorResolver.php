@@ -7,7 +7,7 @@ namespace Siketyan\Loxcan\Versioning;
 class VersionComparatorResolver
 {
     /**
-     * @param VersionComparatorInterface[] $comparators
+     * @param list<VersionComparatorInterface> $comparators
      */
     public function __construct(
         private readonly array $comparators,

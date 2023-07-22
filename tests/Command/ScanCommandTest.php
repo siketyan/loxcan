@@ -23,8 +23,16 @@ class ScanCommandTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<ScanUseCase>
+     */
     private ObjectProphecy $scanUseCase;
+
+    /**
+     * @var ObjectProphecy<ReportUseCase>
+     */
     private ObjectProphecy $reportUseCase;
+
     private CommandTester $tester;
 
     protected function setUp(): void

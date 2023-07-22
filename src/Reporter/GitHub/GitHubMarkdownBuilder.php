@@ -10,6 +10,9 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class GitHubMarkdownBuilder
 {
+    /**
+     * @param array<string, DependencyCollectionDiff> $diffs
+     */
     #[Pure]
     public function build(array $diffs): string
     {
@@ -36,17 +39,17 @@ class GitHubMarkdownBuilder
         if ($diff->count() === 0) {
             $rows[] = '🔄 The file was updated, but no dependency changes found.';
         } else {
-            $rows = array_merge(
-                $rows,
-                $this->buildTable($diff),
-            );
+            $rows = [
+                ...$rows,
+                ...$this->buildTable($diff),
+            ];
         }
 
         return implode("\n", $rows);
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     #[Pure]
     private function buildTable(DependencyCollectionDiff $diff): array

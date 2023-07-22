@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Versioning;
 
 /**
- * @implements CompatibilityAwareInterface
+ * @mixin CompatibilityAwareInterface
  */
 trait HasSemVerLikeCompatibility
 {
-    public function isCompatibleWith(CompatibilityAwareInterface $another): bool
+    public function isCompatibleWith(SemVerLikeInterface $another): bool
     {
         // Let the version has a format of X.Y.Z.
         return $this::class === $another::class  // Two different version systems are not compatible.

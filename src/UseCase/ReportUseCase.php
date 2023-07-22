@@ -10,7 +10,7 @@ use Siketyan\Loxcan\Reporter\ReporterInterface;
 class ReportUseCase
 {
     /**
-     * @param ReporterInterface[] $reporters
+     * @param list<ReporterInterface> $reporters
      */
     public function __construct(
         private readonly array $reporters,
@@ -18,7 +18,7 @@ class ReportUseCase
     }
 
     /**
-     * @param DependencyCollectionDiff[] $diffs
+     * @param array<string, DependencyCollectionDiff> $diffs
      */
     public function report(array $diffs): void
     {

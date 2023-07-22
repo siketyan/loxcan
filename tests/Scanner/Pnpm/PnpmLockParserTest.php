@@ -17,8 +17,16 @@ class PnpmLockParserTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<PnpmPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private PnpmLockParser $parser;
 
     protected function setUp(): void

@@ -19,7 +19,7 @@ class DependencyCollectionIntersector
     }
 
     /**
-     * @return DependencyDiff[]
+     * @return list<DependencyDiff>
      */
     public function intersect(DependencyCollection $a, DependencyCollection $b): array
     {
@@ -27,7 +27,7 @@ class DependencyCollectionIntersector
         $packages = array_uintersect(
             $this->getPackages($a),
             $this->getPackages($b),
-            fn (Package $u, Package $v): int => spl_object_id($u) - spl_object_id($v),
+            fn (Package $u, Package $v): int => spl_object_id($u) - spl_object_id($v), // @phpstan-ignore-line
         );
 
         foreach ($packages as $package) {

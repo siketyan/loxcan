@@ -27,8 +27,16 @@ class CargoLockParserTest extends TestCase
         version = "3.2.1"
         EOS;
 
+    /**
+     * @var ObjectProphecy<CargoPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private CargoLockParser $parser;
 
     protected function setUp(): void

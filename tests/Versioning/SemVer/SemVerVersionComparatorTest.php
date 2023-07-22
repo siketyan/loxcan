@@ -77,6 +77,7 @@ class SemVerVersionComparatorTest extends TestCase
             return;
         }
 
+        $this->assertNotNull($diff);
         $this->assertSame($type, $diff->getType());
         $this->assertSame($before, $diff->getBefore());
         $this->assertSame($after, $diff->getAfter());

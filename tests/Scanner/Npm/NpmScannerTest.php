@@ -15,7 +15,11 @@ class NpmScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<NpmLockParser>
+     */
     private ObjectProphecy $parser;
+
     private NpmScanner $scanner;
 
     protected function setUp(): void

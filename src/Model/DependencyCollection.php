@@ -7,7 +7,7 @@ namespace Siketyan\Loxcan\Model;
 class DependencyCollection
 {
     /**
-     * @param Dependency[] $dependencies
+     * @param list<Dependency> $dependencies
      */
     public function __construct(
         private readonly array $dependencies,
@@ -15,7 +15,7 @@ class DependencyCollection
     }
 
     /**
-     * @return Dependency[]
+     * @return list<Dependency>
      */
     public function getDependencies(): array
     {

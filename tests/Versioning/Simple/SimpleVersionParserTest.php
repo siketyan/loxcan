@@ -19,12 +19,14 @@ class SimpleVersionParserTest extends TestCase
     public function test(): void
     {
         $version = $this->parser->parse('1.2.3.4');
+        $this->assertInstanceOf(SimpleVersion::class, $version);
         $this->assertSame(1, $version->getMajor());
         $this->assertSame(2, $version->getMinor());
         $this->assertSame(3, $version->getPatch());
         $this->assertSame(4, $version->getRevision());
 
         $version = $this->parser->parse('4.3.2');
+        $this->assertInstanceOf(SimpleVersion::class, $version);
         $this->assertSame(4, $version->getMajor());
         $this->assertSame(3, $version->getMinor());
         $this->assertSame(2, $version->getPatch());

@@ -15,7 +15,11 @@ class CargoScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<CargoLockParser>
+     */
     private ObjectProphecy $parser;
+
     private CargoScanner $scanner;
 
     protected function setUp(): void

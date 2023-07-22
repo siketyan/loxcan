@@ -15,6 +15,9 @@ class YarnScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<YarnLockParser>
+     */
     private ObjectProphecy $parser;
     private YarnScanner $scanner;
 

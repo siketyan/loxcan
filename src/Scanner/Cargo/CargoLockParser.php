@@ -24,6 +24,7 @@ class CargoLockParser
             $toml = '[package]';
         }
 
+        /** @var array{package: list<array{name: string, version: string}>} $assoc */
         $assoc = Toml::parse($toml);
         $dependencies = [];
 

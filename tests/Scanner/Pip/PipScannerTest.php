@@ -15,7 +15,11 @@ class PipScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<PipLockParser>
+     */
     private ObjectProphecy $parser;
+
     private PipScanner $scanner;
 
     protected function setUp(): void

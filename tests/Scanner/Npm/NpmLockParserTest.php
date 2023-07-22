@@ -30,8 +30,16 @@ class NpmLockParserTest extends TestCase
         }
         EOS;
 
+    /**
+     * @var ObjectProphecy<NpmPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<SemVerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private NpmLockParser $parser;
 
     protected function setUp(): void

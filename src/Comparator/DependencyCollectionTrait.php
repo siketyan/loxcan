@@ -11,7 +11,7 @@ use Siketyan\Loxcan\Model\Package;
 trait DependencyCollectionTrait
 {
     /**
-     * @return Package[]
+     * @return list<Package>
      */
     private function getPackages(DependencyCollection $collection): array
     {

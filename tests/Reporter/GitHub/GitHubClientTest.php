@@ -17,8 +17,16 @@ class GitHubClientTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<ClientInterface>
+     */
     private ObjectProphecy $httpClient;
+
+    /**
+     * @var ObjectProphecy<GitHubUserPool>
+     */
     private ObjectProphecy $userPool;
+
     private GitHubClient $client;
 
     protected function setUp(): void

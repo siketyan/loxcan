@@ -15,7 +15,11 @@ class ComposerScannerTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<ComposerLockParser>
+     */
     private ObjectProphecy $parser;
+
     private ComposerScanner $scanner;
 
     protected function setUp(): void

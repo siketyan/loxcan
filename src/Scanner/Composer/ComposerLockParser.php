@@ -25,7 +25,13 @@ class ComposerLockParser
         }
 
         try {
-            $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+            /**
+             * @var array{
+             *     packages: list<array{name: string, version: string, dist: array{reference?: string}}>,
+             *     packages-dev: list<array{name: string, version: string, dist: array{reference?: string}}>,
+             * } $assoc
+             */
+            $assoc = json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new ParseErrorException(
                 $e->getMessage(),
@@ -34,10 +40,10 @@ class ComposerLockParser
             );
         }
 
-        $packages = array_merge(
-            $assoc['packages'],
-            $assoc['packages-dev'],
-        );
+        $packages = [
+            ...$assoc['packages'],
+            ...$assoc['packages-dev'],
+        ];
 
         $dependencies = [];
 

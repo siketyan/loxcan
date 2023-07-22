@@ -9,7 +9,7 @@ use Eloquent\Pathogen\PathInterface;
 class ScannerResolver
 {
     /**
-     * @param ScannerInterface[] $scanners
+     * @param list<ScannerInterface> $scanners
      */
     public function __construct(
         private readonly array $scanners,

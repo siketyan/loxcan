@@ -7,7 +7,7 @@ namespace Siketyan\Loxcan\Reporter\GitHub;
 class GitHubUserPool
 {
     /**
-     * @param GitHubUser[] $users
+     * @param list<GitHubUser> $users
      */
     public function __construct(
         private array $users = [],

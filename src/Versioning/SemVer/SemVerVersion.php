@@ -14,8 +14,8 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface, \S
     use HasSemVerLikeCompatibility;
 
     /**
-     * @param string[] $preRelease
-     * @param string[] $build
+     * @param list<int|string> $preRelease
+     * @param list<int|string> $build
      */
     public function __construct(
         private readonly int $major,
@@ -68,7 +68,7 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface, \S
     }
 
     /**
-     * @return string[]
+     * @return list<int|string>
      */
     public function getPreRelease(): array
     {
@@ -76,7 +76,7 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface, \S
     }
 
     /**
-     * @return string[]
+     * @return list<int|string>
      */
     public function getBuild(): array
     {
@@ -90,13 +90,13 @@ class SemVerVersion implements VersionInterface, CompatibilityAwareInterface, \S
 
     // region Aliases for HasSemVerLikeCompatibility trait
     #[Pure]
-    protected function getX(): int
+    public function getX(): int
     {
         return $this->getMajor();
     }
 
     #[Pure]
-    protected function getY(): int
+    public function getY(): int
     {
         return $this->getMinor();
     }

@@ -25,6 +25,7 @@ class PipLockParser
         }
 
         try {
+            /** @var array{default?: array<string, array{}>, develop?: array<string, array{}>} $assoc */
             $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new ParseErrorException(
@@ -34,11 +35,12 @@ class PipLockParser
             );
         }
 
+        /** @var array<string, array{version: string}> $packages */
         $packages = array_merge($assoc['default'] ?? [], $assoc['develop'] ?? []);
         $dependencies = [];
 
         foreach ($packages as $name => $package) {
-            $version = (string) $package['version'];
+            $version = $package['version'];
             if (!str_starts_with($version, '==')) {
                 continue;
             }

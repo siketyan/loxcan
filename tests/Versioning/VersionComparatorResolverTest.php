@@ -13,8 +13,16 @@ class VersionComparatorResolverTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var ObjectProphecy<VersionComparatorInterface>
+     */
     private ObjectProphecy $fooComparator;
+
+    /**
+     * @var ObjectProphecy<VersionComparatorInterface>
+     */
     private ObjectProphecy $barComparator;
+
     private VersionComparatorResolver $resolver;
 
     protected function setUp(): void

@@ -40,8 +40,16 @@ class ComposerLockParserTest extends TestCase
         }
         EOS;
 
+    /**
+     * @var ObjectProphecy<ComposerPackagePool>
+     */
     private ObjectProphecy $packagePool;
+
+    /**
+     * @var ObjectProphecy<ComposerVersionParser>
+     */
     private ObjectProphecy $versionParser;
+
     private ComposerLockParser $parser;
 
     protected function setUp(): void

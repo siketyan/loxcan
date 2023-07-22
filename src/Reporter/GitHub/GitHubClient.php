@@ -19,7 +19,7 @@ class GitHubClient
     }
 
     /**
-     * @return GitHubComment[]
+     * @return list<GitHubComment>
      *
      * @throws \JsonException
      */
@@ -40,7 +40,9 @@ class GitHubClient
         }
 
         $json = $response->getBody()->getContents();
-        $assoc = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+
+        /** @var list<array{id: int, body: string, user: array{id: int, login: string}}> $assoc */
+        $assoc = json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
         $comments = [];
 
         foreach ($assoc as $row) {
@@ -118,6 +120,9 @@ class GitHubClient
         ];
     }
 
+    /**
+     * @param array{id: int, login: string} $assoc
+     */
     private function getOrCreateUser(array $assoc): GitHubUser
     {
         $id = $assoc['id'];
