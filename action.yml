@@ -37,6 +37,7 @@ runs:
         pushd '${{ github.action_path }}' && composer i -n && popd
         
         if [ "${{ inputs.report_enabled }}" = "true" ]; then
+          export LOXCAN_ARGS="-r github"
           export LOXCAN_REPORTER_GITHUB="1"
           export LOXCAN_REPORTER_GITHUB_OWNER="${{ inputs.owner }}"
           export LOXCAN_REPORTER_GITHUB_REPO="${{ inputs.repo }}"
@@ -48,4 +49,4 @@ runs:
         BRANCH_BASE="origin/${{ inputs.base }}"
         BRANCH_HEAD="${{ github.sha }}"
         
-        ${{ github.action_path }}/bin/loxcan "${BRANCH_BASE}" "${BRANCH_HEAD}"
+        ${{ github.action_path }}/bin/loxcan ${LOXCAN_ARGS} "${BRANCH_BASE}" "${BRANCH_HEAD}"
