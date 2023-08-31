@@ -2,6 +2,7 @@
 
 if [ "${INPUT_REPORT_ENABLED}" = "true" ]; then
   # shellcheck disable=SC2034
+  export LOXCAN_ARGS="-r github"
   export LOXCAN_REPORTER_GITHUB="1"
   export LOXCAN_REPORTER_GITHUB_OWNER="${INPUT_OWNER}"
   export LOXCAN_REPORTER_GITHUB_REPO="${INPUT_REPO}"
@@ -13,4 +14,4 @@ fi
 BRANCH_BASE="origin/${INPUT_BASE}"
 BRANCH_HEAD="${GITHUB_SHA}"
 
-/app/bin/loxcan "${BRANCH_BASE}" "${BRANCH_HEAD}"
+/app/bin/loxcan ${LOXCAN_ARGS} "${BRANCH_BASE}" "${BRANCH_HEAD}"
