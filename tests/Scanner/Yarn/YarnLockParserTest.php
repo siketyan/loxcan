@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner\Yarn;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
@@ -50,7 +51,7 @@ class YarnLockParserTest extends TestCase
         $typesNodeVersion = $this->createStub(SemVerVersion::class);
         $typescriptVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name): ?Stub => match ($name) {
             '@types/node' => null,
             'typescript' => $cache,
             default => $this->fail('unexpected pattern'),

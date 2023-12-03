@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Pnpm;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
@@ -28,16 +30,14 @@ class PnpmLockParserTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideCases
-     */
+    #[DataProvider('provideCases')]
     public function test(string $yaml): void
     {
         $cache = $this->createStub(Package::class);
         $fooVersion = $this->createStub(SemVerVersion::class);
         $barVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name): ?Stub => match ($name) {
             'foo' => null,
             'bar' => $cache,
             default => $this->fail('unexpected pattern'),
@@ -66,7 +66,7 @@ class PnpmLockParserTest extends TestCase
     /**
      * @return \Iterator<string, array{0: string}>
      */
-    public function provideCases(): \Iterator
+    public static function provideCases(): \Iterator
     {
         yield 'simple version pattern' => [
             <<<'EOS'

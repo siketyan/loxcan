@@ -7,7 +7,7 @@ namespace Siketyan\Loxcan\Scanner;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Model\Package;
 
-abstract class AbstractPackagePoolTest extends TestCase
+abstract class AbstractPackagePoolTestCase extends TestCase
 {
     private AbstractPackagePool $pool;
 

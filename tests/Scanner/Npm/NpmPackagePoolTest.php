@@ -6,9 +6,9 @@ namespace Siketyan\Loxcan\Scanner\Npm;
 
 use JetBrains\PhpStorm\Pure;
 use Siketyan\Loxcan\Scanner\AbstractPackagePool;
-use Siketyan\Loxcan\Scanner\AbstractPackagePoolTest;
+use Siketyan\Loxcan\Scanner\AbstractPackagePoolTestCase;
 
-class NpmPackagePoolTest extends AbstractPackagePoolTest
+class NpmPackagePoolTest extends AbstractPackagePoolTestCase
 {
     #[Pure]
     protected function getImpl(): AbstractPackagePool

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner\Cargo;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
@@ -44,7 +45,7 @@ class CargoLockParserTest extends TestCase
         $fooBarVersion = $this->createStub(SemVerVersion::class);
         $barBazVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name): ?Stub => match ($name) {
             'foo/bar' => null,
             'bar/baz' => $cache,
             default => $this->fail('unexpected pattern'),

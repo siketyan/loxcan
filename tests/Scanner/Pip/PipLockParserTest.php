@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner\Pip;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
@@ -49,7 +50,7 @@ class PipLockParserTest extends TestCase
         $fooBarVersion = $this->createStub(SimpleVersion::class);
         $barBazVersion = $this->createStub(SimpleVersion::class);
 
-        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name): ?Stub => match ($name) {
             '@foo/bar' => null,
             'baz' => $cache,
             default => $this->fail('unexpected pattern'),
