@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Cargo;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\SemVer\SemVerVersion;
@@ -15,8 +14,6 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 
 class CargoLockParserTest extends TestCase
 {
-    use ProphecyTrait;
-
     private const CONTENTS = <<<'EOS'
         [[package]]
         name = "foo/bar"
@@ -27,41 +24,39 @@ class CargoLockParserTest extends TestCase
         version = "3.2.1"
         EOS;
 
-    /**
-     * @var ObjectProphecy<CargoPackagePool>
-     */
-    private ObjectProphecy $packagePool;
-
-    /**
-     * @var ObjectProphecy<SemVerVersionParser>
-     */
-    private ObjectProphecy $versionParser;
-
+    private CargoPackagePool&MockObject $packagePool;
+    private MockObject&SemVerVersionParser $versionParser;
     private CargoLockParser $parser;
 
     protected function setUp(): void
     {
-        $this->packagePool = $this->prophesize(CargoPackagePool::class);
-        $this->versionParser = $this->prophesize(SemVerVersionParser::class);
+        $this->packagePool = $this->createMock(CargoPackagePool::class);
+        $this->versionParser = $this->createMock(SemVerVersionParser::class);
 
         $this->parser = new CargoLockParser(
-            $this->packagePool->reveal(),
-            $this->versionParser->reveal(),
+            $this->packagePool,
+            $this->versionParser,
         );
     }
 
     public function test(): void
     {
-        $cache = $this->prophesize(Package::class)->reveal();
-        $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
-        $barBazVersion = $this->prophesize(SemVerVersion::class)->reveal();
+        $cache = $this->createStub(Package::class);
+        $fooBarVersion = $this->createStub(SemVerVersion::class);
+        $barBazVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->get('foo/bar')->willReturn(null);
-        $this->packagePool->get('bar/baz')->willReturn($cache);
-        $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name): ?Stub => match ($name) {
+            'foo/bar' => null,
+            'bar/baz' => $cache,
+            default => $this->fail('unexpected pattern'),
+        });
 
-        $this->versionParser->parse('1.2.3-dev')->willReturn($fooBarVersion);
-        $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
+        $this->packagePool->expects($this->once())->method('add')->with($this->isInstanceOf(Package::class));
+
+        $this->versionParser->method('parse')->willReturnMap([
+            ['1.2.3-dev', $fooBarVersion],
+            ['3.2.1', $barBazVersion],
+        ]);
 
         $collection = $this->parser->parse(self::CONTENTS);
         $dependencies = $collection->getDependencies();

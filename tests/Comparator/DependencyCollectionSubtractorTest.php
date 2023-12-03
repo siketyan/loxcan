@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Comparator;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\Package;
 
 class DependencyCollectionSubtractorTest extends TestCase
 {
-    use ProphecyTrait;
-
     private DependencyCollectionSubtractor $subtractor;
 
     protected function setUp(): void
@@ -23,21 +20,21 @@ class DependencyCollectionSubtractorTest extends TestCase
 
     public function test(): void
     {
-        $added = $this->prophesize(Dependency::class);
-        $removed = $this->prophesize(Dependency::class);
-        $common = $this->prophesize(Dependency::class);
+        $added = $this->createStub(Dependency::class);
+        $removed = $this->createStub(Dependency::class);
+        $common = $this->createStub(Dependency::class);
 
-        $added->getPackage()->willReturn($this->prophesize(Package::class)->reveal());
-        $removed->getPackage()->willReturn($this->prophesize(Package::class)->reveal());
-        $common->getPackage()->willReturn($this->prophesize(Package::class)->reveal());
+        $added->method('getPackage')->willReturn($this->createStub(Package::class));
+        $removed->method('getPackage')->willReturn($this->createStub(Package::class));
+        $common->method('getPackage')->willReturn($this->createStub(Package::class));
 
-        $a = $this->prophesize(DependencyCollection::class);
-        $b = $this->prophesize(DependencyCollection::class);
+        $a = $this->createStub(DependencyCollection::class);
+        $b = $this->createStub(DependencyCollection::class);
 
-        $a->getDependencies()->willReturn([$common->reveal(), $removed->reveal()]);
-        $b->getDependencies()->willReturn([$common->reveal(), $added->reveal()]);
+        $a->method('getDependencies')->willReturn([$common, $removed]);
+        $b->method('getDependencies')->willReturn([$common, $added]);
 
-        $this->assertSame([$added->reveal()], $this->subtractor->subtract($b->reveal(), $a->reveal()));
-        $this->assertSame([$removed->reveal()], $this->subtractor->subtract($a->reveal(), $b->reveal()));
+        $this->assertSame([$added], $this->subtractor->subtract($b, $a));
+        $this->assertSame([$removed], $this->subtractor->subtract($a, $b));
     }
 }

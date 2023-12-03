@@ -4,36 +4,25 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Reporter\MarkdownBuilder;
 
 class GitHubReporterTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<MarkdownBuilder>
-     */
-    private ObjectProphecy $markdownBuilder;
-
-    /**
-     * @var ObjectProphecy<GitHubClient>
-     */
-    private ObjectProphecy $client;
-
+    private MarkdownBuilder&MockObject $markdownBuilder;
+    private GitHubClient&MockObject $client;
     private GitHubReporter $reporter;
 
     protected function setUp(): void
     {
-        $this->markdownBuilder = $this->prophesize(MarkdownBuilder::class);
-        $this->client = $this->prophesize(GitHubClient::class);
+        $this->markdownBuilder = $this->createMock(MarkdownBuilder::class);
+        $this->client = $this->createMock(GitHubClient::class);
 
         $this->reporter = new GitHubReporter(
-            $this->markdownBuilder->reveal(),
-            $this->client->reveal(),
+            $this->markdownBuilder,
+            $this->client,
         );
 
         putenv('LOXCAN_REPORTER_GITHUB=1');
@@ -47,13 +36,13 @@ class GitHubReporterTest extends TestCase
     {
         $filename = 'foo.lock';
         $markdown = '## Markdown';
-        $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
+        $diff = $this->createStub(DependencyCollectionDiff::class);
         $diffs = [$filename => $diff];
 
-        $this->markdownBuilder->build($diffs)->willReturn($markdown);
+        $this->markdownBuilder->method('build')->with($diffs)->willReturn($markdown);
 
-        $this->client->getComments('foo', 'bar', 123)->willReturn([])->shouldBeCalledOnce();
-        $this->client->createComment('foo', 'bar', 123, $markdown)->shouldBeCalledOnce();
+        $this->client->expects($this->once())->method('getComments')->with('foo', 'bar', 123)->willReturn([]);
+        $this->client->expects($this->once())->method('createComment')->with('foo', 'bar', 123, $markdown);
 
         $this->reporter->report($diffs);
     }
@@ -62,20 +51,20 @@ class GitHubReporterTest extends TestCase
     {
         $filename = 'foo.lock';
         $markdown = '## Markdown';
-        $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
+        $diff = $this->createStub(DependencyCollectionDiff::class);
         $diffs = [$filename => $diff];
 
-        $me = $this->prophesize(GitHubUser::class);
-        $me->getLogin()->willReturn('me');
+        $me = $this->createStub(GitHubUser::class);
+        $me->method('getLogin')->willReturn('me');
 
-        $comment = $this->prophesize(GitHubComment::class);
-        $comment->getId()->willReturn(123);
-        $comment->getAuthor()->willReturn($me->reveal());
+        $comment = $this->createStub(GitHubComment::class);
+        $comment->method('getId')->willReturn(123);
+        $comment->method('getAuthor')->willReturn($me);
 
-        $this->markdownBuilder->build($diffs)->willReturn($markdown);
+        $this->markdownBuilder->method('build')->with($diffs)->willReturn($markdown);
 
-        $this->client->getComments('foo', 'bar', 123)->willReturn([$comment->reveal()])->shouldBeCalledOnce();
-        $this->client->updateComment('foo', 'bar', $comment->reveal(), $markdown)->shouldBeCalledOnce();
+        $this->client->expects($this->once())->method('getComments')->with('foo', 'bar', 123)->willReturn([$comment]);
+        $this->client->expects($this->once())->method('updateComment')->with('foo', 'bar', $comment, $markdown);
 
         $this->reporter->report($diffs);
     }

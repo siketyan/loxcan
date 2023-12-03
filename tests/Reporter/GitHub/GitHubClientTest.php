@@ -5,50 +5,35 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 class GitHubClientTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<ClientInterface>
-     */
-    private ObjectProphecy $httpClient;
-
-    /**
-     * @var ObjectProphecy<GitHubUserPool>
-     */
-    private ObjectProphecy $userPool;
+    private ClientInterface&MockObject $httpClient;
+    private GitHubUserPool&MockObject $userPool;
 
     private GitHubClient $client;
 
     protected function setUp(): void
     {
-        $this->httpClient = $this->prophesize(ClientInterface::class);
-        $this->userPool = $this->prophesize(GitHubUserPool::class);
+        $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->userPool = $this->createMock(GitHubUserPool::class);
 
         $this->client = new GitHubClient(
-            $this->httpClient->reveal(),
-            $this->userPool->reveal(),
+            $this->httpClient,
+            $this->userPool,
         );
 
         putenv('LOXCAN_REPORTER_GITHUB_TOKEN=dummy_token');
     }
 
-    /**
-     * @throws GuzzleException
-     */
     public function testGetComments(): void
     {
-        $stream = $this->prophesize(StreamInterface::class);
-        $stream->getContents()->willReturn(<<<'EOS'
+        $stream = $this->createStub(StreamInterface::class);
+        $stream->method('getContents')->willReturn(<<<'EOS'
             [
                 {
                     "id": 123,
@@ -69,11 +54,13 @@ class GitHubClientTest extends TestCase
             ]
             EOS);
 
-        $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()->willReturn($stream->reveal());
+        $response = $this->createStub(ResponseInterface::class);
+        $response->method('getBody')->willReturn($stream);
 
         $this->httpClient
-            ->request(
+            ->expects($this->once())
+            ->method('request')
+            ->with(
                 'GET',
                 '/repos/foo/bar/issues/123/comments',
                 [
@@ -83,20 +70,27 @@ class GitHubClientTest extends TestCase
                     ],
                 ],
             )
-            ->willReturn($response->reveal())
-            ->shouldBeCalledOnce()
+            ->willReturn($response)
         ;
 
-        $pool = $this->userPool;
+        $user = null;
 
-        $this->userPool->get(111)->willReturn(null)->shouldBeCalledTimes(2);
         $this->userPool
-            ->add(Argument::type(GitHubUser::class))
-            ->will(function (array $args) use ($pool): void {
-                /* @noinspection PhpUndefinedMethodInspection */
-                $pool->get(111)->willReturn($args[0]);
+            ->expects($this->exactly(2))
+            ->method('get')
+            ->with(111)
+            ->willReturnCallback(static function () use (&$user): ?GitHubUser {
+                return $user;
             })
-            ->shouldBeCalledOnce()
+        ;
+
+        $this->userPool
+            ->expects($this->once())
+            ->method('add')
+            ->with($this->isInstanceOf(GitHubUser::class))
+            ->willReturnCallback(static function (GitHubUser $u) use (&$user): void {
+                $user = $u;
+            })
         ;
 
         $comments = $this->client->getComments('foo', 'bar', 123);
@@ -110,13 +104,12 @@ class GitHubClientTest extends TestCase
         $this->assertSame($comments[0]->getAuthor(), $comments[1]->getAuthor());
     }
 
-    /**
-     * @throws GuzzleException
-     */
     public function testCreateComment(): void
     {
         $this->httpClient
-            ->request(
+            ->expects($this->once())
+            ->method('request')
+            ->with(
                 'POST',
                 '/repos/foo/bar/issues/123/comments',
                 [
@@ -127,8 +120,7 @@ class GitHubClientTest extends TestCase
                     ],
                 ],
             )
-            ->willReturn($this->prophesize(ResponseInterface::class)->reveal())
-            ->shouldBeCalledOnce()
+            ->willReturn($this->createStub(ResponseInterface::class))
         ;
 
         $this->client->createComment(
@@ -139,16 +131,15 @@ class GitHubClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws GuzzleException
-     */
     public function testUpdateComment(): void
     {
-        $comment = $this->prophesize(GitHubComment::class);
-        $comment->getId()->willReturn(123);
+        $comment = $this->createStub(GitHubComment::class);
+        $comment->method('getId')->willReturn(123);
 
         $this->httpClient
-            ->request(
+            ->expects($this->once())
+            ->method('request')
+            ->with(
                 'PATCH',
                 '/repos/foo/bar/issues/comments/123',
                 [
@@ -159,14 +150,13 @@ class GitHubClientTest extends TestCase
                     ],
                 ],
             )
-            ->willReturn($this->prophesize(ResponseInterface::class)->reveal())
-            ->shouldBeCalledOnce()
+            ->willReturn($this->createStub(ResponseInterface::class))
         ;
 
         $this->client->updateComment(
             'foo',
             'bar',
-            $comment->reveal(),
+            $comment,
             'dummy_body',
         );
     }

@@ -6,29 +6,21 @@ namespace Siketyan\Loxcan\Git;
 
 use Eloquent\Pathogen\Path;
 use Eloquent\Pathogen\RelativePathInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Repository;
 use Symfony\Component\Process\Process;
 
 class GitTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<GitProcessFactory>
-     */
-    private ObjectProphecy $processFactory;
-
+    private GitProcessFactory&MockObject $processFactory;
     private Git $git;
 
     protected function setUp(): void
     {
-        $this->processFactory = $this->prophesize(GitProcessFactory::class);
-
+        $this->processFactory = $this->createMock(GitProcessFactory::class);
         $this->git = new Git(
-            $this->processFactory->reveal(),
+            $this->processFactory,
         );
     }
 
@@ -36,20 +28,21 @@ class GitTest extends TestCase
     {
         $base = 'master';
         $head = 'feature';
-        $repository = $this->prophesize(Repository::class)->reveal();
+        $repository = $this->createStub(Repository::class);
 
-        $process = $this->prophesize(Process::class);
-        $process->run()->willReturn(0)->shouldBeCalledOnce();
-        $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->willReturn(<<<'EOS'
+        $process = $this->createMock(Process::class);
+        $process->expects($this->once())->method('run')->willReturn(0);
+        $process->method('isSuccessful')->willReturn(true);
+        $process->method('getOutput')->willReturn(<<<'EOS'
             foo/bar.json
             baz.lock
             EOS);
 
         $this->processFactory
-            ->create($repository, ['diff', '--name-only', 'master', 'feature'])
-            ->willReturn($process->reveal())
-            ->shouldBeCalledOnce()
+            ->expects($this->once())
+            ->method('create')
+            ->with($repository, ['diff', '--name-only', 'master', 'feature'])
+            ->willReturn($process)
         ;
 
         $files = $this->git->fetchChangedFiles($repository, $base, $head);
@@ -61,26 +54,26 @@ class GitTest extends TestCase
 
     public function testFetchOriginalFile(): void
     {
-        $repository = $this->prophesize(Repository::class)->reveal();
+        $repository = $this->createMock(Repository::class);
         $expected = <<<'EOS'
             dummy
             foobar
             EOS;
 
-        $process = $this->prophesize(Process::class);
-        $process->run()->willReturn(0)->shouldBeCalledOnce();
-        $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->willReturn($expected);
+        $process = $this->createMock(Process::class);
+        $process->expects($this->once())->method('run')->willReturn(0);
+        $process->method('isSuccessful')->willReturn(true);
+        $process->method('getOutput')->willReturn($expected);
 
         $this->processFactory
-            ->create($repository, ['show', 'master:bar.lock'])
-            ->willReturn($process->reveal())
-            ->shouldBeCalledOnce()
+            ->expects($this->once())
+            ->method('create')
+            ->with($repository, ['show', 'master:bar.lock'])
+            ->willReturn($process)
         ;
 
-        $path = $this->prophesize(RelativePathInterface::class);
-        $path->string()->willReturn('bar.lock');
-        $path = $path->reveal();
+        $path = $this->createStub(RelativePathInterface::class);
+        $path->method('string')->willReturn('bar.lock');
 
         $actual = $this->git->fetchOriginalFile($repository, 'master', $path);
 
@@ -89,27 +82,25 @@ class GitTest extends TestCase
 
     public function testCheckFileExists(): void
     {
-        $repository = $this->prophesize(Repository::class)->reveal();
+        $repository = $this->createStub(Repository::class);
 
-        $process = $this->prophesize(Process::class);
-        $process->run()->willReturn(0)->shouldBeCalledTimes(2);
-        $process->isSuccessful()->willReturn(true);
+        $process = $this->createMock(Process::class);
+        $process->expects($this->exactly(2))->method('run')->willReturn(0);
+        $process->method('isSuccessful')->willReturnOnConsecutiveCalls(true, false);
 
         $this->processFactory
-            ->create($repository, ['cat-file', '-e', 'master:bar.lock'])
-            ->willReturn($process->reveal())
-            ->shouldBeCalledTimes(2)
+            ->expects($this->exactly(2))
+            ->method('create')
+            ->with($repository, ['cat-file', '-e', 'master:bar.lock'])
+            ->willReturn($process)
         ;
 
-        $path = $this->prophesize(RelativePathInterface::class);
-        $path->string()->willReturn('bar.lock');
-        $path = $path->reveal();
+        $path = $this->createStub(RelativePathInterface::class);
+        $path->method('string')->willReturn('bar.lock');
 
         $this->assertTrue(
             $this->git->checkFileExists($repository, 'master', $path),
         );
-
-        $process->isSuccessful()->willReturn(false);
 
         $this->assertFalse(
             $this->git->checkFileExists($repository, 'master', $path),

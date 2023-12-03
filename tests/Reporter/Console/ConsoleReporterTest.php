@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\Console;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\DependencyDiff;
@@ -19,26 +18,24 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ConsoleReporterTest extends TestCase
 {
-    use ProphecyTrait;
-
     public function test(): void
     {
-        $diff = $this->prophesize(DependencyCollectionDiff::class);
-        $diff->count()->willReturn(5);
-        $diff->getAdded()->willReturn([$this->createDependency('added', 'v1.2.3')]);
-        $diff->getRemoved()->willReturn([$this->createDependency('removed', 'v3.2.1')]);
-        $diff->getUpdated()->willReturn([
+        $diff = $this->createStub(DependencyCollectionDiff::class);
+        $diff->method('count')->willReturn(5);
+        $diff->method('getAdded')->willReturn([$this->createDependency('added', 'v1.2.3')]);
+        $diff->method('getRemoved')->willReturn([$this->createDependency('removed', 'v3.2.1')]);
+        $diff->method('getUpdated')->willReturn([
             $this->createDependencyDiff('upgraded', 'v1.1.1', 'v2.2.2', VersionDiff::UPGRADED),
             $this->createDependencyDiff('downgraded', 'v4.4.4', 'v3.3.3', VersionDiff::DOWNGRADED),
             $this->createDependencyDiff('unknown', 'v5.5.5', 'v5.5.5', VersionDiff::UNKNOWN),
         ]);
 
-        $emptyDiff = $this->prophesize(DependencyCollectionDiff::class);
-        $emptyDiff->count()->willReturn(0);
+        $emptyDiff = $this->createStub(DependencyCollectionDiff::class);
+        $emptyDiff->method('count')->willReturn(0);
 
         $diffs = [
-            'foo.lock' => $diff->reveal(),
-            'bar.lock' => $emptyDiff->reveal(),
+            'foo.lock' => $diff,
+            'bar.lock' => $emptyDiff,
         ];
 
         $input = new ArrayInput([]);
@@ -98,41 +95,41 @@ class ConsoleReporterTest extends TestCase
 
     private function createDependency(string $name, string $versionName): Dependency
     {
-        $package = $this->prophesize(Package::class);
-        $package->getName()->willReturn($name);
+        $package = $this->createStub(Package::class);
+        $package->method('getName')->willReturn($name);
 
-        $version = $this->prophesize(SimpleVersion::class);
-        $version->__toString()->willReturn($versionName);
+        $version = $this->createStub(SimpleVersion::class);
+        $version->method('__toString')->willReturn($versionName);
 
-        $dependency = $this->prophesize(Dependency::class);
-        $dependency->getPackage()->willReturn($package->reveal());
-        $dependency->getVersion()->willReturn($version->reveal());
+        $dependency = $this->createStub(Dependency::class);
+        $dependency->method('getPackage')->willReturn($package);
+        $dependency->method('getVersion')->willReturn($version);
 
-        return $dependency->reveal();
+        return $dependency;
     }
 
     private function createDependencyDiff(string $name, string $before, string $after, int $type): DependencyDiff
     {
-        $package = $this->prophesize(Package::class);
-        $package->getName()->willReturn($name);
+        $package = $this->createStub(Package::class);
+        $package->method('getName')->willReturn($name);
 
-        $beforeVersion = $this->prophesize(SimpleVersion::class);
-        $beforeVersion->__toString()->willReturn($before);
+        $beforeVersion = $this->createStub(SimpleVersion::class);
+        $beforeVersion->method('__toString')->willReturn($before);
 
-        $afterVersion = $this->prophesize(SimpleVersion::class);
-        $afterVersion->__toString()->willReturn($after);
+        $afterVersion = $this->createStub(SimpleVersion::class);
+        $afterVersion->method('__toString')->willReturn($after);
 
-        $versionDiff = $this->prophesize(VersionDiff::class);
-        $versionDiff->isCompatible()->willReturn(false);
-        $versionDiff->getType()->willReturn($type);
-        $versionDiff->getBefore()->willReturn($beforeVersion->reveal());
-        $versionDiff->getAfter()->willReturn($afterVersion->reveal());
+        $versionDiff = $this->createStub(VersionDiff::class);
+        $versionDiff->method('isCompatible')->willReturn(false);
+        $versionDiff->method('getType')->willReturn($type);
+        $versionDiff->method('getBefore')->willReturn($beforeVersion);
+        $versionDiff->method('getAfter')->willReturn($afterVersion);
 
-        $diff = $this->prophesize(DependencyDiff::class);
-        $diff->getPackage()->willReturn($package->reveal());
-        $diff->getVersionDiff()->willReturn($versionDiff->reveal());
+        $diff = $this->createStub(DependencyDiff::class);
+        $diff->method('getPackage')->willReturn($package);
+        $diff->method('getVersionDiff')->willReturn($versionDiff);
 
-        return $diff->reveal();
+        return $diff;
     }
 
     private function removeTextStyles(string $text): string

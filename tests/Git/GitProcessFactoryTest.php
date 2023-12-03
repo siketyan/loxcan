@@ -6,14 +6,11 @@ namespace Siketyan\Loxcan\Git;
 
 use Eloquent\Pathogen\PathInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Siketyan\Loxcan\Model\Repository;
 use Symfony\Component\Process\Process;
 
 class GitProcessFactoryTest extends TestCase
 {
-    use ProphecyTrait;
-
     private const GIT_PATH = '/usr/bin/git';
 
     private GitProcessFactory $factory;
@@ -27,13 +24,13 @@ class GitProcessFactoryTest extends TestCase
 
     public function test(): void
     {
-        $path = $this->prophesize(PathInterface::class);
-        $repository = $this->prophesize(Repository::class);
+        $path = $this->createStub(PathInterface::class);
+        $repository = $this->createStub(Repository::class);
 
-        $path->string()->willReturn(__DIR__);
-        $repository->getPath()->willReturn($path->reveal());
+        $path->method('string')->willReturn(__DIR__);
+        $repository->method('getPath')->willReturn($path);
 
-        $process = $this->factory->create($repository->reveal(), ['foo', 'bar']);
+        $process = $this->factory->create($repository, ['foo', 'bar']);
 
         $this->assertInstanceOf(Process::class, $process);
         $this->assertSame("'/usr/bin/git' 'foo' 'bar'", $process->getCommandLine());

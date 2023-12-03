@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Reporter\GitHub;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class GitHubUserPoolTest extends TestCase
 {
-    use ProphecyTrait;
-
     private GitHubUserPool $pool;
 
     protected function setUp(): void
@@ -22,9 +19,8 @@ class GitHubUserPoolTest extends TestCase
     {
         $id = 123;
 
-        $user = $this->prophesize(GitHubUser::class);
-        $user->getId()->willReturn($id);
-        $user = $user->reveal();
+        $user = $this->createStub(GitHubUser::class);
+        $user->method('getId')->willReturn($id);
 
         $this->pool->add($user);
 

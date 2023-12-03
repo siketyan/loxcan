@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Command;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\DependencyCollectionDiff;
 use Siketyan\Loxcan\Model\Repository;
 use Siketyan\Loxcan\UseCase\ReportUseCase;
@@ -16,50 +14,42 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ScanCommandTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<ScanUseCase>
-     */
-    private ObjectProphecy $scanUseCase;
-
-    /**
-     * @var ObjectProphecy<ReportUseCase>
-     */
-    private ObjectProphecy $reportUseCase;
-
+    private MockObject&ScanUseCase $scanUseCase;
+    private MockObject&ReportUseCase $reportUseCase;
     private CommandTester $tester;
 
     protected function setUp(): void
     {
-        $this->scanUseCase = $this->prophesize(ScanUseCase::class);
-        $this->reportUseCase = $this->prophesize(ReportUseCase::class);
+        $this->scanUseCase = $this->createMock(ScanUseCase::class);
+        $this->reportUseCase = $this->createMock(ReportUseCase::class);
 
         $this->tester = new CommandTester(
             new ScanCommand(
-                $this->scanUseCase->reveal(),
-                $this->reportUseCase->reveal(),
+                $this->scanUseCase,
+                $this->reportUseCase,
             ),
         );
     }
 
     public function test(): void
     {
-        $diff = $this->prophesize(DependencyCollectionDiff::class);
+        $diff = $this->createStub(DependencyCollectionDiff::class);
         $diffs = [
-            'foo.lock' => $diff->reveal(),
-            'bar.lock' => $diff->reveal(),
+            'foo.lock' => $diff,
+            'bar.lock' => $diff,
         ];
 
         $this->scanUseCase
-            ->scan(Argument::type(Repository::class), 'foo', 'bar')
+            ->expects($this->once())
+            ->method('scan')
+            ->with($this->isInstanceOf(Repository::class), 'foo', 'bar')
             ->willReturn($diffs)
-            ->shouldBeCalledOnce()
         ;
 
         $this->reportUseCase
-            ->report($diffs, ['console'], Argument::type('array'))
-            ->shouldBeCalledOnce()
+            ->expects($this->once())
+            ->method('report')
+            ->with($diffs, ['console'], $this->isType('array'))
         ;
 
         $exitCode = $this->tester->execute([
