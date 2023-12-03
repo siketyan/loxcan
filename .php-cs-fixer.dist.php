@@ -17,5 +17,6 @@ return (new Config())
         'php_unit_data_provider_return_type' => false,
         'static_lambda' => false,
     ])
+    ->configure(useRiskyRules: true)
     ->setFinder($finder)
 ;

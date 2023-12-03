@@ -5,51 +5,50 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner;
 
 use Eloquent\Pathogen\PathInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 class ScannerResolverTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<ScannerInterface>
-     */
-    private ObjectProphecy $fooScanner;
-
-    /**
-     * @var ObjectProphecy<ScannerInterface>
-     */
-    private ObjectProphecy $barScanner;
-
+    private MockObject&ScannerInterface $fooScanner;
+    private MockObject&ScannerInterface $barScanner;
     private ScannerResolver $resolver;
 
     protected function setUp(): void
     {
-        $this->fooScanner = $this->prophesize(ScannerInterface::class);
-        $this->barScanner = $this->prophesize(ScannerInterface::class);
+        $this->fooScanner = $this->createMock(ScannerInterface::class);
+        $this->barScanner = $this->createMock(ScannerInterface::class);
 
         $this->resolver = new ScannerResolver([
-            $this->fooScanner->reveal(),
-            $this->barScanner->reveal(),
+            $this->fooScanner,
+            $this->barScanner,
         ]);
     }
 
     public function test(): void
     {
-        $foo = $this->prophesize(PathInterface::class)->reveal();
-        $bar = $this->prophesize(PathInterface::class)->reveal();
-        $dummy = $this->prophesize(PathInterface::class)->reveal();
+        $foo = $this->createStub(PathInterface::class);
+        $bar = $this->createStub(PathInterface::class);
+        $dummy = $this->createStub(PathInterface::class);
 
-        $this->fooScanner->supports($foo)->willReturn(true);
-        $this->fooScanner->supports(Argument::type(PathInterface::class))->willReturn(false);
-        $this->barScanner->supports($bar)->willReturn(true);
-        $this->barScanner->supports(Argument::type(PathInterface::class))->willReturn(false);
+        $this->fooScanner
+            ->method('supports')
+            ->willReturnCallback(static fn (PathInterface $p): bool => match ($p) {
+                $foo => true,
+                default => false,
+            })
+        ;
 
-        $this->assertSame($this->fooScanner->reveal(), $this->resolver->resolve($foo));
-        $this->assertSame($this->barScanner->reveal(), $this->resolver->resolve($bar));
+        $this->barScanner
+            ->method('supports')
+            ->willReturnCallback(static fn (PathInterface $p): bool => match ($p) {
+                $bar => true,
+                default => false,
+            })
+        ;
+
+        $this->assertSame($this->fooScanner, $this->resolver->resolve($foo));
+        $this->assertSame($this->barScanner, $this->resolver->resolve($bar));
         $this->assertNull($this->resolver->resolve($dummy));
     }
 }

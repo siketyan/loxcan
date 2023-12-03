@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Comparator;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyCollection;
 use Siketyan\Loxcan\Model\DependencyDiff;
@@ -14,56 +14,47 @@ use Siketyan\Loxcan\Model\Package;
 
 class DependencyCollectionIntersectorTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<DependencyComparator>
-     */
-    private ObjectProphecy $comparator;
-
+    private DependencyComparator&MockObject $comparator;
     private DependencyCollectionIntersector $intersector;
 
     protected function setUp(): void
     {
-        $this->comparator = $this->prophesize(DependencyComparator::class);
-
-        $this->intersector = new DependencyCollectionIntersector(
-            $this->comparator->reveal(),
-        );
+        $this->comparator = $this->createMock(DependencyComparator::class);
+        $this->intersector = new DependencyCollectionIntersector($this->comparator);
     }
 
     public function test(): void
     {
-        $package = $this->prophesize(Package::class)->reveal();
-        $diff = $this->prophesize(DependencyDiff::class)->reveal();
+        $package = $this->createStub(Package::class);
+        $diff = $this->createStub(DependencyDiff::class);
 
-        $before = $this->prophesize(Dependency::class);
-        $after = $this->prophesize(Dependency::class);
+        $before = $this->createStub(Dependency::class);
+        $after = $this->createStub(Dependency::class);
 
-        $before->getPackage()->willReturn($package);
-        $after->getPackage()->willReturn($package);
+        $before->method('getPackage')->willReturn($package);
+        $after->method('getPackage')->willReturn($package);
 
-        $this->comparator->compare($before->reveal(), $after->reveal())->willReturn($diff);
+        $this->comparator->method('compare')->with($before, $after)->willReturn($diff);
 
-        $a = $this->prophesize(DependencyCollection::class);
-        $b = $this->prophesize(DependencyCollection::class);
+        $a = $this->createStub(DependencyCollection::class);
+        $b = $this->createStub(DependencyCollection::class);
 
-        $a->getDependencies()->willReturn([$before->reveal(), $this->createDummyDependency()]);
-        $b->getDependencies()->willReturn([$after->reveal(), $this->createDummyDependency()]);
+        $a->method('getDependencies')->willReturn([$before, $this->createDummyDependency()]);
+        $b->method('getDependencies')->willReturn([$after, $this->createDummyDependency()]);
 
-        $this->assertSame([$diff], $this->intersector->intersect($a->reveal(), $b->reveal()));
+        $this->assertSame([$diff], $this->intersector->intersect($a, $b));
     }
 
-    private function createDummyDependency(): Dependency
+    private function createDummyDependency(): Dependency&Stub
     {
-        $package = $this->prophesize(Package::class)->reveal();
-        $dependency = $this->prophesize(Dependency::class);
+        $package = $this->createStub(Package::class);
+        $dependency = $this->createStub(Dependency::class);
 
         $dependency
-            ->getPackage()
+            ->method('getPackage')
             ->willReturn($package)
         ;
 
-        return $dependency->reveal();
+        return $dependency;
     }
 }

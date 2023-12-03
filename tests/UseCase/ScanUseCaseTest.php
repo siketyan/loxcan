@@ -6,10 +6,8 @@ namespace Siketyan\Loxcan\UseCase;
 
 use Eloquent\Pathogen\PathInterface;
 use Eloquent\Pathogen\RelativePathInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Comparator\DependencyCollectionComparator;
 use Siketyan\Loxcan\Git\Git;
 use Siketyan\Loxcan\Model\DependencyCollection;
@@ -22,45 +20,31 @@ use Siketyan\Loxcan\Scanner\ScannerResolver;
 
 class ScanUseCaseTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<Git>
-     */
-    private ObjectProphecy $git;
-
-    /**
-     * @var ObjectProphecy<ScannerResolver>
-     */
-    private ObjectProphecy $scannerResolver;
-
-    /**
-     * @var ObjectProphecy<DependencyCollectionComparator>
-     */
-    private ObjectProphecy $comparator;
-
+    private Git&MockObject $git;
+    private MockObject&ScannerResolver $scannerResolver;
+    private DependencyCollectionComparator&MockObject $comparator;
     private ScanUseCase $useCase;
 
     protected function setUp(): void
     {
-        $this->git = $this->prophesize(Git::class);
-        $this->scannerResolver = $this->prophesize(ScannerResolver::class);
-        $this->comparator = $this->prophesize(DependencyCollectionComparator::class);
+        $this->git = $this->createMock(Git::class);
+        $this->scannerResolver = $this->createMock(ScannerResolver::class);
+        $this->comparator = $this->createMock(DependencyCollectionComparator::class);
 
         $this->useCase = new ScanUseCase(
-            $this->git->reveal(),
-            $this->scannerResolver->reveal(),
-            $this->comparator->reveal(),
+            $this->git,
+            $this->scannerResolver,
+            $this->comparator,
         );
     }
 
     public function test(): void
     {
         $makeRelativePath = function (string $path): RelativePathInterface {
-            $prophecy = $this->prophesize(RelativePathInterface::class);
-            $prophecy->string()->willReturn($path);
+            $stub = $this->createStub(RelativePathInterface::class);
+            $stub->method('string')->willReturn($path);
 
-            return $prophecy->reveal();
+            return $stub;
         };
 
         $base = 'main';
@@ -70,46 +54,50 @@ class ScanUseCaseTest extends TestCase
             $makeRelativePath('./file2.php'),
         ];
 
-        $file0Path = $this->prophesize(PathInterface::class);
-        $file0Path->string()->willReturn(__FILE__);
-        $file0Path = $file0Path->reveal();
+        $file0Path = $this->createStub(PathInterface::class);
+        $file0Path->method('string')->willReturn(__FILE__);
 
-        $file1Path = $this->prophesize(PathInterface::class)->reveal();
+        $file1Path = $this->createStub(PathInterface::class);
 
-        $repositoryPath = $this->prophesize(PathInterface::class);
-        $repositoryPath->join($files[0])->willReturn($file0Path);
-        $repositoryPath->join($files[1])->willReturn($file1Path);
+        $repositoryPath = $this->createStub(PathInterface::class);
+        $repositoryPath->method('join')->willReturnMap([
+            [$files[0], $file0Path],
+            [$files[1], $file1Path],
+        ]);
 
-        $repository = $this->prophesize(Repository::class);
-        $repository->getPath()->willReturn($repositoryPath->reveal());
-        $repository = $repository->reveal();
+        $repository = $this->createStub(Repository::class);
+        $repository->method('getPath')->willReturn($repositoryPath);
 
-        $before = $this->prophesize(DependencyCollection::class)->reveal();
-        $after = $this->prophesize(DependencyCollection::class)->reveal();
-        $diff = $this->prophesize(DependencyCollectionDiff::class)->reveal();
+        $before = $this->createStub(DependencyCollection::class);
+        $after = $this->createStub(DependencyCollection::class);
+        $diff = $this->createStub(DependencyCollectionDiff::class);
 
-        $pair = $this->prophesize(DependencyCollectionPair::class);
-        $pair->getBefore()->willReturn($before);
-        $pair->getAfter()->willReturn($after);
+        $pair = $this->createStub(DependencyCollectionPair::class);
+        $pair->method('getBefore')->willReturn($before);
+        $pair->method('getAfter')->willReturn($after);
 
-        $scanner = $this->prophesize(ScannerInterface::class);
+        $scanner = $this->createMock(ScannerInterface::class);
 
-        /* @noinspection PhpParamsInspection */
         $scanner
-            ->scan(Argument::that(fn (FileDiff $d): bool => $d->getBefore() === 'foo'))
+            ->expects($this->once())
+            ->method('scan')
+            ->with($this->callback(static fn (FileDiff $d): bool => $d->getBefore() === 'foo'))
             ->willReturn($pair)
-            ->shouldBeCalledOnce()
         ;
 
-        $this->git->fetchChangedFiles($repository, $base, $head)->willReturn($files)->shouldBeCalledOnce();
-        $this->git->fetchOriginalFile($repository, $base, $files[0])->willReturn('foo')->shouldBeCalledOnce();
-        $this->git->fetchOriginalFile($repository, $base, $files[1])->shouldNotBeCalled();
-        $this->git->checkFileExists($repository, $base, $files[0])->willReturn(true)->shouldBeCalledOnce();
+        $this->git->expects($this->once())->method('fetchChangedFiles')->with($repository, $base, $head)->willReturn($files);
+        $this->git->expects($this->once())->method('fetchOriginalFile')->with($repository, $base, $files[0])->willReturn('foo');
+        $this->git->expects($this->once())->method('checkFileExists')->with($repository, $base, $files[0])->willReturn(true);
 
-        $this->scannerResolver->resolve($file0Path)->willReturn($scanner->reveal());
-        $this->scannerResolver->resolve($file1Path)->willReturn(null);
+        $this->scannerResolver
+            ->method('resolve')
+            ->willReturnCallback(static fn (PathInterface $p): ?ScannerInterface => match ($p) {
+                $file0Path => $scanner,
+                default => null,
+            })
+        ;
 
-        $this->comparator->compare($before, $after)->willReturn($diff);
+        $this->comparator->method('compare')->with($before, $after)->willReturn($diff);
 
         $diffs = $this->useCase->scan($repository, $base, $head);
 

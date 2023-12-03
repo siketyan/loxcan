@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Siketyan\Loxcan\Scanner;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Siketyan\Loxcan\Model\Package;
 
 abstract class AbstractPackagePoolTest extends TestCase
 {
-    use ProphecyTrait;
-
     private AbstractPackagePool $pool;
 
     protected function setUp(): void
@@ -25,10 +22,9 @@ abstract class AbstractPackagePoolTest extends TestCase
     {
         $name = 'dummy/dummy';
 
-        $package = $this->prophesize(Package::class);
-        $package->getName()->willReturn($name);
-        $package->getConstraint()->willReturn(null);
-        $package = $package->reveal();
+        $package = $this->createStub(Package::class);
+        $package->method('getName')->willReturn($name);
+        $package->method('getConstraint')->willReturn(null);
 
         $this->pool->add($package);
 
@@ -41,10 +37,9 @@ abstract class AbstractPackagePoolTest extends TestCase
         $name = 'dummy/dummy';
         $constraint = '^1.2.3';
 
-        $package = $this->prophesize(Package::class);
-        $package->getName()->willReturn($name);
-        $package->getConstraint()->willReturn($constraint);
-        $package = $package->reveal();
+        $package = $this->createStub(Package::class);
+        $package->method('getName')->willReturn($name);
+        $package->method('getConstraint')->willReturn($constraint);
 
         $this->pool->add($package);
 

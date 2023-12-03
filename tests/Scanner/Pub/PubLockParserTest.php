@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Pub;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\SemVer\SemVerVersion;
@@ -15,8 +13,6 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 
 class PubLockParserTest extends TestCase
 {
-    use ProphecyTrait;
-
     private const CONTENTS = <<<'EOS'
         packages:
           foo:
@@ -25,41 +21,39 @@ class PubLockParserTest extends TestCase
             version: "3.2.1"
         EOS;
 
-    /**
-     * @var ObjectProphecy<PubPackagePool>
-     */
-    private ObjectProphecy $packagePool;
-
-    /**
-     * @var ObjectProphecy<SemVerVersionParser>
-     */
-    private ObjectProphecy $versionParser;
-
+    private MockObject&PubPackagePool $packagePool;
+    private MockObject&SemVerVersionParser $versionParser;
     private PubLockParser $parser;
 
     protected function setUp(): void
     {
-        $this->packagePool = $this->prophesize(PubPackagePool::class);
-        $this->versionParser = $this->prophesize(SemVerVersionParser::class);
+        $this->packagePool = $this->createMock(PubPackagePool::class);
+        $this->versionParser = $this->createMock(SemVerVersionParser::class);
 
         $this->parser = new PubLockParser(
-            $this->packagePool->reveal(),
-            $this->versionParser->reveal(),
+            $this->packagePool,
+            $this->versionParser,
         );
     }
 
     public function test(): void
     {
-        $cache = $this->prophesize(Package::class)->reveal();
-        $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
-        $barBazVersion = $this->prophesize(SemVerVersion::class)->reveal();
+        $cache = $this->createStub(Package::class);
+        $fooVersion = $this->createStub(SemVerVersion::class);
+        $barVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->get('foo')->willReturn(null);
-        $this->packagePool->get('bar')->willReturn($cache);
-        $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+            'foo' => null,
+            'bar' => $cache,
+            default => $this->fail('unexpected pattern'),
+        });
 
-        $this->versionParser->parse('1.2.3-dev')->willReturn($fooBarVersion);
-        $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
+        $this->packagePool->expects($this->once())->method('add')->with($this->isInstanceOf(Package::class));
+
+        $this->versionParser->method('parse')->willReturnMap([
+            ['1.2.3-dev', $fooVersion],
+            ['3.2.1', $barVersion],
+        ]);
 
         $collection = $this->parser->parse(self::CONTENTS);
         $dependencies = $collection->getDependencies();
@@ -68,9 +62,9 @@ class PubLockParserTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Dependency::class, $dependencies);
 
         $this->assertSame('foo', $dependencies[0]->getPackage()->getName());
-        $this->assertSame($fooBarVersion, $dependencies[0]->getVersion());
+        $this->assertSame($fooVersion, $dependencies[0]->getVersion());
 
         $this->assertSame($cache, $dependencies[1]->getPackage());
-        $this->assertSame($barBazVersion, $dependencies[1]->getVersion());
+        $this->assertSame($barVersion, $dependencies[1]->getVersion());
     }
 }

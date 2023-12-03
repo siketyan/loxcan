@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Comparator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Exception\InvalidComparisonException;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\DependencyDiff;
@@ -18,47 +17,39 @@ use Siketyan\Loxcan\Versioning\VersionDiff;
 
 class DependencyComparatorTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<VersionComparatorResolver>
-     */
-    private ObjectProphecy $versionComparatorResolver;
-
+    private MockObject&VersionComparatorResolver $versionComparatorResolver;
     private DependencyComparator $comparator;
 
     protected function setUp(): void
     {
-        $this->versionComparatorResolver = $this->prophesize(VersionComparatorResolver::class);
-
-        $this->comparator = new DependencyComparator(
-            $this->versionComparatorResolver->reveal(),
-        );
+        $this->versionComparatorResolver = $this->createMock(VersionComparatorResolver::class);
+        $this->comparator = new DependencyComparator($this->versionComparatorResolver);
     }
 
     public function test(): void
     {
-        $package = $this->prophesize(Package::class)->reveal();
-        $versionDiff = $this->prophesize(VersionDiff::class)->reveal();
-        $beforeVersion = $this->prophesize(SimpleVersion::class)->reveal();
-        $afterVersion = $this->prophesize(SimpleVersion::class)->reveal();
-        $before = $this->prophesize(Dependency::class);
-        $after = $this->prophesize(Dependency::class);
+        $package = $this->createStub(Package::class);
+        $versionDiff = $this->createStub(VersionDiff::class);
+        $beforeVersion = $this->createStub(SimpleVersion::class);
+        $afterVersion = $this->createStub(SimpleVersion::class);
+        $before = $this->createStub(Dependency::class);
+        $after = $this->createStub(Dependency::class);
 
-        $before->getPackage()->willReturn($package);
-        $before->getVersion()->willReturn($beforeVersion);
-        $after->getPackage()->willReturn($package);
-        $after->getVersion()->willReturn($afterVersion);
+        $before->method('getPackage')->willReturn($package);
+        $before->method('getVersion')->willReturn($beforeVersion);
+        $after->method('getPackage')->willReturn($package);
+        $after->method('getVersion')->willReturn($afterVersion);
 
-        $versionComparator = $this->prophesize(VersionComparatorInterface::class);
-        $versionComparator->compare($beforeVersion, $afterVersion)->willReturn($versionDiff);
+        $versionComparator = $this->createMock(VersionComparatorInterface::class);
+        $versionComparator->method('compare')->with($beforeVersion, $afterVersion)->willReturn($versionDiff);
 
         $this->versionComparatorResolver
-            ->resolve($beforeVersion, $afterVersion)
-            ->willReturn($versionComparator->reveal())
+            ->method('resolve')
+            ->with($beforeVersion, $afterVersion)
+            ->willReturn($versionComparator)
         ;
 
-        $diff = $this->comparator->compare($before->reveal(), $after->reveal());
+        $diff = $this->comparator->compare($before, $after);
 
         $this->assertInstanceOf(DependencyDiff::class, $diff);
         $this->assertSame($package, $diff->getPackage());
@@ -69,14 +60,14 @@ class DependencyComparatorTest extends TestCase
     {
         $this->expectException(InvalidComparisonException::class);
 
-        $beforePackage = $this->prophesize(Package::class)->reveal();
-        $afterPackage = $this->prophesize(Package::class)->reveal();
-        $before = $this->prophesize(Dependency::class);
-        $after = $this->prophesize(Dependency::class);
+        $beforePackage = $this->createStub(Package::class);
+        $afterPackage = $this->createStub(Package::class);
+        $before = $this->createStub(Dependency::class);
+        $after = $this->createStub(Dependency::class);
 
-        $before->getPackage()->willReturn($beforePackage);
-        $after->getPackage()->willReturn($afterPackage);
+        $before->method('getPackage')->willReturn($beforePackage);
+        $after->method('getPackage')->willReturn($afterPackage);
 
-        $this->comparator->compare($before->reveal(), $after->reveal());
+        $this->comparator->compare($before, $after);
     }
 }

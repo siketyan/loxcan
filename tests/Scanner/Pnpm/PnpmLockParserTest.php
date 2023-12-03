@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Scanner\Pnpm;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Loxcan\Model\Dependency;
 use Siketyan\Loxcan\Model\Package;
 use Siketyan\Loxcan\Versioning\SemVer\SemVerVersion;
@@ -15,28 +13,18 @@ use Siketyan\Loxcan\Versioning\SemVer\SemVerVersionParser;
 
 class PnpmLockParserTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy<PnpmPackagePool>
-     */
-    private ObjectProphecy $packagePool;
-
-    /**
-     * @var ObjectProphecy<SemVerVersionParser>
-     */
-    private ObjectProphecy $versionParser;
-
+    private MockObject&PnpmPackagePool $packagePool;
+    private MockObject&SemVerVersionParser $versionParser;
     private PnpmLockParser $parser;
 
     protected function setUp(): void
     {
-        $this->packagePool = $this->prophesize(PnpmPackagePool::class);
-        $this->versionParser = $this->prophesize(SemVerVersionParser::class);
+        $this->packagePool = $this->createMock(PnpmPackagePool::class);
+        $this->versionParser = $this->createMock(SemVerVersionParser::class);
 
         $this->parser = new PnpmLockParser(
-            $this->packagePool->reveal(),
-            $this->versionParser->reveal(),
+            $this->packagePool,
+            $this->versionParser,
         );
     }
 
@@ -45,16 +33,22 @@ class PnpmLockParserTest extends TestCase
      */
     public function test(string $yaml): void
     {
-        $cache = $this->prophesize(Package::class)->reveal();
-        $fooBarVersion = $this->prophesize(SemVerVersion::class)->reveal();
-        $barBazVersion = $this->prophesize(SemVerVersion::class)->reveal();
+        $cache = $this->createStub(Package::class);
+        $fooVersion = $this->createStub(SemVerVersion::class);
+        $barVersion = $this->createStub(SemVerVersion::class);
 
-        $this->packagePool->get('foo', Argument::any())->willReturn(null);
-        $this->packagePool->get('bar', Argument::any())->willReturn($cache);
-        $this->packagePool->add(Argument::type(Package::class))->shouldBeCalledOnce();
+        $this->packagePool->method('get')->willReturnCallback(fn (string $name) => match ($name) {
+            'foo' => null,
+            'bar' => $cache,
+            default => $this->fail('unexpected pattern'),
+        });
 
-        $this->versionParser->parse('1.2.3-dev')->willReturn($fooBarVersion);
-        $this->versionParser->parse('3.2.1')->willReturn($barBazVersion);
+        $this->packagePool->expects($this->once())->method('add')->with($this->isInstanceOf(Package::class));
+
+        $this->versionParser->method('parse')->willReturnMap([
+            ['1.2.3-dev', $fooVersion],
+            ['3.2.1', $barVersion],
+        ]);
 
         $collection = $this->parser->parse($yaml);
         $dependencies = $collection->getDependencies();
@@ -63,10 +57,10 @@ class PnpmLockParserTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Dependency::class, $dependencies);
 
         $this->assertSame('foo', $dependencies[0]->getPackage()->getName());
-        $this->assertSame($fooBarVersion, $dependencies[0]->getVersion());
+        $this->assertSame($fooVersion, $dependencies[0]->getVersion());
 
         $this->assertSame($cache, $dependencies[1]->getPackage());
-        $this->assertSame($barBazVersion, $dependencies[1]->getVersion());
+        $this->assertSame($barVersion, $dependencies[1]->getVersion());
     }
 
     /**
