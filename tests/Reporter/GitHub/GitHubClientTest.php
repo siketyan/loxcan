@@ -92,7 +92,7 @@ class GitHubClientTest extends TestCase
         $this->userPool->get(111)->willReturn(null)->shouldBeCalledTimes(2);
         $this->userPool
             ->add(Argument::type(GitHubUser::class))
-            ->will(function ($args) use ($pool): void {
+            ->will(function (array $args) use ($pool): void {
                 /* @noinspection PhpUndefinedMethodInspection */
                 $pool->get(111)->willReturn($args[0]);
             })
