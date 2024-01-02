@@ -4,6 +4,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      symfony:
+        patterns:
+          - 'symfony/*'
 
   - package-ecosystem: docker
     directory: /
