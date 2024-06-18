@@ -32,7 +32,7 @@ jobs:
         run: echo "::set-output name=hash::$(echo ${GITHUB_SHA} | cut -c1-7)"
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           context: .
