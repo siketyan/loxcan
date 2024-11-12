@@ -333,16 +333,16 @@
         },
         {
             "name": "jetbrains/phpstorm-attributes",
-            "version": "1.1",
+            "version": "1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-attributes.git",
-                "reference": "22fb28d679deceedba8366dbae65cc8ebfc17e26"
+                "reference": "64de815a4509c29e00d5e3474087fd24c171afc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-attributes/zipball/22fb28d679deceedba8366dbae65cc8ebfc17e26",
-                "reference": "22fb28d679deceedba8366dbae65cc8ebfc17e26",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-attributes/zipball/64de815a4509c29e00d5e3474087fd24c171afc2",
+                "reference": "64de815a4509c29e00d5e3474087fd24c171afc2",
                 "shasum": ""
             },
             "type": "library",
@@ -369,9 +369,9 @@
             ],
             "support": {
                 "issues": "https://youtrack.jetbrains.com/newIssue?project=WI",
-                "source": "https://github.com/JetBrains/phpstorm-attributes/tree/1.1"
+                "source": "https://github.com/JetBrains/phpstorm-attributes/tree/1.2"
             },
-            "time": "2023-09-01T08:50:25+00:00"
+            "time": "2024-10-11T10:46:19+00:00"
         },
         {
             "name": "mschop/pathogen",
