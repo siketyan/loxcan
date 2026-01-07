@@ -59,6 +59,7 @@ steps:
 - [x] Composer (PHP)
 - [x] Cargo (Rust)
 - [x] Go Modules (Go)
+- [x] uv (Python)
 - [x] Pipenv (Python)
 - [x] npm (JavaScript, Node.js)
 - [x] pnpm (JavaScript, Node.js)

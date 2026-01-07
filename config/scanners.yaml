@@ -83,6 +83,18 @@ services:
     arguments:
       $parser: '@Siketyan\Loxcan\Scanner\Pub\PubLockParser'
 
+  Siketyan\Loxcan\Scanner\Uv\UvPackagePool:
+    shared: true
+
+  Siketyan\Loxcan\Scanner\Uv\UvLockParser:
+    arguments:
+      $packagePool: '@Siketyan\Loxcan\Scanner\Uv\UvPackagePool'
+      $versionParser: '@Siketyan\Loxcan\Versioning\Simple\SimpleVersionParser'
+
+  Siketyan\Loxcan\Scanner\Uv\UvScanner:
+    arguments:
+      $parser: '@Siketyan\Loxcan\Scanner\Uv\UvLockParser'
+
   Siketyan\Loxcan\Scanner\Yarn\YarnPackagePool:
     shared: true
 
@@ -105,4 +117,5 @@ services:
         - '@Siketyan\Loxcan\Scanner\Pip\PipScanner'
         - '@Siketyan\Loxcan\Scanner\Pnpm\PnpmScanner'
         - '@Siketyan\Loxcan\Scanner\Pub\PubScanner'
+        - '@Siketyan\Loxcan\Scanner\Uv\UvScanner'
         - '@Siketyan\Loxcan\Scanner\Yarn\YarnScanner'
