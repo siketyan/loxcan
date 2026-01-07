@@ -23,8 +23,7 @@ class GoSumParser
             return new DependencyCollection([]);
         }
 
-        $dependencies = [];
-        $seen = [];
+        $dependencies = $seen = [];
 
         foreach (explode("\n", $content) as $line) {
             $line = trim($line);
@@ -39,13 +38,10 @@ class GoSumParser
                 continue;
             }
 
-            $name = $parts[0];
-            $version = $parts[1];
+            [$name, $version] = $parts;
 
             // Remove /go.mod suffix from version
-            if (str_ends_with($version, '/go.mod')) {
-                $version = substr($version, 0, -7);
-            }
+            $version = preg_replace('#/go\.mod\z#', '', $version);
 
             // Skip duplicates (same module can appear twice: once for source, once for go.mod)
             $key = $name . '@' . $version;
