@@ -13,6 +13,7 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
+        "composer/semver": "^3.4",
         "guzzlehttp/guzzle": "^7.7",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mschop/pathogen": "^0.7.1",
