@@ -45,7 +45,12 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
+      # Skip linter on PHP 8.4+:
+      # PHPStan's better-reflection has type compatibility issues with
+      # ReflectionProperty::IS_READONLY constant type change in PHP 8.4+.
+      # See: https://github.com/phpstan/phpstan/issues/10182
       - name: Run linter
+        if: matrix.php != '8.4' && matrix.php != '8.5'
         run: composer run-script analyse
 
       - name: Run test suite
