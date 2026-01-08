@@ -1,4 +1,6 @@
 services:
+  Composer\Semver\VersionParser: ~
+
   Siketyan\Loxcan\Versioning\Composer\ComposerVersionParser: ~
 
   Siketyan\Loxcan\Versioning\Composer\ComposerVersionComparator: ~

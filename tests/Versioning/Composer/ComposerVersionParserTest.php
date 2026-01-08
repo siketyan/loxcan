@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Composer;
 
+use Composer\Semver\VersionParser as SemverVersionParser;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Loxcan\Versioning\Unknown\UnknownVersion;
 
@@ -13,18 +14,18 @@ class ComposerVersionParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->parser = new ComposerVersionParser();
+        $this->parser = new ComposerVersionParser(
+            new SemverVersionParser(),
+        );
     }
 
     public function test(): void
     {
         /** @var ComposerVersion $version */
-        $version = $this->parser->parse('v1.2.3-dev123', 'hash');
+        $version = $this->parser->parse('v1.2.3-alpha1', 'hash');
         $this->assertSame(1, $version->getX());
         $this->assertSame(2, $version->getY());
         $this->assertSame(3, $version->getZ());
-        $this->assertSame(ComposerVersion::STABILITY_DEV, $version->getStability());
-        $this->assertSame(123, $version->getNumber());
         $this->assertSame('hash', $version->getHash());
 
         /** @var ComposerVersion $version */
@@ -32,8 +33,6 @@ class ComposerVersionParserTest extends TestCase
         $this->assertSame(4, $version->getX());
         $this->assertSame(3, $version->getY());
         $this->assertSame(2, $version->getZ());
-        $this->assertSame(ComposerVersion::STABILITY_STABLE, $version->getStability());
-        $this->assertSame(0, $version->getNumber());
         $this->assertSame('hash', $version->getHash());
 
         /** @var ComposerVersion $version */
@@ -46,7 +45,7 @@ class ComposerVersionParserTest extends TestCase
     {
         $this->assertInstanceOf(
             UnknownVersion::class,
-            $this->parser->parse('v1.2.3_not_supported', 'hash'),
+            $this->parser->parse('not_a_valid_version', 'hash'),
         );
     }
 }

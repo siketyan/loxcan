@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Loxcan\Versioning\Composer;
 
-use JetBrains\PhpStorm\Pure;
+use Composer\Semver\Comparator;
 use Siketyan\Loxcan\Exception\RuntimeException;
 use Siketyan\Loxcan\Versioning\VersionComparatorInterface;
 use Siketyan\Loxcan\Versioning\VersionDiff;
@@ -42,46 +42,16 @@ class ComposerVersionComparator implements VersionComparatorInterface
         return $beforeType === ComposerVersion::class && $afterType === ComposerVersion::class;
     }
 
-    #[Pure]
     private function determineType(ComposerVersion $before, ComposerVersion $after): ?int
     {
-        if ($before->getX() < $after->getX()) {
+        $beforeNormalized = $before->getNormalized();
+        $afterNormalized = $after->getNormalized();
+
+        if (Comparator::lessThan($beforeNormalized, $afterNormalized)) {
             return VersionDiff::UPGRADED;
         }
 
-        if ($before->getX() > $after->getX()) {
-            return VersionDiff::DOWNGRADED;
-        }
-
-        if ($before->getY() < $after->getY()) {
-            return VersionDiff::UPGRADED;
-        }
-
-        if ($before->getY() > $after->getY()) {
-            return VersionDiff::DOWNGRADED;
-        }
-
-        if ($before->getZ() < $after->getZ()) {
-            return VersionDiff::UPGRADED;
-        }
-
-        if ($before->getZ() > $after->getZ()) {
-            return VersionDiff::DOWNGRADED;
-        }
-
-        if ($before->getStability() < $after->getStability()) {
-            return VersionDiff::UPGRADED;
-        }
-
-        if ($before->getStability() > $after->getStability()) {
-            return VersionDiff::DOWNGRADED;
-        }
-
-        if ($before->getNumber() < $after->getNumber()) {
-            return VersionDiff::UPGRADED;
-        }
-
-        if ($before->getNumber() > $after->getNumber()) {
+        if (Comparator::greaterThan($beforeNormalized, $afterNormalized)) {
             return VersionDiff::DOWNGRADED;
         }
 
