@@ -13,6 +13,7 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
+        "composer/semver": "^3.4",
         "guzzlehttp/guzzle": "^7.7",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mschop/pathogen": "^0.7.1",
@@ -22,7 +23,6 @@
         "symfony/dependency-injection": "^6.4|^7.0",
         "symfony/process": "^6.4|^7.0",
         "symfony/yaml": "^6.4|^7.0",
-        "composer/semver": "^3.4",
         "yosymfony/toml": "^1.0"
     },
     "require-dev": {
