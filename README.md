@@ -58,10 +58,12 @@ steps:
 
 - [x] Composer (PHP)
 - [x] Cargo (Rust)
-- [x] Pub (Dart)
+- [x] Go Modules (Go)
+- [x] Pipenv (Python)
 - [x] npm (JavaScript, Node.js)
 - [x] pnpm (JavaScript, Node.js)
 - [x] Yarn (JavaScript, Node.js)
+- [x] Pub (Dart)
 
 ## 📋 Supported Reporters
 (✅ = Supported, ⬜️ = Scheduled)
