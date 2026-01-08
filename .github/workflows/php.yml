@@ -18,6 +18,9 @@ jobs:
         php:
           - '8.1'
           - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
     steps:
       - uses: actions/checkout@v4
 
@@ -42,14 +45,19 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
+      # Skip linter on PHP 8.4+:
+      # PHPStan's better-reflection has type compatibility issues with
+      # ReflectionProperty::IS_READONLY constant type change in PHP 8.4+.
+      # See: https://github.com/phpstan/phpstan/issues/10182
       - name: Run linter
+        if: matrix.php != '8.4' && matrix.php != '8.5'
         run: composer run-script analyse
 
       - name: Run test suite
         run: composer run-script codecov
 
       - uses: codecov/codecov-action@v5
-        if: ${{ matrix.php }} == '8.2'
+        if: ${{ matrix.php }} == '8.5'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
