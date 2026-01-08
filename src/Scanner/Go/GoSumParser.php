@@ -34,7 +34,7 @@ class GoSumParser
             // Format: module/path v1.2.3 h1:hash=
             // or: module/path v1.2.3/go.mod h1:hash=
             $parts = preg_split('/\s+/', $line);
-            if ($parts === false || count($parts) < 2) {
+            if ($parts === false || \count($parts) < 2) {
                 continue;
             }
 
@@ -59,7 +59,7 @@ class GoSumParser
 
             $dependencies[] = new Dependency(
                 $package,
-                $this->versionParser->parse(ltrim($version, 'v')),
+                $this->versionParser->parse(ltrim((string) $version, 'v')),
             );
         }
 
